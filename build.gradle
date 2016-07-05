@@ -1,0 +1,76 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        dependencies {
+            classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'
+            classpath 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.0.2'
+        }
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.unbroken-dome.test-sets'
+apply plugin: 'maven-publish'
+apply plugin: 'maven-publish-auth'
+apply plugin: 'jacoco'
+apply plugin: 'idea'
+
+group = 'com.smartling.connector'
+description = 'Eloqua SDK'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+version '1.0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.netflix.feign:feign-core:8.6.0'
+    compile 'com.netflix.feign:feign-gson:8.6.0'
+    compile 'com.netflix.feign:feign-httpclient:8.6.0'
+    compile 'org.redisson:redisson:2.1.1'
+    compile 'org.apache.commons:commons-lang3:3.4'
+
+    testCompile 'org.easytesting:fest-assert-core:2.0M10'
+    testCompile 'junit:junit:4.12'
+    testCompile 'com.jayway.jsonpath:json-path:2.0.0'
+    testCompile 'com.jayway.jsonpath:json-path-assert:2.0.0'
+    testCompile 'com.github.tomakehurst:wiremock:1.56'
+    testCompile 'org.mockito:mockito-core:2.0.31-beta'
+}
+
+testSets {
+    integrationTest { dirName = 'integration-test' }
+}
+
+// workaround to start tests jod with passed system properties
+tasks.withType(Test) {
+    systemProperties = System.properties
+}
+
+check.dependsOn -= integrationTest
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId 'eloqua-sdk'
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name 'smartling.repository.target.snapshots'
+            url (project.version.contains('SNAPSHOT')
+                    ? 'https://artifactory.smartling.net/artifactory/local-snapshots'
+                    : 'https://artifactory.smartling.net/artifactory/local-releases')
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14'
+}

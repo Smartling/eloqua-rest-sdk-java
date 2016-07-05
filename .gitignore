@@ -3,10 +3,24 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
-*.jar
-*.war
-*.ear
+# Build directory
+build
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+#idea
+
+.idea
+*.iml
+
+# Eclise files
+.settings/**
+.classpath
+.project
+
+#Gradle cache
+.gradle
+
+#OS
+.DS_Store
