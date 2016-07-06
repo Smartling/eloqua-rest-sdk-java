@@ -64,15 +64,6 @@ publishing {
             from components.java
         }
     }
-
-    repositories {
-        maven {
-            name 'smartling.repository.target.snapshots'
-            url (project.version.contains('SNAPSHOT')
-                    ? 'https://artifactory.smartling.net/artifactory/local-snapshots'
-                    : 'https://artifactory.smartling.net/artifactory/local-releases')
-        }
-    }
 }
 
 artifactory {
