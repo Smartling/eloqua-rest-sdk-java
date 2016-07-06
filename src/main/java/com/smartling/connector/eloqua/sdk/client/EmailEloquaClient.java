@@ -1,6 +1,7 @@
-package com.smartling.connector.eloqua.sdk.rest;
+package com.smartling.connector.eloqua.sdk.client;
 
 import com.smartling.connector.eloqua.sdk.Configuration;
+import com.smartling.connector.eloqua.sdk.rest.api.EmailApi;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
 import feign.Feign;
@@ -19,12 +20,11 @@ public class EmailEloquaClient extends EloquaClient<EmailApi, Email>
     }
 
     @Override
-    public EmailApi getApi()
+    protected EmailApi getApi()
     {
-        if(baseUrl == null)
-        {
-            init();
-        }
-        return Feign.builder().decoder(new GsonDecoder()).target(EmailApi.class, baseUrl);
+        return Feign.builder()
+                    .decoder(new GsonDecoder())
+                    .options(configuration.getOptions())
+                    .target(EmailApi.class, baseUrl);
     }
 }

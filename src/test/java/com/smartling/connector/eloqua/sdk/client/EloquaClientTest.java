@@ -1,6 +1,8 @@
-package com.smartling.connector.eloqua.sdk.rest;
+package com.smartling.connector.eloqua.sdk.client;
 
 import com.smartling.connector.eloqua.sdk.Configuration;
+import com.smartling.connector.eloqua.sdk.rest.api.EmailApi;
+import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
 import com.smartling.connector.eloqua.sdk.rest.model.login.AccountInfo;
@@ -58,8 +60,8 @@ public class EloquaClientTest
 
         AccountInfo accountInfo = new AccountInfo();
         Urls urls = new Urls();
-        urls.base = "dasd";
-        accountInfo.urls = urls;
+        urls.setBase("dasd");
+        accountInfo.setUrls(urls);
 
         when(configuration.getLoginEncoded()).thenReturn("");
         when(loginApi.getAccountInfo(anyString())).thenReturn(accountInfo);

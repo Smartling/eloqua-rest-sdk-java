@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Elements<T>
 {
-    public List<T> elements = new ArrayList<T>();
-    public Integer page;
-    public Integer pageSize;
+    private List<T> elements = new ArrayList<T>();
+    private Integer page;
+    private Integer pageSize;
     public Integer total;
 }

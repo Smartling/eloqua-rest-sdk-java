@@ -1,4 +1,4 @@
-package com.smartling.connector.eloqua.sdk.rest;
+package com.smartling.connector.eloqua.sdk.rest.api;
 
 import com.smartling.connector.eloqua.sdk.rest.model.login.AccountInfo;
 import feign.Headers;

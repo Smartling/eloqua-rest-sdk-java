@@ -1,13 +1,23 @@
 package com.smartling.connector.eloqua.sdk.rest.model.login;
 
-public class AccountInfo {
-	public Site site;
-    public ApiAccount user;
-    public Urls urls;
+public class AccountInfo
+{
+    private Site site;
+    private ApiAccount user;
+    private Urls urls;
 
     public String getBaseUrl()
     {
-        return urls.base;
+        return urls.getBase();
     }
 
+    public Urls getUrls()
+    {
+        return urls;
+    }
+
+    public void setUrls(final Urls urls)
+    {
+        this.urls = urls;
+    }
 }

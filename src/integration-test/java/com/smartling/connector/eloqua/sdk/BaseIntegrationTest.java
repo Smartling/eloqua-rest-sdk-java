@@ -1,6 +1,6 @@
 package com.smartling.connector.eloqua.sdk;
 
-import com.smartling.connector.eloqua.sdk.rest.EmailEloquaClient;
+import com.smartling.connector.eloqua.sdk.client.EmailEloquaClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
 import org.junit.Test;
