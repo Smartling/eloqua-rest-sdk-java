@@ -75,9 +75,7 @@ publishing {
 }
 
 artifactory {
-    contextUrl =  (project.version.contains('SNAPSHOT')
-                        ? 'https://artifactory.smartling.net/artifactory/local-snapshots'
-                        : 'https://artifactory.smartling.net/artifactory/local-releases') // base artifactory url
+    contextUrl =  'https://artifactory.smartling.net/artifactory'
     publish {
         defaults {
             publications('mavenJava')
