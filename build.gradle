@@ -5,8 +5,8 @@ buildscript {
         dependencies {
             classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'
             classpath 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.0.2'
-            classpath("com.netflix.nebula:gradle-info-plugin:2.2.+")
-            classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.0"
+            classpath 'com.netflix.nebula:gradle-info-plugin:2.2.+'
+            classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.4.0'
         }
     }
 }
