@@ -6,6 +6,7 @@ buildscript {
             classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'
             classpath 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.0.2'
             classpath("com.netflix.nebula:gradle-info-plugin:2.2.+")
+            classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.4.0"
         }
     }
 }
@@ -16,6 +17,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'maven-publish-auth'
 apply plugin: 'jacoco'
 apply plugin: 'idea'
+apply plugin: "com.jfrog.artifactory"
 
 group = 'com.smartling.connector'
 description = 'Eloqua SDK'
@@ -70,6 +72,21 @@ publishing {
                     : 'https://artifactory.smartling.net/artifactory/local-releases')
         }
     }
+}
+
+artifactory {
+    contextUrl =  (project.version.contains('SNAPSHOT')
+                        ? 'https://artifactory.smartling.net/artifactory/local-snapshots'
+                        : 'https://artifactory.smartling.net/artifactory/local-releases') // base artifactory url
+    publish {
+        defaults {
+            publications('mavenJava')
+        }
+    }
+}
+
+artifactoryPublish {
+    dependsOn jar
 }
 
 apply plugin: 'nebula.info'
