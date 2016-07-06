@@ -17,7 +17,8 @@ apply plugin: 'maven-publish'
 apply plugin: 'maven-publish-auth'
 apply plugin: 'jacoco'
 apply plugin: 'idea'
-apply plugin: "com.jfrog.artifactory"
+apply plugin: 'nebula.info'
+apply plugin: 'com.jfrog.artifactory'
 
 group = 'com.smartling.connector'
 description = 'Eloqua SDK'
@@ -86,8 +87,6 @@ artifactory {
 artifactoryPublish {
     dependsOn jar
 }
-
-apply plugin: 'nebula.info'
 
 ext {
     branch = project.hasProperty('branch') ? project.getProperty('branch') : project.scminfo.branch
