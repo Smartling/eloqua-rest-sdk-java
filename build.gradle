@@ -71,6 +71,16 @@ publishing {
     }
 }
 
+task prepareSonarConfig(type: Copy) {
+    from 'sonar-project.template.properties'
+    into '.'
+
+    rename { String fileName ->
+        fileName.replace('.template', '')
+    }
+    expand(analysisMode: branch == 'master' ? 'analysis' : 'preview')
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.14'
 }
