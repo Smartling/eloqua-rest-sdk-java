@@ -6,7 +6,6 @@ buildscript {
             classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'
             classpath 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.0.2'
             classpath 'com.netflix.nebula:gradle-info-plugin:2.2.+'
-            classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.4.0'
         }
     }
 }
@@ -18,7 +17,6 @@ apply plugin: 'maven-publish-auth'
 apply plugin: 'jacoco'
 apply plugin: 'idea'
 apply plugin: 'nebula.info'
-apply plugin: 'com.jfrog.artifactory'
 
 group = 'com.smartling.connector'
 description = 'Eloqua SDK'
@@ -72,31 +70,11 @@ publishing {
                     ? 'https://artifactory.smartling.net/artifactory/local-snapshots'
                     : 'https://artifactory.smartling.net/artifactory/local-releases')
             credentials {
-                username = project.getProperty('artifactoryUser')
-                password = project.getProperty('artifactoryPassword')
+                username = project.hasProperty('artifactoryUser') ? project.getProperty('artifactoryUser') : ""
+                password = project.hasProperty('artifactoryPassword') ? project.getProperty('artifactoryPassword') : ""
             }
         }
     }
-}
-
-artifactory {
-    contextUrl =  'https://artifactory.smartling.net/artifactory'
-
-    publish {
-        repository {
-            repoKey = (project.version.contains('SNAPSHOT') ? 'local-snapshots' : 'local-releases')
-            username = project.getProperty('artifactoryUser')          //The publisher user name
-            password = project.getProperty('artifactoryPassword')       //The publisher password
-        }
-
-        defaults {
-            publications('mavenJava')
-        }
-    }
-}
-
-artifactoryPublish {
-    dependsOn jar
 }
 
 ext {
