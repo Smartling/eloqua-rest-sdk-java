@@ -80,8 +80,10 @@ artifactory {
 
     repository {
         repoKey = (project.version.contains('SNAPSHOT') ? 'local-snapshots' : 'local-releases')
+        artifactoryUser = 'deployer'          //The publisher user name
+        artifactoryPassword = 'deployerPaS*'       //The publisher password
     }
-    
+
     publish {
         defaults {
             publications('mavenJava')
