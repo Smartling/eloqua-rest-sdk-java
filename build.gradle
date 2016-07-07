@@ -25,7 +25,7 @@ description = 'Eloqua SDK'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-version '1.0.0'
+version '1.0.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -71,6 +71,10 @@ publishing {
             url (project.version.contains('SNAPSHOT')
                     ? 'https://artifactory.smartling.net/artifactory/local-snapshots'
                     : 'https://artifactory.smartling.net/artifactory/local-releases')
+            credentials {
+                username = project.getProperty('artifactoryUser')
+                password = project.getProperty('artifactoryPassword')
+            }
         }
     }
 }
@@ -81,6 +85,8 @@ artifactory {
     publish {
         repository {
             repoKey = (project.version.contains('SNAPSHOT') ? 'local-snapshots' : 'local-releases')
+            username = project.getProperty('artifactoryUser')          //The publisher user name
+            password = project.getProperty('artifactoryPassword')       //The publisher password
         }
 
         defaults {
