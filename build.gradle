@@ -56,7 +56,6 @@ tasks.withType(Test) {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId 'eloqua-sdk'
             from components.java
         }
     }
