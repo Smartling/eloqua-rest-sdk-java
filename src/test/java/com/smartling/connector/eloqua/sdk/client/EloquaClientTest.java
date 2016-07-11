@@ -26,13 +26,13 @@ import static org.mockito.Mockito.when;
 public class EloquaClientTest
 {
     @InjectMocks
-    TestEloquaClient client;
+    private TestEloquaClient client;
     @Mock
-    LoginApi loginApi;
+    private LoginApi loginApi;
     @Mock
-    Configuration configuration;
+    private Configuration configuration;
     @Mock
-    EmailApi emailApi;
+    private EmailApi emailApi;
 
     class TestEloquaClient extends EloquaClient<EmailApi, Email>
     {
@@ -41,7 +41,8 @@ public class EloquaClientTest
             super(configuration);
         }
 
-        @Override public EmailApi getApi()
+        @Override
+        public EmailApi getApi()
         {
             return emailApi;
         }

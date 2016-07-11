@@ -12,16 +12,18 @@ import java.util.function.Function;
 
 public abstract class EloquaClient<T extends EloquaApi, E>
 {
-    public static final String STATUS_401 = "status 401";
-    protected Configuration configuration;
-    private LoginApi loginApi;
-    protected String baseUrl = null;
     private static final String LOGIN_URL = "https://login.eloqua.com/id";
+    private static final String STATUS_401 = "status 401";
+
+    private LoginApi loginApi;
+
+    protected Configuration configuration;
+    protected String baseUrl;
 
     public EloquaClient(final Configuration configuration)
     {
         this.configuration = configuration;
-        loginApi = Feign.builder().decoder(new GsonDecoder()).target(LoginApi.class, LOGIN_URL);
+        this.loginApi = Feign.builder().decoder(new GsonDecoder()).target(LoginApi.class, LOGIN_URL);
     }
 
     protected Elements<E> executeCallWithRetry(Function<T, Elements<E>> function)
@@ -52,5 +54,4 @@ public abstract class EloquaClient<T extends EloquaApi, E>
     }
 
     protected abstract T getApi();
-
 }

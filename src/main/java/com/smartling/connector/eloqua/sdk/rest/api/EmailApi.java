@@ -8,7 +8,7 @@ import feign.RequestLine;
 
 public interface EmailApi extends EloquaApi
 {
-    @RequestLine ("GET /API/REST/1.0/assets/emails?depth=complete")
-    @Headers ("Authorization: {login_encoded}") Elements<Email>
-    listEmails(@Param ("login_encoded") final String loginEncoded);
+    @RequestLine("GET /API/REST/1.0/assets/emails?depth=complete")
+    @Headers("Authorization: {login_encoded}")
+    Elements<Email> listEmails(@Param("login_encoded") final String loginEncoded);
 }
