@@ -53,8 +53,6 @@ tasks.withType(Test) {
     systemProperties = System.properties
 }
 
-check.dependsOn -= integrationTest
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
