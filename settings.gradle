@@ -1,4 +1,4 @@
 /*
  * Project build settings.
 */
-rootProject.name = 'eloqua-rest-sdk'
+rootProject.name = 'eloqua-sdk'
