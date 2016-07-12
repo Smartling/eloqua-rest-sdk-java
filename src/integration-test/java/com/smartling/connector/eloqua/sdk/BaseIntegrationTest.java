@@ -34,6 +34,10 @@ public class BaseIntegrationTest
         Elements<Email> emails = emailEloquaClient.listEmails();
 
         assertThat(emails).isNotNull();
-        assertThat(emails.total).isEqualTo(2);
+        assertThat(emails.page).isEqualTo(1);
+        assertThat(emails.pageSize).isEqualTo(1000);
+        assertThat(emails.total).isGreaterThan(0);
+        assertThat(emails.elements).isNotEmpty();
+        assertThat(emails.elements.get(0)).isNotNull();
     }
 }
