@@ -75,6 +75,7 @@ public abstract class EloquaClient<T extends EloquaApi, E>
         return Feign.builder()
                     .requestInterceptor(configuration.getAuthenticationInterceptor())
                     .decoder(new GsonDecoder())
+                    .options(configuration.getOptions())
                     .target(LoginApi.class, LOGIN_URL);
     }
 }
