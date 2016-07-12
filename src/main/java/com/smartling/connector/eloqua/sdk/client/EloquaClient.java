@@ -15,10 +15,10 @@ public abstract class EloquaClient<T extends EloquaApi, E>
     private static final String LOGIN_URL = "https://login.eloqua.com/id";
     private static final String STATUS_401 = "status 401";
 
-    private LoginApi loginApi;
-    private String baseUrl;
+    private final Configuration configuration;
+    private final LoginApi loginApi;
 
-    protected Configuration configuration;
+    private String baseUrl;
 
     public EloquaClient(final Configuration configuration)
     {
