@@ -14,7 +14,7 @@ public class EmailEloquaClient extends EloquaClient<EmailApi, Email>
 
     public Elements<Email> listEmails()
     {
-        return executeCallWithRetry(emailApi -> emailApi.listEmails(configuration.getLoginEncoded()));
+        return executeCallWithRetry(EmailApi::listEmails);
     }
 
     @Override

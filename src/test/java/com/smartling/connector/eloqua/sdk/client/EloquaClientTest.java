@@ -18,8 +18,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.HashMap;
 
 import static feign.FeignException.errorStatus;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -62,19 +60,19 @@ public class EloquaClientTest
         AccountInfo accountInfo = new AccountInfo();
         accountInfo.setUrls(urls);
 
-        when(loginApi.getAccountInfo(any())).thenReturn(accountInfo);
+        when(loginApi.getAccountInfo()).thenReturn(accountInfo);
     }
 
     @Test
     public void testExecuteCallWithRetry() throws Exception
     {
-        when(emailApi.listEmails(anyString()))
+        when(emailApi.listEmails())
                 .thenThrow(errorStatus("EmailApi#listEmails(String)", unauthorizedResponse()))
                 .thenReturn(new Elements<>());
 
-        testedInstance.executeCallWithRetry(emailApi -> emailApi.listEmails("dafafdasdf"));
+        testedInstance.executeCallWithRetry(EmailApi::listEmails);
 
-        verify(emailApi, times(2)).listEmails(anyString());
+        verify(emailApi, times(2)).listEmails();
     }
 
     private static Response unauthorizedResponse()

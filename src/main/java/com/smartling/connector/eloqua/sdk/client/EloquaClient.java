@@ -56,7 +56,7 @@ public abstract class EloquaClient<T extends EloquaApi, E>
 
     private void init()
     {
-        baseUrl = loginApi.getAccountInfo(configuration.getLoginEncoded()).getBaseUrl();
+        baseUrl = loginApi.getAccountInfo().getBaseUrl();
     }
 
     protected abstract T getApi();
