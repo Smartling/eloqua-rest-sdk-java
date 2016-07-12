@@ -1,6 +1,8 @@
 package com.smartling.connector.eloqua.sdk;
 
 import feign.Request;
+import feign.RequestInterceptor;
+import feign.auth.BasicAuthRequestInterceptor;
 import org.apache.commons.lang3.Validate;
 
 import java.util.Base64;
@@ -24,6 +26,11 @@ public class Configuration
     public String getLoginEncoded()
     {
         return "Basic " + new String(Base64.getEncoder().encode((siteName + '\\' + username + ':' + password).getBytes()));
+    }
+
+    public RequestInterceptor getAuthenticationInterceptor()
+    {
+        return new BasicAuthRequestInterceptor(siteName + '\\' + username , password);
     }
 
     public Request.Options getOptions()

@@ -1,5 +1,6 @@
 package com.smartling.connector.eloqua.sdk;
 
+import feign.RequestTemplate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -53,6 +54,18 @@ public class ConfigurationTest
         final String expected = "Basic " + new String(Base64.getEncoder().encode("siteName\\username:password".getBytes()));
 
         assertThat(configuration.getLoginEncoded()).isEqualTo(expected);
+    }
+
+    @Test
+    public void authenticationInterceptorShouldAddBasicAuthHeader() throws Exception
+    {
+        RequestTemplate requestTemplate = new RequestTemplate();
+        String expected = "Basic " + new String(Base64.getEncoder().encode("siteName\\username:password".getBytes()));
+
+        configuration.getAuthenticationInterceptor().apply(requestTemplate);
+
+        assertThat(requestTemplate.headers()).containsKeys("Authorization");
+        assertThat(requestTemplate.headers().get("Authorization")).containsOnly(expected);
     }
 
     @Test

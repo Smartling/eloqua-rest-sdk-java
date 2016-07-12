@@ -54,7 +54,7 @@ public abstract class EloquaClient<T extends EloquaApi, E>
         return elements;
     }
 
-    protected void init()
+    private void init()
     {
         baseUrl = loginApi.getAccountInfo(configuration.getLoginEncoded()).getBaseUrl();
     }
@@ -64,6 +64,7 @@ public abstract class EloquaClient<T extends EloquaApi, E>
     protected T buildApi(Class<T> apiType)
     {
         return Feign.builder()
+                    .requestInterceptor(configuration.getAuthenticationInterceptor())
                     .decoder(new GsonDecoder())
                     .options(configuration.getOptions())
                     .target(apiType, baseUrl);
@@ -72,6 +73,7 @@ public abstract class EloquaClient<T extends EloquaApi, E>
     private LoginApi buildLoginApi()
     {
         return Feign.builder()
+                    .requestInterceptor(configuration.getAuthenticationInterceptor())
                     .decoder(new GsonDecoder())
                     .target(LoginApi.class, LOGIN_URL);
     }
