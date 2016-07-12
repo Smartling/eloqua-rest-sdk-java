@@ -41,7 +41,7 @@ dependencies {
     testCompile 'com.jayway.jsonpath:json-path:2.0.0'
     testCompile 'com.jayway.jsonpath:json-path-assert:2.0.0'
     testCompile 'com.github.tomakehurst:wiremock:1.56'
-    testCompile 'org.mockito:mockito-core:2.0.31-beta'
+    testCompile 'org.mockito:mockito-core:2.0.86-beta'
 }
 
 testSets {

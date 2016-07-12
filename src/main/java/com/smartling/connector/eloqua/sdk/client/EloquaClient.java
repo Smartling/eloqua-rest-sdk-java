@@ -23,7 +23,13 @@ public abstract class EloquaClient<T extends EloquaApi, E>
     public EloquaClient(final Configuration configuration)
     {
         this.configuration = configuration;
-        this.loginApi = Feign.builder().decoder(new GsonDecoder()).target(LoginApi.class, LOGIN_URL);
+        this.loginApi = buildLoginApi();
+    }
+
+    public EloquaClient(final Configuration configuration, final LoginApi loginApi)
+    {
+        this.configuration = configuration;
+        this.loginApi = loginApi;
     }
 
     protected Elements<E> executeCallWithRetry(Function<T, Elements<E>> function)
@@ -61,5 +67,12 @@ public abstract class EloquaClient<T extends EloquaApi, E>
                     .decoder(new GsonDecoder())
                     .options(configuration.getOptions())
                     .target(apiType, baseUrl);
+    }
+
+    private LoginApi buildLoginApi()
+    {
+        return Feign.builder()
+                    .decoder(new GsonDecoder())
+                    .target(LoginApi.class, LOGIN_URL);
     }
 }
