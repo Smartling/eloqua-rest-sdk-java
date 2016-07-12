@@ -14,7 +14,8 @@ public class BaseIntegrationTest
     private Configuration configuration;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception
+    {
         String siteName = System.getProperty("eloqua.siteName");
         String username = System.getProperty("eloqua.username");
         String password = System.getProperty("eloqua.password");
