@@ -4,8 +4,6 @@ import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.rest.api.EmailApi;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
-import feign.Feign;
-import feign.gson.GsonDecoder;
 
 public class EmailEloquaClient extends EloquaClient<EmailApi, Email>
 {
@@ -22,9 +20,6 @@ public class EmailEloquaClient extends EloquaClient<EmailApi, Email>
     @Override
     protected EmailApi getApi()
     {
-        return Feign.builder()
-                    .decoder(new GsonDecoder())
-                    .options(configuration.getOptions())
-                    .target(EmailApi.class, baseUrl);
+        return buildApi(EmailApi.class);
     }
 }

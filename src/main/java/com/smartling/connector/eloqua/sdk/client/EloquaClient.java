@@ -16,9 +16,9 @@ public abstract class EloquaClient<T extends EloquaApi, E>
     private static final String STATUS_401 = "status 401";
 
     private LoginApi loginApi;
+    private String baseUrl;
 
     protected Configuration configuration;
-    protected String baseUrl;
 
     public EloquaClient(final Configuration configuration)
     {
@@ -54,4 +54,11 @@ public abstract class EloquaClient<T extends EloquaApi, E>
     }
 
     protected abstract T getApi();
+
+    protected T buildApi(Class<T> apiType) {
+        return Feign.builder()
+                    .decoder(new GsonDecoder())
+                    .options(configuration.getOptions())
+                    .target(apiType, baseUrl);
+    }
 }
