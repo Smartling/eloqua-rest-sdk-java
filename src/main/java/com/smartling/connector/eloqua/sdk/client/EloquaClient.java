@@ -55,7 +55,8 @@ public abstract class EloquaClient<T extends EloquaApi, E>
 
     protected abstract T getApi();
 
-    protected T buildApi(Class<T> apiType) {
+    protected T buildApi(Class<T> apiType)
+    {
         return Feign.builder()
                     .decoder(new GsonDecoder())
                     .options(configuration.getOptions())
