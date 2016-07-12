@@ -6,7 +6,7 @@ import com.smartling.connector.eloqua.sdk.rest.model.Email;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assume.assumeNotNull;
 
 public class BaseIntegrationTest
@@ -33,6 +33,7 @@ public class BaseIntegrationTest
 
         Elements<Email> emails = emailEloquaClient.listEmails();
 
-        assertEquals(2, emails.total.intValue());
+        assertThat(emails).isNotNull();
+        assertThat(emails.total).isEqualTo(2);
     }
 }

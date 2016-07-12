@@ -5,11 +5,10 @@ import org.junit.Test;
 
 import java.util.Base64;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConfigurationTest
 {
-
     private Configuration configuration;
 
     @Before
@@ -22,14 +21,14 @@ public class ConfigurationTest
     public void testGetLoginEncoded() throws Exception
     {
         final String expected = "Basic " + new String(Base64.getEncoder().encode("siteName\\username:password".getBytes()));
-        assertEquals(expected, configuration.getLoginEncoded());
+
+        assertThat(configuration.getLoginEncoded()).isEqualTo(expected);
     }
 
     @Test
     public void testGetOptions() throws Exception
     {
-        assertEquals(configuration.getConnectTimeoutMillis(), configuration.getOptions().connectTimeoutMillis());
-        assertEquals(configuration.getReadTimeoutMillis(), configuration.getOptions().readTimeoutMillis());
-
+        assertThat(configuration.getOptions().connectTimeoutMillis()).isEqualTo(configuration.getConnectTimeoutMillis());
+        assertThat(configuration.getOptions().readTimeoutMillis()).isEqualTo(configuration.getReadTimeoutMillis());
     }
 }
