@@ -1,9 +1,8 @@
 package com.smartling.connector.eloqua.sdk.client;
 
 import com.smartling.connector.eloqua.sdk.Configuration;
-import com.smartling.connector.eloqua.sdk.rest.api.EmailApi;
+import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
-import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.login.AccountInfo;
 import com.smartling.connector.eloqua.sdk.rest.model.login.Urls;
 import feign.Response;
@@ -30,26 +29,31 @@ public class EloquaClientTest
     @Mock
     private Configuration configuration;
     @Mock
-    private EmailApi emailApi;
+    private TestApi testApi;
 
     @InjectMocks
     private TestEloquaClient testedInstance;
 
-    private final static class TestEloquaClient extends EloquaClient<EmailApi>
+    private final static class TestEloquaClient extends EloquaClient<TestApi>
     {
-        private final EmailApi emailApi;
+        private final TestApi api;
 
-        private TestEloquaClient(final Configuration configuration, final LoginApi loginApi, final EmailApi emailApi)
+        private TestEloquaClient(final Configuration configuration, final LoginApi loginApi, final TestApi api)
         {
             super(configuration, loginApi);
-            this.emailApi = emailApi;
+            this.api = api;
         }
 
         @Override
-        public EmailApi getApi()
+        public TestApi getApi()
         {
-            return emailApi;
+            return api;
         }
+    }
+
+    private interface TestApi extends EloquaApi
+    {
+        Object test();
     }
 
     @Before
@@ -66,13 +70,13 @@ public class EloquaClientTest
     @Test
     public void testExecuteCallWithRetry() throws Exception
     {
-        given(emailApi.listEmails())
+        given(testApi.test())
                   .willThrow(errorStatus("EmailApi#listEmails(String)", unauthorizedResponse()))
-                  .willReturn(new Elements<>());
+                  .willReturn(new Object());
 
-        testedInstance.executeCall(EmailApi::listEmails);
+        testedInstance.executeCall(TestApi::test);
 
-        verify(emailApi, times(2)).listEmails();
+        verify(testApi, times(2)).test();
     }
 
     private static Response unauthorizedResponse()
