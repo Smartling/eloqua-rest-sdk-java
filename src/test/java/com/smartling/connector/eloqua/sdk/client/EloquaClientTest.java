@@ -16,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.HashMap;
 
 import static feign.FeignException.errorStatus;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -68,7 +69,18 @@ public class EloquaClientTest
     }
 
     @Test
-    public void testExecuteCallWithRetry() throws Exception
+    public void shouldReturnCallResult() throws Exception
+    {
+        Object response = new Object();
+        given(testApi.test()).willReturn(response);
+
+        Object result = testedInstance.executeCall(TestApi::test);
+
+        assertThat(result).isSameAs(response);
+    }
+
+    @Test
+    public void shouldExecuteCallWithRetry() throws Exception
     {
         given(testApi.test())
                   .willThrow(errorStatus("EmailApi#listEmails(String)", unauthorizedResponse()))
@@ -77,6 +89,18 @@ public class EloquaClientTest
         testedInstance.executeCall(TestApi::test);
 
         verify(testApi, times(2)).test();
+    }
+
+    @Test
+    public void shouldRefreshBaseUrlIfUnauthorized() throws Exception
+    {
+        given(testApi.test())
+                .willThrow(errorStatus("EmailApi#listEmails(String)", unauthorizedResponse()))
+                .willReturn(new Object());
+
+        testedInstance.executeCall(TestApi::test);
+
+        verify(loginApi, times(2)).getAccountInfo();
     }
 
     private static Response unauthorizedResponse()
