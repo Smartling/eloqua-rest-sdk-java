@@ -18,6 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.HashMap;
 
 import static feign.FeignException.errorStatus;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -56,7 +57,7 @@ public class EloquaClientTest
     public void setUp() throws Exception
     {
         Urls urls = new Urls();
-        urls.setBase("dasd");
+        urls.setBase("http://some-endpoint.eloqua.com");
         AccountInfo accountInfo = new AccountInfo();
         accountInfo.setUrls(urls);
 
@@ -66,9 +67,9 @@ public class EloquaClientTest
     @Test
     public void testExecuteCallWithRetry() throws Exception
     {
-        when(emailApi.listEmails())
-                .thenThrow(errorStatus("EmailApi#listEmails(String)", unauthorizedResponse()))
-                .thenReturn(new Elements<>());
+        given(emailApi.listEmails())
+                  .willThrow(errorStatus("EmailApi#listEmails(String)", unauthorizedResponse()))
+                  .willReturn(new Elements<>());
 
         testedInstance.executeCallWithRetry(EmailApi::listEmails);
 
