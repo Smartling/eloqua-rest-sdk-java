@@ -25,15 +25,18 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 version '1.0.0-SNAPSHOT'
 
+ext {
+    feignVersion = '8.6.0'
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'com.netflix.feign:feign-core:8.6.0'
-    compile 'com.netflix.feign:feign-jackson:8.6.0'
-    compile 'com.netflix.feign:feign-httpclient:8.6.0'
-    compile 'org.redisson:redisson:2.1.1'
+    compile "com.netflix.feign:feign-core:$feignVersion"
+    compile "com.netflix.feign:feign-jackson:$feignVersion"
+    compile "com.netflix.feign:feign-httpclient:$feignVersion"
     compile 'org.apache.commons:commons-lang3:3.4'
 
     testCompile 'org.assertj:assertj-core:3.5.1'
