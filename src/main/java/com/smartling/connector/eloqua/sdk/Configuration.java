@@ -5,8 +5,6 @@ import feign.RequestInterceptor;
 import feign.auth.BasicAuthRequestInterceptor;
 import org.apache.commons.lang3.Validate;
 
-import java.util.Base64;
-
 public class Configuration
 {
     private final String siteName;
@@ -21,11 +19,6 @@ public class Configuration
         this.siteName = Validate.notEmpty(siteName, "Site name can not be empty");
         this.username = Validate.notEmpty(username, "Username can not be empty");
         this.password = Validate.notEmpty(password, "Password can not be empty");
-    }
-
-    public String getLoginEncoded()
-    {
-        return "Basic " + new String(Base64.getEncoder().encode((siteName + '\\' + username + ':' + password).getBytes()));
     }
 
     public RequestInterceptor getAuthenticationInterceptor()

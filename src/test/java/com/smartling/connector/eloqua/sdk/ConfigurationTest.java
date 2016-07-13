@@ -49,14 +49,6 @@ public class ConfigurationTest
     }
 
     @Test
-    public void testGetLoginEncoded() throws Exception
-    {
-        final String expected = "Basic " + new String(Base64.getEncoder().encode("siteName\\username:password".getBytes()));
-
-        assertThat(configuration.getLoginEncoded()).isEqualTo(expected);
-    }
-
-    @Test
     public void authenticationInterceptorShouldAddBasicAuthHeader() throws Exception
     {
         RequestTemplate requestTemplate = new RequestTemplate();
