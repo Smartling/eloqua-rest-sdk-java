@@ -3,14 +3,13 @@ package com.smartling.connector.eloqua.sdk.client;
 import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
-import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import feign.Feign;
 import feign.FeignException;
 import feign.gson.GsonDecoder;
 
 import java.util.function.Function;
 
-public abstract class EloquaClient<T extends EloquaApi, E>
+public abstract class EloquaClient<T extends EloquaApi>
 {
     private static final String LOGIN_URL = "https://login.eloqua.com/id";
     private static final String STATUS_401 = "status 401";
@@ -32,13 +31,14 @@ public abstract class EloquaClient<T extends EloquaApi, E>
         this.loginApi = loginApi;
     }
 
-    protected Elements<E> executeCallWithRetry(Function<T, Elements<E>> function)
+    protected <R> R executeCall(Function<T, R> function)
     {
         if (baseUrl == null)
         {
             init();
         }
-        Elements<E> elements = null;
+
+        R elements = null;
         try
         {
             elements = function.apply(getApi());

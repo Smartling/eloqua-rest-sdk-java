@@ -5,7 +5,7 @@ import com.smartling.connector.eloqua.sdk.rest.api.EmailApi;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
 
-public class EmailEloquaClient extends EloquaClient<EmailApi, Email>
+public class EmailEloquaClient extends EloquaClient<EmailApi>
 {
     public EmailEloquaClient(final Configuration configuration)
     {
@@ -14,7 +14,7 @@ public class EmailEloquaClient extends EloquaClient<EmailApi, Email>
 
     public Elements<Email> listEmails()
     {
-        return executeCallWithRetry(EmailApi::listEmails);
+        return executeCall(EmailApi::listEmails);
     }
 
     @Override

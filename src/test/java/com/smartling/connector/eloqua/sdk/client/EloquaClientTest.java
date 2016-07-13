@@ -4,7 +4,6 @@ import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.rest.api.EmailApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
-import com.smartling.connector.eloqua.sdk.rest.model.Email;
 import com.smartling.connector.eloqua.sdk.rest.model.login.AccountInfo;
 import com.smartling.connector.eloqua.sdk.rest.model.login.Urls;
 import feign.Response;
@@ -36,7 +35,7 @@ public class EloquaClientTest
     @InjectMocks
     private TestEloquaClient testedInstance;
 
-    private final static class TestEloquaClient extends EloquaClient<EmailApi, Email>
+    private final static class TestEloquaClient extends EloquaClient<EmailApi>
     {
         private final EmailApi emailApi;
 
@@ -71,7 +70,7 @@ public class EloquaClientTest
                   .willThrow(errorStatus("EmailApi#listEmails(String)", unauthorizedResponse()))
                   .willReturn(new Elements<>());
 
-        testedInstance.executeCallWithRetry(EmailApi::listEmails);
+        testedInstance.executeCall(EmailApi::listEmails);
 
         verify(emailApi, times(2)).listEmails();
     }
