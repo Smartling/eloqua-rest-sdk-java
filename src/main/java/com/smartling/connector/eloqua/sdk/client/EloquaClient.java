@@ -5,7 +5,7 @@ import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
 import feign.Feign;
 import feign.FeignException;
-import feign.gson.GsonDecoder;
+import feign.jackson.JacksonDecoder;
 
 import java.util.function.Function;
 
@@ -65,7 +65,7 @@ public abstract class EloquaClient<T extends EloquaApi>
     {
         return Feign.builder()
                     .requestInterceptor(configuration.getAuthenticationInterceptor())
-                    .decoder(new GsonDecoder())
+                    .decoder(new JacksonDecoder())
                     .options(configuration.getOptions())
                     .target(apiType, baseUrl);
     }
@@ -74,7 +74,7 @@ public abstract class EloquaClient<T extends EloquaApi>
     {
         return Feign.builder()
                     .requestInterceptor(configuration.getAuthenticationInterceptor())
-                    .decoder(new GsonDecoder())
+                    .decoder(new JacksonDecoder())
                     .options(configuration.getOptions())
                     .target(LoginApi.class, LOGIN_URL);
     }
