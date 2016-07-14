@@ -83,7 +83,7 @@ ext {
 
 task prepareSonarConfig(type: Copy) {
     doFirst {
-        println "Current branch is '$branch'"
+        logger.info("Current branch is '$branch'")
     }
 
     from 'sonar-project.template.properties'
@@ -92,7 +92,7 @@ task prepareSonarConfig(type: Copy) {
     rename { String fileName ->
         fileName.replace('.template', '')
     }
-    expand(analysisMode: branch == 'master' ? 'publish' : 'preview')
+    expand(analysisMode: branch == 'master' || branch.endsWith('/master') ? 'publish' : 'preview')
 }
 
 task wrapper(type: Wrapper) {
