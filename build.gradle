@@ -82,6 +82,10 @@ ext {
 }
 
 task prepareSonarConfig(type: Copy) {
+    doFirst {
+        println "Current branch is '$branch'"
+    }
+
     from 'sonar-project.template.properties'
     into '.'
 
