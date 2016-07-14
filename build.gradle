@@ -78,6 +78,7 @@ publishing {
 }
 
 ext {
+    // CI usually checks a specific revision so we can not rely on project.scminfo.branch
     branch = project.hasProperty('branch') ? project.getProperty('branch') : project.scminfo.branch
 }
 
@@ -92,6 +93,8 @@ task prepareSonarConfig(type: Copy) {
     rename { String fileName ->
         fileName.replace('.template', '')
     }
+
+    // Want to support both plain "master" and full-qualified "refs/origin/master"
     expand(analysisMode: branch == 'master' || branch.endsWith('/master') ? 'publish' : 'preview')
 }
 
