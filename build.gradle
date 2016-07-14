@@ -26,7 +26,7 @@ targetCompatibility = 1.8
 version '1.0.0-SNAPSHOT'
 
 ext {
-    feignVersion = '8.6.0'
+    feignVersion = '8.18.0'
 }
 
 repositories {
