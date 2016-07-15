@@ -2,6 +2,7 @@ package com.smartling.connector.eloqua.sdk.client;
 
 import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.EloquaAuthenticationException;
+import com.smartling.connector.eloqua.sdk.EloquaClientException;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
 import com.smartling.connector.eloqua.sdk.rest.model.login.AccountInfo;
@@ -124,12 +125,29 @@ public class EloquaClientTest
     }
 
     @Test
-    public void shouldThrowExceptionIfCouldNotExecuteCall() throws Exception
+    public void shouldThrowClientExceptionIfCouldNotExecuteCall() throws Exception
     {
-        given(testApi.test()).willThrow(new DecodeException("Test call failed"));
+        DecodeException internalException = new DecodeException("Test call failed");
+        given(testApi.test()).willThrow(internalException);
 
         assertThatThrownBy(() -> testedInstance.executeCall(TestApi::test))
-                .isInstanceOf(FeignException.class);
+                .isExactlyInstanceOf(EloquaClientException.class)
+                .hasMessage("Failed to perform a call to Eloqua API")
+                .hasCause(internalException);
+    }
+
+    @Test
+    public void shouldThrowClientExceptionIfCouldNotRetryCall() throws Exception
+    {
+        DecodeException internalException = new DecodeException("Test call failed");
+        given(testApi.test())
+                .willThrow(new EloquaAuthenticationException("Unauthorized"))
+                .willThrow(internalException);
+
+        assertThatThrownBy(() -> testedInstance.executeCall(TestApi::test))
+                .isExactlyInstanceOf(EloquaClientException.class)
+                .hasMessage("Failed to perform a call to Eloqua API")
+                .hasCause(internalException);
     }
 
     private static AccountInfo anAccountInfo()

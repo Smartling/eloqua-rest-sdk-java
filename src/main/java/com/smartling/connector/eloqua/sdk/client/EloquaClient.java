@@ -2,6 +2,7 @@ package com.smartling.connector.eloqua.sdk.client;
 
 import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.EloquaAuthenticationException;
+import com.smartling.connector.eloqua.sdk.EloquaClientException;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
 import feign.Feign;
@@ -40,12 +41,24 @@ public abstract class EloquaClient<T extends EloquaApi>
 
         try
         {
-            return function.apply(getApi());
+            return executeAndWrapExceptions(function);
         }
         catch (EloquaAuthenticationException e)
         {
             init();
+            return executeCall(function);
+        }
+    }
+
+    private <R> R executeAndWrapExceptions(final Function<T, R> function)
+    {
+        try
+        {
             return function.apply(getApi());
+        }
+        catch (FeignException e)
+        {
+            throw new EloquaClientException("Failed to perform a call to Eloqua API", e);
         }
     }
 
