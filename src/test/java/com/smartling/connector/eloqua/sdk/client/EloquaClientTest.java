@@ -46,7 +46,7 @@ public class EloquaClientTest
 
         private TestEloquaClient(final Configuration configuration, final LoginApi loginApi, final TestApi api)
         {
-            super(configuration, loginApi);
+            super(configuration, TestApi.class, loginApi);
             this.api = api;
         }
 

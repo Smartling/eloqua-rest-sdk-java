@@ -16,19 +16,22 @@ public abstract class EloquaClient<T extends EloquaApi>
     private static final String LOGIN_URL = "https://login.eloqua.com/id";
 
     private final Configuration configuration;
+    private final Class<T>      apiType;
     private final LoginApi loginApi;
 
     private String baseUrl;
 
-    public EloquaClient(final Configuration configuration)
+    public EloquaClient(final Configuration configuration, Class<T> apiType)
     {
         this.configuration = configuration;
-        this.loginApi = buildLoginApi();
+        this.apiType = apiType;
+        this.loginApi = buildApi(LoginApi.class, LOGIN_URL);
     }
 
-    public EloquaClient(final Configuration configuration, final LoginApi loginApi)
+    public EloquaClient(final Configuration configuration, final Class<T> apiType, final LoginApi loginApi)
     {
         this.configuration = configuration;
+        this.apiType = apiType;
         this.loginApi = loginApi;
     }
 
@@ -74,25 +77,18 @@ public abstract class EloquaClient<T extends EloquaApi>
         }
     }
 
-    protected abstract T getApi();
-
-    protected T buildApi(Class<T> apiType)
+    protected T getApi()
     {
-        return Feign.builder()
-                    .requestInterceptor(configuration.getAuthenticationInterceptor())
-                    .decoder(new JacksonDecoder())
-                    .errorDecoder(new EloquaApiErrorDecoder())
-                    .options(configuration.getOptions())
-                    .target(apiType, baseUrl);
+        return buildApi(this.apiType, this.baseUrl);
     }
 
-    private LoginApi buildLoginApi()
+    private <A> A buildApi(final Class<A> apiType, final String apiBaseUrl)
     {
         return Feign.builder()
                     .requestInterceptor(configuration.getAuthenticationInterceptor())
                     .decoder(new JacksonDecoder())
                     .errorDecoder(new EloquaApiErrorDecoder())
                     .options(configuration.getOptions())
-                    .target(LoginApi.class, LOGIN_URL);
+                    .target(apiType, apiBaseUrl);
     }
 }

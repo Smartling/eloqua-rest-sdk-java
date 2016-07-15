@@ -10,17 +10,11 @@ public class EmailEloquaClient extends EloquaClient<EmailApi>
 {
     public EmailEloquaClient(final Configuration configuration)
     {
-        super(configuration);
+        super(configuration, EmailApi.class);
     }
 
     public Elements<Email> listEmails(final int page, final int count)
     {
         return executeCall(emailApi -> emailApi.listEmails(EloquaApi.Depth.MINIMAL, page, count));
-    }
-
-    @Override
-    protected EmailApi getApi()
-    {
-        return buildApi(EmailApi.class);
     }
 }
