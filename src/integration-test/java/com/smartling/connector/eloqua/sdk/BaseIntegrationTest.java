@@ -3,22 +3,27 @@ package com.smartling.connector.eloqua.sdk;
 import com.smartling.connector.eloqua.sdk.client.EmailEloquaClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
+import feign.FeignException;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assume.assumeNotNull;
 
 public class BaseIntegrationTest
 {
     private Configuration configuration;
 
+    private String siteName;
+    private String username;
+
     @Before
     public void setUp() throws Exception
     {
-        String siteName = System.getProperty("eloqua.siteName");
-        String username = System.getProperty("eloqua.username");
-        String password = System.getProperty("eloqua.password");
+        siteName = System.getProperty("eloqua.siteName");
+        username = System.getProperty("eloqua.username");
+        final String password = System.getProperty("eloqua.password");
 
         assumeNotNull("Site name is not specified", siteName);
         assumeNotNull("Username is not specified", username);
@@ -28,7 +33,16 @@ public class BaseIntegrationTest
     }
 
     @Test
-    public void testCall()
+    public void shouldThrowFeignErrorIfPasswordIncorrect() throws Exception
+    {
+        EmailEloquaClient client = new EmailEloquaClient(new Configuration(siteName, username, "invalid"));
+
+        assertThatThrownBy(client::listEmails)
+                .isInstanceOf(FeignException.class);
+    }
+
+    @Test
+    public void shouldListEmails()
     {
         EmailEloquaClient emailEloquaClient = new EmailEloquaClient(configuration);
 
