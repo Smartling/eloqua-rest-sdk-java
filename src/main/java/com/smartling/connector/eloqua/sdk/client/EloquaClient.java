@@ -46,7 +46,7 @@ public abstract class EloquaClient<T extends EloquaApi>
         catch (EloquaAuthenticationException e)
         {
             init();
-            return executeCall(function);
+            return executeAndWrapExceptions(function);
         }
     }
 
