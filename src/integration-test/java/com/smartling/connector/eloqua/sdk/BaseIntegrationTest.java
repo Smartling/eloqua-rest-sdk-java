@@ -37,7 +37,17 @@ public class BaseIntegrationTest
     {
         EmailEloquaClient client = new EmailEloquaClient(new Configuration(siteName, username, "invalid"));
 
-        assertThatThrownBy(client::listEmails)
+        assertThatThrownBy(() -> client.listEmails(1, 10))
+                .isInstanceOf(FeignException.class);
+    }
+
+    @Test
+    public void shouldThrowFeignExceptionIfApiCallFailed() throws Exception
+    {
+        EmailEloquaClient client = new EmailEloquaClient(configuration);
+
+        // 0 is invalid parameter so emulating an API error
+        assertThatThrownBy(() -> client.listEmails(0, 10))
                 .isInstanceOf(FeignException.class);
     }
 
@@ -46,11 +56,11 @@ public class BaseIntegrationTest
     {
         EmailEloquaClient emailEloquaClient = new EmailEloquaClient(configuration);
 
-        Elements<Email> emails = emailEloquaClient.listEmails();
+        Elements<Email> emails = emailEloquaClient.listEmails(1, 10);
 
         assertThat(emails).isNotNull();
         assertThat(emails.page).isEqualTo(1);
-        assertThat(emails.pageSize).isEqualTo(1000);
+        assertThat(emails.pageSize).isEqualTo(10);
         assertThat(emails.total).isGreaterThan(0);
         assertThat(emails.elements).isNotEmpty();
         assertThat(emails.elements.get(0)).isNotNull();

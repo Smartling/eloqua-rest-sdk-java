@@ -1,6 +1,7 @@
 package com.smartling.connector.eloqua.sdk.client;
 
 import com.smartling.connector.eloqua.sdk.Configuration;
+import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.EmailApi;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
@@ -12,9 +13,9 @@ public class EmailEloquaClient extends EloquaClient<EmailApi>
         super(configuration);
     }
 
-    public Elements<Email> listEmails()
+    public Elements<Email> listEmails(final int page, final int count)
     {
-        return executeCall(EmailApi::listEmails);
+        return executeCall(emailApi -> emailApi.listEmails(EloquaApi.Depth.MINIMAL, page, count));
     }
 
     @Override
