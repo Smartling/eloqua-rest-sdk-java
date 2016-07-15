@@ -13,7 +13,6 @@ import java.util.function.Function;
 public abstract class EloquaClient<T extends EloquaApi>
 {
     private static final String LOGIN_URL = "https://login.eloqua.com/id";
-    private static final String STATUS_401 = "status 401";
 
     private final Configuration configuration;
     private final LoginApi loginApi;
@@ -43,17 +42,10 @@ public abstract class EloquaClient<T extends EloquaApi>
         {
             return function.apply(getApi());
         }
-        catch (FeignException e)
+        catch (EloquaAuthenticationException e)
         {
-            if (e.getMessage().contains(STATUS_401))
-            {
-                init();
-                return function.apply(getApi());
-            }
-            else
-            {
-                throw e;
-            }
+            init();
+            return function.apply(getApi());
         }
     }
 
@@ -76,6 +68,7 @@ public abstract class EloquaClient<T extends EloquaApi>
         return Feign.builder()
                     .requestInterceptor(configuration.getAuthenticationInterceptor())
                     .decoder(new JacksonDecoder())
+                    .errorDecoder(new EloquaApiErrorDecoder())
                     .options(configuration.getOptions())
                     .target(apiType, baseUrl);
     }
@@ -85,6 +78,7 @@ public abstract class EloquaClient<T extends EloquaApi>
         return Feign.builder()
                     .requestInterceptor(configuration.getAuthenticationInterceptor())
                     .decoder(new JacksonDecoder())
+                    .errorDecoder(new EloquaApiErrorDecoder())
                     .options(configuration.getOptions())
                     .target(LoginApi.class, LOGIN_URL);
     }

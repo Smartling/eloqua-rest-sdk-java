@@ -3,7 +3,6 @@ package com.smartling.connector.eloqua.sdk;
 import com.smartling.connector.eloqua.sdk.client.EmailEloquaClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
-import feign.FeignException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,13 +41,13 @@ public class BaseIntegrationTest
     }
 
     @Test
-    public void shouldThrowFeignExceptionIfApiCallFailed() throws Exception
+    public void shouldThrowApiExceptionIfApiCallFailed() throws Exception
     {
         EmailEloquaClient client = new EmailEloquaClient(configuration);
 
         // 0 is invalid parameter so emulating an API error
         assertThatThrownBy(() -> client.listEmails(0, 10))
-                .isInstanceOf(FeignException.class);
+                .isExactlyInstanceOf(EloquaClientException.class);
     }
 
     @Test

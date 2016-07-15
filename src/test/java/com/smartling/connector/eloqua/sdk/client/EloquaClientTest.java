@@ -82,7 +82,7 @@ public class EloquaClientTest
     public void shouldExecuteCallWithRetry() throws Exception
     {
         given(testApi.test())
-                  .willThrow(errorStatus("EmailApi#listEmails(String)", unauthorizedResponse()))
+                  .willThrow(new EloquaAuthenticationException("Test"))
                   .willReturn(new Object());
 
         testedInstance.executeCall(TestApi::test);
@@ -94,7 +94,7 @@ public class EloquaClientTest
     public void shouldRefreshBaseUrlIfUnauthorized() throws Exception
     {
         given(testApi.test())
-                .willThrow(errorStatus("EmailApi#listEmails(String)", unauthorizedResponse()))
+                .willThrow(new EloquaAuthenticationException("Test"))
                 .willReturn(new Object());
 
         testedInstance.executeCall(TestApi::test);
@@ -105,10 +105,10 @@ public class EloquaClientTest
     @Test
     public void shouldThrowExceptionIfCouldNotRefreshBaseUrl() throws Exception
     {
-        given(testApi.test()).willThrow(errorStatus("", unauthorizedResponse()));
+        given(testApi.test()).willThrow(new EloquaAuthenticationException("Test"));
         given(loginApi.getAccountInfo())
                 .willReturn(anAccountInfo())
-                .willThrow(errorStatus("", unauthorizedResponse()));
+                .willThrow(loginApiException());
 
         assertThatThrownBy(() -> testedInstance.executeCall(TestApi::test))
                 .isInstanceOf(EloquaAuthenticationException.class);
@@ -117,7 +117,7 @@ public class EloquaClientTest
     @Test
     public void shouldThrowExceptionIfCouldNotLogin() throws Exception
     {
-        given(loginApi.getAccountInfo()).willThrow(errorStatus("", unauthorizedResponse()));
+        given(loginApi.getAccountInfo()).willThrow(loginApiException());
 
         assertThatThrownBy(() -> testedInstance.executeCall(api -> null))
                 .isInstanceOf(EloquaAuthenticationException.class);
@@ -142,8 +142,8 @@ public class EloquaClientTest
         return accountInfo;
     }
 
-    private static Response unauthorizedResponse()
+    private static FeignException loginApiException()
     {
-        return Response.create(401, "", new HashMap<>(), new byte[1]);
+        return errorStatus("", Response.create(200, "", new HashMap<>(), new byte[0]));
     }
 }
