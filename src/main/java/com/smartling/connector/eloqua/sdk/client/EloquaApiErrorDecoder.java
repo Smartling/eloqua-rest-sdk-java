@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-public class EloquaApiErrorDecoder implements ErrorDecoder
+class EloquaApiErrorDecoder implements ErrorDecoder
 {
     @Override
     public Exception decode(final String methodKey, final Response response)
