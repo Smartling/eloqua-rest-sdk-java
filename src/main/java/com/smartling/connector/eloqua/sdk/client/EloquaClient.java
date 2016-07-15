@@ -1,6 +1,7 @@
 package com.smartling.connector.eloqua.sdk.client;
 
 import com.smartling.connector.eloqua.sdk.Configuration;
+import com.smartling.connector.eloqua.sdk.EloquaAuthenticationException;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
 import feign.Feign;
@@ -58,7 +59,14 @@ public abstract class EloquaClient<T extends EloquaApi>
 
     private void init()
     {
-        baseUrl = loginApi.getAccountInfo().getBaseUrl();
+        try
+        {
+            baseUrl = loginApi.getAccountInfo().getBaseUrl();
+        }
+        catch (FeignException e)
+        {
+            throw new EloquaAuthenticationException("Failed determine base URL", e);
+        }
     }
 
     protected abstract T getApi();

@@ -1,6 +1,7 @@
 package com.smartling.connector.eloqua.sdk.client;
 
 import com.smartling.connector.eloqua.sdk.Configuration;
+import com.smartling.connector.eloqua.sdk.EloquaAuthenticationException;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
 import com.smartling.connector.eloqua.sdk.rest.model.login.AccountInfo;
@@ -107,19 +108,19 @@ public class EloquaClientTest
         given(testApi.test()).willThrow(errorStatus("", unauthorizedResponse()));
         given(loginApi.getAccountInfo())
                 .willReturn(anAccountInfo())
-                .willThrow(new DecodeException("Test"));
+                .willThrow(errorStatus("", unauthorizedResponse()));
 
         assertThatThrownBy(() -> testedInstance.executeCall(TestApi::test))
-                .isInstanceOf(FeignException.class);
+                .isInstanceOf(EloquaAuthenticationException.class);
     }
 
     @Test
     public void shouldThrowExceptionIfCouldNotLogin() throws Exception
     {
-        given(loginApi.getAccountInfo()).willThrow(new DecodeException("Login failed"));
+        given(loginApi.getAccountInfo()).willThrow(errorStatus("", unauthorizedResponse()));
 
         assertThatThrownBy(() -> testedInstance.executeCall(api -> null))
-                .isInstanceOf(FeignException.class);
+                .isInstanceOf(EloquaAuthenticationException.class);
     }
 
     @Test

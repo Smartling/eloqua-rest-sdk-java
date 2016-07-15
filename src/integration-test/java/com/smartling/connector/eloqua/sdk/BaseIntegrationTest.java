@@ -33,12 +33,12 @@ public class BaseIntegrationTest
     }
 
     @Test
-    public void shouldThrowFeignErrorIfPasswordIncorrect() throws Exception
+    public void shouldThrowAuthenticationExceptionIfPasswordIncorrect() throws Exception
     {
         EmailEloquaClient client = new EmailEloquaClient(new Configuration(siteName, username, "invalid"));
 
         assertThatThrownBy(() -> client.listEmails(1, 10))
-                .isInstanceOf(FeignException.class);
+                .isInstanceOf(EloquaAuthenticationException.class);
     }
 
     @Test
