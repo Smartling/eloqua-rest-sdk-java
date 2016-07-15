@@ -5,7 +5,9 @@ import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
 import com.smartling.connector.eloqua.sdk.rest.model.login.AccountInfo;
 import com.smartling.connector.eloqua.sdk.rest.model.login.Urls;
+import feign.FeignException;
 import feign.Response;
+import feign.codec.DecodeException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 
 import static feign.FeignException.errorStatus;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -60,12 +63,7 @@ public class EloquaClientTest
     @Before
     public void setUp() throws Exception
     {
-        Urls urls = new Urls();
-        urls.setBase("http://some-endpoint.eloqua.com");
-        AccountInfo accountInfo = new AccountInfo();
-        accountInfo.setUrls(urls);
-
-        when(loginApi.getAccountInfo()).thenReturn(accountInfo);
+        when(loginApi.getAccountInfo()).thenReturn(anAccountInfo());
     }
 
     @Test
@@ -101,6 +99,46 @@ public class EloquaClientTest
         testedInstance.executeCall(TestApi::test);
 
         verify(loginApi, times(2)).getAccountInfo();
+    }
+
+    @Test
+    public void shouldThrowExceptionIfCouldNotRefreshBaseUrl() throws Exception
+    {
+        given(testApi.test()).willThrow(errorStatus("", unauthorizedResponse()));
+        given(loginApi.getAccountInfo())
+                .willReturn(anAccountInfo())
+                .willThrow(new DecodeException("Test"));
+
+        assertThatThrownBy(() -> testedInstance.executeCall(TestApi::test))
+                .isInstanceOf(FeignException.class);
+    }
+
+    @Test
+    public void shouldThrowExceptionIfCouldNotLogin() throws Exception
+    {
+        given(loginApi.getAccountInfo()).willThrow(new DecodeException("Login failed"));
+
+        assertThatThrownBy(() -> testedInstance.executeCall(api -> null))
+                .isInstanceOf(FeignException.class);
+    }
+
+    @Test
+    public void shouldThrowExceptionIfCouldNotExecuteCall() throws Exception
+    {
+        given(testApi.test()).willThrow(new DecodeException("Test call failed"));
+
+        assertThatThrownBy(() -> testedInstance.executeCall(TestApi::test))
+                .isInstanceOf(FeignException.class);
+    }
+
+    private static AccountInfo anAccountInfo()
+    {
+        Urls urls = new Urls();
+        urls.setBase("http://some-endpoint.eloqua.com");
+        AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setUrls(urls);
+
+        return accountInfo;
     }
 
     private static Response unauthorizedResponse()

@@ -38,20 +38,22 @@ public abstract class EloquaClient<T extends EloquaApi>
             init();
         }
 
-        R elements = null;
         try
         {
-            elements = function.apply(getApi());
+            return function.apply(getApi());
         }
-        catch (FeignException ex)
+        catch (FeignException e)
         {
-            if (ex.getMessage().contains(STATUS_401))
+            if (e.getMessage().contains(STATUS_401))
             {
                 init();
-                elements = function.apply(getApi());
+                return function.apply(getApi());
+            }
+            else
+            {
+                throw e;
             }
         }
-        return elements;
     }
 
     private void init()
