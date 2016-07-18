@@ -38,6 +38,7 @@ dependencies {
     compile "com.netflix.feign:feign-jackson:$feignVersion"
     compile "com.netflix.feign:feign-httpclient:$feignVersion"
     compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'org.slf4j:slf4j-api:1.7.21'
 
     testCompile 'org.assertj:assertj-core:3.5.1'
     testCompile 'junit:junit:4.12'

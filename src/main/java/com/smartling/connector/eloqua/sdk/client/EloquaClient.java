@@ -8,11 +8,15 @@ import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
 import feign.Feign;
 import feign.FeignException;
 import feign.jackson.JacksonDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.function.Function;
 
 public abstract class EloquaClient<T extends EloquaApi>
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EloquaClient.class);
+
     private static final String LOGIN_URL = "https://login.eloqua.com/id";
 
     private final Configuration configuration;
@@ -48,6 +52,8 @@ public abstract class EloquaClient<T extends EloquaApi>
         }
         catch (EloquaAuthenticationException e)
         {
+            LOGGER.debug("Got authentication exception so trying to determine base URL once again:", e);
+
             init();
             return executeAndWrapExceptions(function);
         }

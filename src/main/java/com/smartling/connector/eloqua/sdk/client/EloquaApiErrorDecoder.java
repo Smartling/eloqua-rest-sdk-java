@@ -4,6 +4,8 @@ import com.smartling.connector.eloqua.sdk.EloquaAuthenticationException;
 import com.smartling.connector.eloqua.sdk.EloquaClientException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +13,8 @@ import java.util.stream.Collectors;
 
 class EloquaApiErrorDecoder implements ErrorDecoder
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EloquaApiErrorDecoder.class);
+
     @Override
     public Exception decode(final String methodKey, final Response response)
     {
@@ -36,8 +40,9 @@ class EloquaApiErrorDecoder implements ErrorDecoder
             {
                 return reader.lines().collect(Collectors.joining());
             }
-            catch (IOException ignored)
+            catch (IOException e)
             {
+                LOGGER.warn("Failed to read response:", e);
                 return null;
             }
         }
