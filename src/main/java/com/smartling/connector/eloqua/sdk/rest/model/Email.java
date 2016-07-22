@@ -30,4 +30,54 @@ public class Email
     private String senderEmail;
     private String senderName;
     private String style;
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public long getUpdatedAt()
+    {
+        return updatedAt;
+    }
+
+    public String getCurrentStatus()
+    {
+        return currentStatus;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public int getFolderId()
+    {
+        return folderId;
+    }
+
+    public void setId(final int id)
+    {
+        this.id = id;
+    }
+
+    public void setName(final String name)
+    {
+        this.name = name;
+    }
+
+    public void setFolderId(final int folderId)
+    {
+        this.folderId = folderId;
+    }
+
+    public void setUpdatedAt(final long updatedAt)
+    {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setCurrentStatus(final String currentStatus)
+    {
+        this.currentStatus = currentStatus;
+    }
 }
