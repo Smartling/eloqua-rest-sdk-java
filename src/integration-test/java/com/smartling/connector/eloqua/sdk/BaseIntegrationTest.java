@@ -68,6 +68,6 @@ public class BaseIntegrationTest
 
         assertThat(email).isNotNull();
         assertThat(email.getHtmlContent()).isNotNull();
-        assertThat(email.getHtmlContent().getHtmlBody()).isNotNull();
+        assertThat(email.getHtmlContent().getPlainHtml()).isNotNull();
     }
 }
