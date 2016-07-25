@@ -17,4 +17,9 @@ public class EmailEloquaClient extends EloquaClient<EmailApi>
     {
         return executeCall(emailApi -> emailApi.listEmails(EloquaApi.Depth.MINIMAL, page, count));
     }
+
+    public Email getEmail(final long id)
+    {
+        return executeCall(emailApi -> emailApi.getEmail(EloquaApi.Depth.COMPLETE, id));
+    }
 }

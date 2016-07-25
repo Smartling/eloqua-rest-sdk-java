@@ -80,4 +80,14 @@ public class Email
     {
         this.currentStatus = currentStatus;
     }
+
+    public HtmlContent getHtmlContent()
+    {
+        return htmlContent;
+    }
+
+    public void setHtmlContent(final HtmlContent htmlContent)
+    {
+        this.htmlContent = htmlContent;
+    }
 }

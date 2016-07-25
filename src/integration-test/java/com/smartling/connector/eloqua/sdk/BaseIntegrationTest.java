@@ -63,5 +63,11 @@ public class BaseIntegrationTest
         assertThat(emails.total).isGreaterThan(0);
         assertThat(emails.elements).isNotEmpty();
         assertThat(emails.elements.get(0)).isNotNull();
+
+        Email email = emailEloquaClient.getEmail(emails.elements.get(0).getId());
+
+        assertThat(email).isNotNull();
+        assertThat(email.getHtmlContent()).isNotNull();
+        assertThat(email.getHtmlContent().getHtmlBody()).isNotNull();
     }
 }
