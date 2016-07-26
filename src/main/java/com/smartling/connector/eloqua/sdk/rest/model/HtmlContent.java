@@ -1,5 +1,7 @@
 package com.smartling.connector.eloqua.sdk.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 public class HtmlContent
@@ -43,6 +45,7 @@ public class HtmlContent
         this.type = type;
     }
 
+    @JsonIgnore
     public String getPlainHtml()
     {
         if (STRUCTURED_HTML_CONTENT.equals(type))
@@ -50,6 +53,17 @@ public class HtmlContent
             return htmlBody;
         } else {
             return html;
+        }
+    }
+
+    @JsonIgnore
+    public void setPlainHtml(String html)
+    {
+        if (STRUCTURED_HTML_CONTENT.equals(type))
+        {
+            htmlBody = html;
+        } else {
+            this.html = html;
         }
     }
 }
