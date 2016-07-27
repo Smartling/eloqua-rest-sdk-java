@@ -12,6 +12,8 @@ import static org.junit.Assume.assumeNotNull;
 
 public class BaseIntegrationTest
 {
+    public static final String POSTFIX = "(test)";
+    public static final String HTML = "<h4>Test</h4>";
     private Configuration configuration;
 
     private String siteName;
@@ -69,8 +71,18 @@ public class BaseIntegrationTest
         assertThat(email).isNotNull();
         assertThat(email.getHtmlContent()).isNotNull();
         assertThat(email.getHtmlContent().getPlainHtml()).isNotNull();
-        emailEloquaClient.createEmail(email.getName()+"(es)", email.getId(), "<h4>Test</h4>");
+        emailEloquaClient.createEmail(email.getName() + POSTFIX, email.getId(), HTML);
 
-        emails = emailEloquaClient.listEmails(1, 10);
+        Elements<Email> newEmails = emailEloquaClient.searchForEmail(email.getName() + POSTFIX);
+        assertThat(newEmails).isNotNull();
+        assertThat(newEmails.elements).isNotEmpty();
+        assertThat(newEmails.total).isEqualTo(1);
+
+        Email testEmail = newEmails.elements.get(0);
+
+        assertThat(testEmail.getName()).isEqualTo(email.getName() + POSTFIX);
+        assertThat(testEmail.getHtmlContent().getPlainHtml()).isEqualTo(HTML);
+
+        emailEloquaClient.deleteEmail(testEmail.getId());
     }
 }

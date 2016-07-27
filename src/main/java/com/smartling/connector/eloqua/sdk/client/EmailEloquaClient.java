@@ -27,7 +27,7 @@ public class EmailEloquaClient extends EloquaClient<EmailApi>
     public void createEmail(final String title, final long id, String html)
     {
         final Email emailToClone = getEmail(id);
-        Elements<Email> targetEmails = searchForEmail(emailToClone.getName());
+        Elements<Email> targetEmails = searchForEmail(title);
         if (targetEmails.total > 0)
         {
             final Email emailToUpdate = targetEmails.elements.get(0);
@@ -49,6 +49,6 @@ public class EmailEloquaClient extends EloquaClient<EmailApi>
 
     public Elements<Email> searchForEmail(final String name)
     {
-        return executeCall(emailApi -> emailApi.searchForEmail("[name =] \""+name+ '"'));
+        return executeCall(emailApi -> emailApi.searchForEmail(EloquaApi.Depth.COMPLETE, "[name =] \""+name+ '"'));
     }
 }

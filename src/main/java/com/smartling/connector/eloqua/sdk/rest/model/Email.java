@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Email
 {
+    public static final String DRAFT = "Draft";
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private String type;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
@@ -319,5 +320,10 @@ public class Email
     public void setStyle(final String style)
     {
         this.style = style;
+    }
+
+    public Boolean isDraft()
+    {
+        return DRAFT.equalsIgnoreCase(currentStatus);
     }
 }

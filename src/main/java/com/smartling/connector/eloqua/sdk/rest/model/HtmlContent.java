@@ -45,6 +45,46 @@ public class HtmlContent
         this.type = type;
     }
 
+    public String getDocType()
+    {
+        return docType;
+    }
+
+    public void setDocType(final String docType)
+    {
+        this.docType = docType;
+    }
+
+    public List<String> getMetaTags()
+    {
+        return metaTags;
+    }
+
+    public void setMetaTags(final List<String> metaTags)
+    {
+        this.metaTags = metaTags;
+    }
+
+    public String getRoot()
+    {
+        return root;
+    }
+
+    public void setRoot(final String root)
+    {
+        this.root = root;
+    }
+
+    public String getSystemHeader()
+    {
+        return systemHeader;
+    }
+
+    public void setSystemHeader(final String systemHeader)
+    {
+        this.systemHeader = systemHeader;
+    }
+
     @JsonIgnore
     public String getPlainHtml()
     {
