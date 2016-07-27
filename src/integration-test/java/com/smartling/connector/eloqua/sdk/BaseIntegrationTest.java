@@ -71,7 +71,7 @@ public class BaseIntegrationTest
         assertThat(email).isNotNull();
         assertThat(email.getHtmlContent()).isNotNull();
         assertThat(email.getHtmlContent().getPlainHtml()).isNotNull();
-        emailEloquaClient.createEmail(email.getName() + POSTFIX, email.getId(), HTML);
+        emailEloquaClient.createOrUpdateEmail(email.getName() + POSTFIX, email.getId(), HTML);
 
         Elements<Email> newEmails = emailEloquaClient.searchForEmail(email.getName() + POSTFIX);
         assertThat(newEmails).isNotNull();

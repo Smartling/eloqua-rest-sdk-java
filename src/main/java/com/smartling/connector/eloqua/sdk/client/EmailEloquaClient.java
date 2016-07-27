@@ -24,7 +24,7 @@ public class EmailEloquaClient extends EloquaClient<EmailApi>
         return executeCall(emailApi -> emailApi.getEmail(EloquaApi.Depth.COMPLETE, id));
     }
 
-    public void createEmail(final String title, final long id, String html)
+    public void createOrUpdateEmail(final String title, final long id, String html)
     {
         final Email emailToClone = getEmail(id);
         Elements<Email> targetEmails = searchForEmail(title);
