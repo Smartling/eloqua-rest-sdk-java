@@ -95,7 +95,7 @@ public class BaseIntegrationTest
     {
         EmailFolderEloquaClient emailFolderEloquaClient = new EmailFolderEloquaClient(configuration);
 
-        Elements<EmailFolder> folders = emailFolderEloquaClient.listEmailFolders(0, 10, "name", "");
+        Elements<EmailFolder> folders = emailFolderEloquaClient.listEmailFolders(1, 10, "name", "");
 
         assertThat(folders).isNotNull();
         assertThat(folders.page).isEqualTo(1);
