@@ -1,9 +1,11 @@
 package com.smartling.connector.eloqua.sdk;
 
 import com.smartling.connector.eloqua.sdk.client.EmailEloquaClient;
+import com.smartling.connector.eloqua.sdk.client.EmailFolderEloquaClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
 import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
+import com.smartling.connector.eloqua.sdk.rest.model.EmailFolder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -86,5 +88,24 @@ public class BaseIntegrationTest
         assertThat(testEmail.getHtmlContent().getType()).isEqualTo(HtmlContent.RAW_HTML_CONTENT);
 
         emailEloquaClient.deleteEmail(testEmail.getId());
+    }
+
+    @Test
+    public void shouldListEmailFolders()
+    {
+        EmailFolderEloquaClient emailFolderEloquaClient = new EmailFolderEloquaClient(configuration);
+
+        Elements<EmailFolder> folders = emailFolderEloquaClient.listEmailFolders(0, 10, "name", "");
+
+        assertThat(folders).isNotNull();
+        assertThat(folders.page).isEqualTo(1);
+        assertThat(folders.pageSize).isEqualTo(10);
+        assertThat(folders.total).isGreaterThan(0);
+        assertThat(folders.elements).isNotEmpty();
+        assertThat(folders.elements.get(0)).isNotNull();
+
+        EmailFolder folder = emailFolderEloquaClient.getEmailFolder(folders.elements.get(0).getId());
+        assertThat(folder).isNotNull();
+
     }
 }
