@@ -6,6 +6,7 @@ import java.util.List;
 
 public class HtmlContent
 {
+    public static final String RAW_HTML_CONTENT = "RawHtmlContent";
     public static final String STRUCTURED_HTML_CONTENT = "StructuredHtmlContent";
     private String type;
     private String docType;
