@@ -83,7 +83,7 @@ public class BaseIntegrationTest
 
         assertThat(testEmail.getName()).isEqualTo(email.getName() + POSTFIX);
         assertThat(testEmail.getHtmlContent().getPlainHtml()).isEqualTo(HTML);
-        assertThat(testEmail.getType()).isEqualTo(HtmlContent.RAW_HTML_CONTENT);
+        assertThat(testEmail.getHtmlContent().getType()).isEqualTo(HtmlContent.RAW_HTML_CONTENT);
 
         emailEloquaClient.deleteEmail(testEmail.getId());
     }
