@@ -7,6 +7,7 @@ import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
 import com.smartling.connector.eloqua.sdk.rest.model.EmailDtoForCreation;
 import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
+import org.apache.commons.lang3.StringUtils;
 
 public class EmailEloquaClient extends EloquaClient<EmailApi>
 {
@@ -16,9 +17,10 @@ public class EmailEloquaClient extends EloquaClient<EmailApi>
         super(configuration, EmailApi.class);
     }
 
-    public Elements<Email> listEmails(final int page, final int count)
+    public Elements<Email> listEmails(final int page, final int count, String sortBy, String order)
     {
-        return executeCall(emailApi -> emailApi.listEmails(EloquaApi.Depth.MINIMAL, page, count));
+        final String orderBy = StringUtils.isEmpty(sortBy) ? "" : sortBy + ' ' + order;
+        return executeCall(emailApi -> emailApi.listEmails(EloquaApi.Depth.MINIMAL, page, count, orderBy));
     }
 
     public Email getEmail(final long id)

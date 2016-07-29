@@ -41,7 +41,7 @@ public class BaseIntegrationTest
     {
         EmailEloquaClient client = new EmailEloquaClient(new Configuration(siteName, username, "invalid"));
 
-        assertThatThrownBy(() -> client.listEmails(1, 10))
+        assertThatThrownBy(() -> client.listEmails(1, 10, "", ""))
                 .isInstanceOf(EloquaAuthenticationException.class);
     }
 
@@ -51,16 +51,16 @@ public class BaseIntegrationTest
         EmailEloquaClient client = new EmailEloquaClient(configuration);
 
         // 0 is invalid parameter so emulating an API error
-        assertThatThrownBy(() -> client.listEmails(0, 10))
+        assertThatThrownBy(() -> client.listEmails(0, 10, "", ""))
                 .isExactlyInstanceOf(EloquaClientException.class);
     }
 
     @Test
-    public void shouldListEmails()
+    public void shouldWorkWithEmailsCorrectly()
     {
         EmailEloquaClient emailEloquaClient = new EmailEloquaClient(configuration);
 
-        Elements<Email> emails = emailEloquaClient.listEmails(1, 10);
+        Elements<Email> emails = emailEloquaClient.listEmails(1, 10, "createdAt", "DESC");
 
         assertThat(emails).isNotNull();
         assertThat(emails.page).isEqualTo(1);
@@ -68,6 +68,11 @@ public class BaseIntegrationTest
         assertThat(emails.total).isGreaterThan(0);
         assertThat(emails.elements).isNotEmpty();
         assertThat(emails.elements.get(0)).isNotNull();
+
+        if(emails.total > 1)
+        {
+            assertThat(emails.elements.get(0).getUpdatedAt() > emails.elements.get(1).getUpdatedAt());
+        }
 
         Email email = emailEloquaClient.getEmail(emails.elements.get(0).getId());
 
