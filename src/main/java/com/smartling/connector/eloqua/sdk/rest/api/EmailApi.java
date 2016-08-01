@@ -2,7 +2,6 @@ package com.smartling.connector.eloqua.sdk.rest.api;
 
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
-import com.smartling.connector.eloqua.sdk.rest.model.EmailDtoForCreation;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -20,7 +19,7 @@ public interface EmailApi extends EloquaApi
 
     @RequestLine("POST /API/REST/1.0/assets/email")
     @Headers ("Content-Type: application/json")
-    Void createEmail(EmailDtoForCreation clonedEmail);
+    Void createEmail(Email clonedEmail);
 
     @RequestLine("PUT /API/REST/1.0/assets/email/{id}")
     @Headers ("Content-Type: application/json")

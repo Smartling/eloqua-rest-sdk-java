@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assume.assumeNotNull;
 
-public class BaseIntegrationTest
+public class IntegrationTest
 {
     public static final String POSTFIX = "(test)";
     public static final String HTML = "<h4>Test</h4>";
@@ -93,6 +93,17 @@ public class BaseIntegrationTest
         assertThat(testEmail.getHtmlContent().getType()).isEqualTo(HtmlContent.RAW_HTML_CONTENT);
 
         emailEloquaClient.deleteEmail(testEmail.getId());
+    }
+
+    @Test
+    public void createUpdateTest()
+    {
+        EmailEloquaClient emailEloquaClient = new EmailEloquaClient(configuration);
+
+        Email email = emailEloquaClient.getEmail(55l);
+        emailEloquaClient.createOrUpdateEmail(email.getName() + POSTFIX, email.getId(), HTML);
+        Elements<Email> newEmails = emailEloquaClient.searchForEmail(email.getName() + POSTFIX);
+        emailEloquaClient.deleteEmail(newEmails.elements.get(0).getId());
     }
 
     @Test

@@ -5,7 +5,6 @@ import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.EmailApi;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
-import com.smartling.connector.eloqua.sdk.rest.model.EmailDtoForCreation;
 import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,7 +44,7 @@ public class EmailEloquaClient extends EloquaClient<EmailApi>
         {
             emailToClone.setName(title);
             emailToClone.setHtmlContent(htmlContent);
-            executeCall(emailApi -> emailApi.createEmail(new EmailDtoForCreation(emailToClone)));
+            executeCall(emailApi -> emailApi.createEmail(emailToClone));
         }
     }
 
