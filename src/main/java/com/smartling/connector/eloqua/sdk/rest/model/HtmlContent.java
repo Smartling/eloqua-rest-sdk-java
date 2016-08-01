@@ -89,12 +89,7 @@ public class HtmlContent
     @JsonIgnore
     public String getPlainHtml()
     {
-        if (STRUCTURED_HTML_CONTENT.equals(type))
-        {
-            return htmlBody;
-        } else {
-            return html;
-        }
+        return STRUCTURED_HTML_CONTENT.equals(type) ? htmlBody : html;
     }
 
     @JsonIgnore
@@ -106,5 +101,11 @@ public class HtmlContent
         } else {
             this.html = html;
         }
+    }
+
+    @JsonIgnore
+    public String getHtmlDirectivePath()
+    {
+        return STRUCTURED_HTML_CONTENT.equals(type) ? "/htmlContent/htmlBody" : "/htmlContent/html";
     }
 }
