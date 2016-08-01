@@ -4,8 +4,8 @@ import com.smartling.connector.eloqua.sdk.client.EmailEloquaClient;
 import com.smartling.connector.eloqua.sdk.client.EmailFolderEloquaClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
-import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
 import com.smartling.connector.eloqua.sdk.rest.model.EmailFolder;
+import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -79,31 +79,27 @@ public class IntegrationTest
         assertThat(email).isNotNull();
         assertThat(email.getHtmlContent()).isNotNull();
         assertThat(email.getHtmlContent().getPlainHtml()).isNotNull();
-        emailEloquaClient.createOrUpdateEmail(email.getName() + POSTFIX, email.getId(), HTML);
+        if((email.getHtmlContent().getType().equals(HtmlContent.RAW_HTML_CONTENT)))
+        {
+            email.getHtmlContent().setHtml(HTML);
+        }else{
+            email.getHtmlContent().setHtmlBody(HTML);
+        }
+        final String oldTitle = email.getName() + POSTFIX;
+        emailEloquaClient.createOrUpdateEmail(oldTitle, email);
 
-        Elements<Email> newEmails = emailEloquaClient.searchForEmail(email.getName() + POSTFIX);
+        Elements<Email> newEmails = emailEloquaClient.searchForEmail(oldTitle);
         assertThat(newEmails).isNotNull();
         assertThat(newEmails.elements).isNotEmpty();
         assertThat(newEmails.total).isEqualTo(1);
 
         Email testEmail = newEmails.elements.get(0);
 
-        assertThat(testEmail.getName()).isEqualTo(email.getName() + POSTFIX);
+        assertThat(testEmail.getName()).isEqualTo(oldTitle);
         assertThat(testEmail.getHtmlContent().getPlainHtml()).isEqualTo(HTML);
         assertThat(testEmail.getHtmlContent().getType()).isEqualTo(HtmlContent.RAW_HTML_CONTENT);
 
         emailEloquaClient.deleteEmail(testEmail.getId());
-    }
-
-    @Test
-    public void createUpdateTest()
-    {
-        EmailEloquaClient emailEloquaClient = new EmailEloquaClient(configuration);
-
-        Email email = emailEloquaClient.getEmail(55l);
-        emailEloquaClient.createOrUpdateEmail(email.getName() + POSTFIX, email.getId(), HTML);
-        Elements<Email> newEmails = emailEloquaClient.searchForEmail(email.getName() + POSTFIX);
-        emailEloquaClient.deleteEmail(newEmails.elements.get(0).getId());
     }
 
     @Test

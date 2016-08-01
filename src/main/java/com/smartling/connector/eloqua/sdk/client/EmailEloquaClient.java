@@ -27,13 +27,13 @@ public class EmailEloquaClient extends EloquaClient<EmailApi>
         return executeCall(emailApi -> emailApi.getEmail(EloquaApi.Depth.COMPLETE, id));
     }
 
-    public void createOrUpdateEmail(final String title, final long id, String html)
+    public void createOrUpdateEmail(final String title, Email translatedEmail)
     {
-        final Email emailToClone = getEmail(id);
         Elements<Email> targetEmails = searchForEmail(title);
         HtmlContent htmlContent = new HtmlContent();
+        htmlContent.setHtml(translatedEmail.getHtmlContent().getPlainHtml());
         htmlContent.setType(HtmlContent.RAW_HTML_CONTENT);
-        htmlContent.setHtml(html);
+
         if (targetEmails.total > 0)
         {
             final Email emailToUpdate = targetEmails.elements.get(0);
@@ -42,9 +42,9 @@ public class EmailEloquaClient extends EloquaClient<EmailApi>
         }
         else
         {
-            emailToClone.setName(title);
-            emailToClone.setHtmlContent(htmlContent);
-            executeCall(emailApi -> emailApi.createEmail(emailToClone));
+            translatedEmail.setName(title);
+            translatedEmail.setHtmlContent(htmlContent);
+            executeCall(emailApi -> emailApi.createEmail(translatedEmail));
         }
     }
 
