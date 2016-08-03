@@ -16,10 +16,11 @@ public class EmailEloquaClient extends EloquaClient<EmailApi>
         super(configuration, EmailApi.class);
     }
 
-    public Elements<Email> listEmails(final int page, final int count, String sortBy, String order)
+    public Elements<Email> listEmails(final int page, final int count, String sortBy, String order, String searchTerm)
     {
         final String orderBy = StringUtils.isEmpty(sortBy) ? "" : sortBy + ' ' + order;
-        return executeCall(emailApi -> emailApi.listEmails(EloquaApi.Depth.MINIMAL, page, count, orderBy));
+        final String search = StringUtils.isEmpty(searchTerm) ? "" : "[name =] \"" + searchTerm + '"';
+        return executeCall(emailApi -> emailApi.listEmails(EloquaApi.Depth.MINIMAL, page, count, orderBy, search));
     }
 
     public Email getEmail(final long id)
