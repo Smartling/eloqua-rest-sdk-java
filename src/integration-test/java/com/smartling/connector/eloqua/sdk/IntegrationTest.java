@@ -41,7 +41,7 @@ public class IntegrationTest
     {
         EmailEloquaClient client = new EmailEloquaClient(new Configuration(siteName, username, "invalid"));
 
-        assertThatThrownBy(() -> client.listEmails(1, 10, "", ""))
+        assertThatThrownBy(() -> client.listEmails(1, 10, "", "", ""))
                 .isInstanceOf(EloquaAuthenticationException.class);
     }
 
@@ -51,7 +51,7 @@ public class IntegrationTest
         EmailEloquaClient client = new EmailEloquaClient(configuration);
 
         // 0 is invalid parameter so emulating an API error
-        assertThatThrownBy(() -> client.listEmails(0, 10, "", ""))
+        assertThatThrownBy(() -> client.listEmails(0, 10, "", "", ""))
                 .isExactlyInstanceOf(EloquaClientException.class);
     }
 
@@ -60,7 +60,7 @@ public class IntegrationTest
     {
         EmailEloquaClient emailEloquaClient = new EmailEloquaClient(configuration);
 
-        Elements<Email> emails = emailEloquaClient.listEmails(1, 10, "createdAt", "DESC");
+        Elements<Email> emails = emailEloquaClient.listEmails(1, 10, "createdAt", "DESC", "");
 
         assertThat(emails).isNotNull();
         assertThat(emails.page).isEqualTo(1);
