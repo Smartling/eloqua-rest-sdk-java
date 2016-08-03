@@ -2,6 +2,8 @@ package com.smartling.connector.eloqua.sdk.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Calendar;
+
 public class Email
 {
     public static final String DRAFT = "Draft";
@@ -11,6 +13,9 @@ public class Email
     private String currentStatus;
     private Integer id;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
+    /*
+        It's timestamp in seconds totaly not Java style be aware
+     */
     private long createdAt;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Integer createdBy;
@@ -21,6 +26,9 @@ public class Email
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private String permissions; //read / write / fullControl
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
+    /*
+        It's timestamp in seconds totaly not Java style be aware
+     */
     private long updatedAt;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Integer updatedBy;
@@ -47,9 +55,17 @@ public class Email
         return id;
     }
 
+    @Deprecated
     public long getUpdatedAt()
     {
         return updatedAt;
+    }
+
+    public Calendar getUpdatedAtAsCalendar()
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(createdAt*1000);
+        return calendar;
     }
 
     public String getCurrentStatus()
@@ -112,9 +128,17 @@ public class Email
         this.type = type;
     }
 
+    @Deprecated
     public long getCreatedAt()
     {
         return createdAt;
+    }
+
+    public Calendar getCreatedAtAsCalendar()
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(updatedAt*1000);
+        return calendar;
     }
 
     public void setCreatedAt(final long createdAt)
