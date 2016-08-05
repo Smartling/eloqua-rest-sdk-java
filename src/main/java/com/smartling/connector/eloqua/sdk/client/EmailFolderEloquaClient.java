@@ -5,6 +5,7 @@ import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.EmailFolderApi;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.EmailFolder;
+import org.apache.commons.lang3.StringUtils;
 
 public class EmailFolderEloquaClient extends EloquaClient<EmailFolderApi>
 {
@@ -13,9 +14,10 @@ public class EmailFolderEloquaClient extends EloquaClient<EmailFolderApi>
         super(configuration, EmailFolderApi.class);
     }
 
-    public Elements<EmailFolder> listEmailFolders(final int page, final int count, String orderBy, String search)
+    public Elements<EmailFolder> listEmailFolders(final int page, final int count, String sortBy, String orderBy, String search)
     {
-        return executeCall(emailApi -> emailApi.listEmailFolders(EloquaApi.Depth.MINIMAL, page, count, orderBy, search));
+        String order = StringUtils.isEmpty(sortBy) ? "" : sortBy + ' ' + orderBy;
+        return executeCall(emailApi -> emailApi.listEmailFolders(EloquaApi.Depth.MINIMAL, page, count, order, search));
     }
 
     public EmailFolder getEmailFolder(final long id)

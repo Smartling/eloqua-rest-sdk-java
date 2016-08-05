@@ -6,12 +6,12 @@ public class EmailFolder
 {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String type;
-    private Integer id;
+    private Long id;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private long createdAt;
     private String depth; //minimal / partial / complete
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Integer folderId;
+    private Long folderId;
     private String description;
     private String name;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -30,12 +30,12 @@ public class EmailFolder
         this.type = type;
     }
 
-    public Integer getId()
+    public Long getId()
     {
         return id;
     }
 
-    public void setId(Integer id)
+    public void setId(Long id)
     {
         this.id = id;
     }
@@ -60,12 +60,12 @@ public class EmailFolder
         this.depth = depth;
     }
 
-    public Integer getFolderId()
+    public Long getFolderId()
     {
         return folderId;
     }
 
-    public void setFolderId(Integer folderId)
+    public void setFolderId(Long folderId)
     {
         this.folderId = folderId;
     }

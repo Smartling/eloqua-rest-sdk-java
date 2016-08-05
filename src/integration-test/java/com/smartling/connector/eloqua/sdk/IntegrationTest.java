@@ -17,7 +17,7 @@ public class IntegrationTest
 {
     public static final String POSTFIX = "(test)";
     public static final String HTML = "<h4>Test</h4>";
-    private Configuration configuration;
+    protected Configuration configuration;
 
     private String siteName;
     private String username;
@@ -100,24 +100,5 @@ public class IntegrationTest
         assertThat(testEmail.getHtmlContent().getType()).isEqualTo(HtmlContent.RAW_HTML_CONTENT);
 
         emailEloquaClient.deleteEmail(testEmail.getId());
-    }
-
-    @Test
-    public void shouldListEmailFolders()
-    {
-        EmailFolderEloquaClient emailFolderEloquaClient = new EmailFolderEloquaClient(configuration);
-
-        Elements<EmailFolder> folders = emailFolderEloquaClient.listEmailFolders(1, 10, "name", "");
-
-        assertThat(folders).isNotNull();
-        assertThat(folders.page).isEqualTo(1);
-        assertThat(folders.pageSize).isEqualTo(10);
-        assertThat(folders.total).isGreaterThan(0);
-        assertThat(folders.elements).isNotEmpty();
-        assertThat(folders.elements.get(0)).isNotNull();
-
-        EmailFolder folder = emailFolderEloquaClient.getEmailFolder(folders.elements.get(0).getId());
-        assertThat(folder).isNotNull();
-
     }
 }
