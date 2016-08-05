@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EmailFolderIntegrationTest extends BaseIntegrationTest
+public class EmailFolderIntegrationTest extends IntegrationTest
 {
     @Test
     public void shouldListEmailFolders()
