@@ -19,7 +19,7 @@ public interface EmailApi extends EloquaApi
 
     @RequestLine("POST /API/REST/1.0/assets/email")
     @Headers ("Content-Type: application/json")
-    Void createEmail(Email clonedEmail);
+    Email createEmail(Email clonedEmail);
 
     @RequestLine("PUT /API/REST/1.0/assets/email/{id}")
     @Headers ("Content-Type: application/json")

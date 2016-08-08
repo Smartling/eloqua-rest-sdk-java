@@ -5,7 +5,6 @@ import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.EmailApi;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
-import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
 import org.apache.commons.lang3.StringUtils;
 
 public class EmailClient extends EloquaClient<EmailApi>
@@ -28,25 +27,14 @@ public class EmailClient extends EloquaClient<EmailApi>
         return executeCall(emailApi -> emailApi.getEmail(EloquaApi.Depth.COMPLETE, id));
     }
 
-    public void createOrUpdateEmail(final String title, Email translatedEmail)
+    public Email createEmail(Email emailToCreate)
     {
-        Elements<Email> targetEmails = searchForEmail(title);
-        HtmlContent htmlContent = new HtmlContent();
-        htmlContent.setHtml(translatedEmail.getHtmlContent().getPlainHtml());
-        htmlContent.setType(HtmlContent.RAW_HTML_CONTENT);
+        return executeCall(emailApi -> emailApi.createEmail(emailToCreate));
+    }
 
-        if (targetEmails.total > 0)
-        {
-            final Email emailToUpdate = targetEmails.elements.get(0);
-            emailToUpdate.setHtmlContent(htmlContent);
-            executeCall(emailApi -> emailApi.updateEmail(emailToUpdate.getId(), emailToUpdate));
-        }
-        else
-        {
-            translatedEmail.setName(title);
-            translatedEmail.setHtmlContent(htmlContent);
-            executeCall(emailApi -> emailApi.createEmail(translatedEmail));
-        }
+    public void updateEmail(Long id, Email email)
+    {
+        executeCall(emailApi -> emailApi.updateEmail(id, email));
     }
 
     public Void deleteEmail(final long id)

@@ -11,7 +11,7 @@ public class Email
     private String type;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private String currentStatus;
-    private Integer id;
+    private Long id;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     /*
         It's timestamp in seconds totaly not Java style be aware
@@ -50,7 +50,7 @@ public class Email
     private String senderName;
     private String style;
 
-    public Integer getId()
+    public Long getId()
     {
         return id;
     }
@@ -83,7 +83,7 @@ public class Email
         return folderId;
     }
 
-    public void setId(final Integer id)
+    public void setId(final Long id)
     {
         this.id = id;
     }
