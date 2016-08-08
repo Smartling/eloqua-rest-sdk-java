@@ -1,10 +1,8 @@
 package com.smartling.connector.eloqua.sdk;
 
-import com.smartling.connector.eloqua.sdk.client.EmailEloquaClient;
-import com.smartling.connector.eloqua.sdk.client.EmailFolderEloquaClient;
+import com.smartling.connector.eloqua.sdk.client.EmailClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
-import com.smartling.connector.eloqua.sdk.rest.model.EmailFolder;
 import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +37,7 @@ public class IntegrationTest
     @Test
     public void shouldThrowAuthenticationExceptionIfPasswordIncorrect() throws Exception
     {
-        EmailEloquaClient client = new EmailEloquaClient(new Configuration(siteName, username, "invalid"));
+        EmailClient client = new EmailClient(new Configuration(siteName, username, "invalid"));
 
         assertThatThrownBy(() -> client.listEmails(1, 10, "", "", ""))
                 .isInstanceOf(EloquaAuthenticationException.class);
@@ -48,7 +46,7 @@ public class IntegrationTest
     @Test
     public void shouldThrowApiExceptionIfApiCallFailed() throws Exception
     {
-        EmailEloquaClient client = new EmailEloquaClient(configuration);
+        EmailClient client = new EmailClient(configuration);
 
         // 0 is invalid parameter so emulating an API error
         assertThatThrownBy(() -> client.listEmails(0, 10, "", "", ""))
@@ -58,9 +56,9 @@ public class IntegrationTest
     @Test
     public void shouldWorkWithEmailsCorrectly()
     {
-        EmailEloquaClient emailEloquaClient = new EmailEloquaClient(configuration);
+        EmailClient emailClient = new EmailClient(configuration);
 
-        Elements<Email> emails = emailEloquaClient.listEmails(1, 10, "createdAt", "DESC", "");
+        Elements<Email> emails = emailClient.listEmails(1, 10, "createdAt", "DESC", "");
 
         assertThat(emails).isNotNull();
         assertThat(emails.page).isEqualTo(1);
@@ -74,7 +72,7 @@ public class IntegrationTest
             assertThat(emails.elements.get(0).getUpdatedAt() > emails.elements.get(1).getUpdatedAt());
         }
 
-        Email email = emailEloquaClient.getEmail(emails.elements.get(0).getId());
+        Email email = emailClient.getEmail(emails.elements.get(0).getId());
 
         assertThat(email).isNotNull();
         assertThat(email.getHtmlContent()).isNotNull();
@@ -86,9 +84,9 @@ public class IntegrationTest
             email.getHtmlContent().setHtmlBody(HTML);
         }
         final String oldTitle = email.getName() + POSTFIX;
-        emailEloquaClient.createOrUpdateEmail(oldTitle, email);
+        emailClient.createOrUpdateEmail(oldTitle, email);
 
-        Elements<Email> newEmails = emailEloquaClient.searchForEmail(oldTitle);
+        Elements<Email> newEmails = emailClient.searchForEmail(oldTitle);
         assertThat(newEmails).isNotNull();
         assertThat(newEmails.elements).isNotEmpty();
         assertThat(newEmails.total).isEqualTo(1);
@@ -99,6 +97,6 @@ public class IntegrationTest
         assertThat(testEmail.getHtmlContent().getPlainHtml()).isEqualTo(HTML);
         assertThat(testEmail.getHtmlContent().getType()).isEqualTo(HtmlContent.RAW_HTML_CONTENT);
 
-        emailEloquaClient.deleteEmail(testEmail.getId());
+        emailClient.deleteEmail(testEmail.getId());
     }
 }

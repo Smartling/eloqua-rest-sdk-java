@@ -7,9 +7,9 @@ import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.EmailFolder;
 import org.apache.commons.lang3.StringUtils;
 
-public class EmailFolderEloquaClient extends EloquaClient<EmailFolderApi>
+public class EmailFolderClient extends EloquaClient<EmailFolderApi>
 {
-    public EmailFolderEloquaClient(Configuration configuration)
+    public EmailFolderClient(Configuration configuration)
     {
         super(configuration, EmailFolderApi.class);
     }

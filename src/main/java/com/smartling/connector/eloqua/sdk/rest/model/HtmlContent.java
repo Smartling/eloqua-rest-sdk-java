@@ -103,9 +103,9 @@ public class HtmlContent
         }
     }
 
-    @JsonIgnore
-    public String getHtmlDirectivePath()
-    {
-        return STRUCTURED_HTML_CONTENT.equals(type) ? "/htmlContent/htmlBody" : "/htmlContent/html";
-    }
+//    @JsonIgnore
+//    public String getHtmlDirectivePath()
+//    {
+//        return STRUCTURED_HTML_CONTENT.equals(type) ? "/htmlContent/htmlBody" : "/htmlContent/html";
+//    }
 }
