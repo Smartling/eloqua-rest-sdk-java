@@ -1,6 +1,7 @@
 package com.smartling.connector.eloqua.sdk.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Calendar;
 
@@ -13,9 +14,6 @@ public class Email
     private String currentStatus;
     private Long id;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
-    /*
-        It's timestamp in seconds totaly not Java style be aware
-     */
     private long createdAt;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Integer createdBy;
@@ -26,12 +24,9 @@ public class Email
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private String permissions; //read / write / fullControl
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
-    /*
-        It's timestamp in seconds totaly not Java style be aware
-     */
-    private long updatedAt;
+    private Calendar updatedAt;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
-    private Integer updatedBy;
+    private Calendar updatedBy;
     private String bounceBackEmail;
     private Integer emailFooterId;
     private Integer emailGroupId;
@@ -55,17 +50,9 @@ public class Email
         return id;
     }
 
-    @Deprecated
-    public long getUpdatedAt()
+    public Calendar getUpdatedAt()
     {
         return updatedAt;
-    }
-
-    public Calendar getUpdatedAtAsCalendar()
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(createdAt*1000);
-        return calendar;
     }
 
     public String getCurrentStatus()
@@ -98,7 +85,8 @@ public class Email
         this.folderId = folderId;
     }
 
-    public void setUpdatedAt(final long updatedAt)
+    @JsonDeserialize (using = CustomJsonCalendarDeserializer.class)
+    public void setUpdatedAt(final Calendar updatedAt)
     {
         this.updatedAt = updatedAt;
     }
@@ -132,13 +120,6 @@ public class Email
     public long getCreatedAt()
     {
         return createdAt;
-    }
-
-    public Calendar getCreatedAtAsCalendar()
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(updatedAt*1000);
-        return calendar;
     }
 
     public void setCreatedAt(final long createdAt)
@@ -176,12 +157,13 @@ public class Email
         this.permissions = permissions;
     }
 
-    public Integer getUpdatedBy()
+    public Calendar getUpdatedBy()
     {
         return updatedBy;
     }
 
-    public void setUpdatedBy(final Integer updatedBy)
+    @JsonDeserialize (using = CustomJsonCalendarDeserializer.class)
+    public void setUpdatedBy(final Calendar updatedBy)
     {
         this.updatedBy = updatedBy;
     }

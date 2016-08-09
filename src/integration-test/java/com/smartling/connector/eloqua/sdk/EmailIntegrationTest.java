@@ -4,36 +4,13 @@ import com.smartling.connector.eloqua.sdk.client.EmailClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
 import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assume.assumeNotNull;
 
-public class EmailIntegrationTest
+public class EmailIntegrationTest extends BaseIntegrationTest
 {
-    public static final String POSTFIX = "(test)";
-    public static final String HTML = "<body>Test</body>";
-    protected Configuration configuration;
-
-    private String siteName;
-    private String username;
-
-    @Before
-    public void setUp() throws Exception
-    {
-        siteName = System.getProperty("eloqua.siteName");
-        username = System.getProperty("eloqua.username");
-        final String password = System.getProperty("eloqua.password");
-
-        assumeNotNull("Site name is not specified", siteName);
-        assumeNotNull("Username is not specified", username);
-        assumeNotNull("Password is not specified", password);
-
-        this.configuration = new Configuration(siteName, username, password);
-    }
-
     @Test
     public void shouldThrowAuthenticationExceptionIfPasswordIncorrect() throws Exception
     {
@@ -69,7 +46,7 @@ public class EmailIntegrationTest
 
         if(emails.total > 1)
         {
-            assertThat(emails.elements.get(0).getUpdatedAt() > emails.elements.get(1).getUpdatedAt());
+            assertThat(emails.elements.get(0).getUpdatedAt().after(emails.elements.get(1).getUpdatedAt()));
         }
 
         Email email = emailClient.getEmail(emails.elements.get(0).getId());

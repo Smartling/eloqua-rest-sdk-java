@@ -27,5 +27,4 @@ public interface EmailApi extends EloquaApi
 
     @RequestLine("DELETE /API/REST/1.0/assets/email/{id}")
     Void deleteEmail(@Param("id") long id);
-
 }
