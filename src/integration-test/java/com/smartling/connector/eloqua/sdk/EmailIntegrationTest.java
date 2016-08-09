@@ -14,7 +14,7 @@ import static org.junit.Assume.assumeNotNull;
 public class EmailIntegrationTest
 {
     public static final String POSTFIX = "(test)";
-    public static final String HTML = "<h4>Test</h4>";
+    public static final String HTML = "<body>Test</body>";
     protected Configuration configuration;
 
     private String siteName;
