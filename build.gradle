@@ -2,10 +2,14 @@ buildscript {
     repositories {
         mavenCentral()
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
         dependencies {
             classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'
             classpath 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.0.2'
             classpath 'com.netflix.nebula:gradle-info-plugin:2.2.+'
+            classpath 'gradle.plugin.com.palantir.gradle.gitversion:gradle-git-version:0.5.2'
         }
     }
 }
@@ -17,13 +21,14 @@ apply plugin: 'maven-publish-auth'
 apply plugin: 'jacoco'
 apply plugin: 'idea'
 apply plugin: 'nebula.info'
+apply plugin: "com.palantir.git-version"
 
 group = 'com.smartling.connector'
 description = 'Eloqua SDK'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-version '1.0.0-SNAPSHOT'
+version gitVersion()
 
 ext {
     feignVersion = '8.18.0'
@@ -68,9 +73,9 @@ publishing {
     repositories {
         maven {
             name 'smartling.repository.target.snapshots'
-            url (project.version.contains('SNAPSHOT')
-                    ? 'https://artifactory.smartling.net/artifactory/local-snapshots'
-                    : 'https://artifactory.smartling.net/artifactory/local-releases')
+            url (project.version ==~ /\d+\.\d+\.\d+/
+                    ? 'https://artifactory.smartling.net/artifactory/local-releases'
+                    : 'https://artifactory.smartling.net/artifactory/local-snapshots')
             credentials {
                 username = project.hasProperty('artifactoryUser') ? project.getProperty('artifactoryUser') : ""
                 password = project.hasProperty('artifactoryPassword') ? project.getProperty('artifactoryPassword') : ""
