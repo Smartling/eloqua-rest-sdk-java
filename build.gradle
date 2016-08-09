@@ -28,7 +28,7 @@ description = 'Eloqua SDK'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-version gitVersion()
+version buildVersion()
 
 ext {
     feignVersion = '8.18.0'
@@ -101,6 +101,16 @@ task prepareSonarConfig(type: Copy) {
 
     // Want to support both plain "master" and full-qualified "refs/origin/master"
     expand(analysisMode: branch == 'master' || branch.endsWith('/master') ? 'publish' : 'preview')
+}
+
+def buildVersion() {
+    def details = versionDetails();
+    def metadata = project.hasProperty('buildNumber') ? project.getProperty('buildNumber') : "SNAPSHOT";
+
+    return details.lastTag - '.dirty' \
+            + '.' + details.commitDistance \
+            + '-' + details.gitHash \
+            + '-' + metadata;
 }
 
 task wrapper(type: Wrapper) {
