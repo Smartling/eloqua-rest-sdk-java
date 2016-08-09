@@ -73,9 +73,7 @@ publishing {
     repositories {
         maven {
             name 'smartling.repository.target.snapshots'
-            url (project.version ==~ /\d+\.\d+\.\d+/
-                    ? 'https://artifactory.smartling.net/artifactory/local-releases'
-                    : 'https://artifactory.smartling.net/artifactory/local-snapshots')
+            url 'https://artifactory.smartling.net/artifactory/local-releases'
             credentials {
                 username = project.hasProperty('artifactoryUser') ? project.getProperty('artifactoryUser') : ""
                 password = project.hasProperty('artifactoryPassword') ? project.getProperty('artifactoryPassword') : ""
