@@ -105,12 +105,14 @@ task prepareSonarConfig(type: Copy) {
 
 def buildVersion() {
     def details = versionDetails();
-    def metadata = project.hasProperty('buildNumber') ? project.getProperty('buildNumber') : "SNAPSHOT";
+    def patchNumber = details.commitDistance
+    def buildNumber = project.hasProperty('buildNumber') ? project.getProperty('buildNumber') : null;
 
-    return details.lastTag - '.dirty' \
-            + '.' + details.commitDistance \
-            + '-' + details.gitHash \
-            + '-' + metadata;
+    def suffix = buildNumber != null \
+             ? '.' + patchNumber + '-' + buildNumber + '-' + details.gitHash \
+             : '.' + (patchNumber + 1) + '-SNAPSHOT'
+
+    return details.lastTag - '.dirty' + suffix;
 }
 
 task wrapper(type: Wrapper) {
