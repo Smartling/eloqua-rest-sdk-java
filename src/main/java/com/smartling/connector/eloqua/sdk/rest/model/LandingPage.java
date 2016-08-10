@@ -1,6 +1,7 @@
 package com.smartling.connector.eloqua.sdk.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Calendar;
 
@@ -63,6 +64,7 @@ public class LandingPage
         return createdAt;
     }
 
+    @JsonDeserialize (using = CustomJsonCalendarDeserializer.class)
     public void setCreatedAt(final Calendar createdAt)
     {
         this.createdAt = createdAt;
@@ -113,6 +115,7 @@ public class LandingPage
         return updatedAt;
     }
 
+    @JsonDeserialize (using = CustomJsonCalendarDeserializer.class)
     public void setUpdatedAt(final Calendar updatedAt)
     {
         this.updatedAt = updatedAt;
@@ -128,6 +131,7 @@ public class LandingPage
         this.updatedBy = updatedBy;
     }
 
+    @JsonDeserialize (using = CustomJsonCalendarDeserializer.class)
     public Calendar getDeployedAt()
     {
         return deployedAt;
@@ -173,6 +177,7 @@ public class LandingPage
         return refreshedAt;
     }
 
+    @JsonDeserialize (using = CustomJsonCalendarDeserializer.class)
     public void setRefreshedAt(final Calendar refreshedAt)
     {
         this.refreshedAt = refreshedAt;
