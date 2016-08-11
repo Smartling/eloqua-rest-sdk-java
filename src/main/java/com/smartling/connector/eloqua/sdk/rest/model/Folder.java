@@ -2,7 +2,7 @@ package com.smartling.connector.eloqua.sdk.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class EmailFolder
+public class Folder
 {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String type;
