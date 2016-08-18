@@ -8,6 +8,8 @@ public class BaseIntegrationTest
 {
     public static final String POSTFIX = "(test)";
     public static final String HTML = "<body>Test</body>";
+    public static final String TEXT = "Test";
+
     protected Configuration configuration;
 
     protected String siteName;

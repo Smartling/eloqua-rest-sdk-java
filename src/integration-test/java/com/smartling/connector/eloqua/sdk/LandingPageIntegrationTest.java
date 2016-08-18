@@ -38,18 +38,18 @@ public class LandingPageIntegrationTest extends BaseIntegrationTest
         Elements<LandingPage> landingPages = landingPageClient.listLandingPages(1, 10, "createdAt", "DESC", "");
 
         assertThat(landingPages).isNotNull();
-        assertThat(landingPages.page).isEqualTo(1);
-        assertThat(landingPages.pageSize).isEqualTo(10);
-        assertThat(landingPages.total).isGreaterThan(0);
-        assertThat(landingPages.elements).isNotEmpty();
-        assertThat(landingPages.elements.get(0)).isNotNull();
+        assertThat(landingPages.getPage()).isEqualTo(1);
+        assertThat(landingPages.getPageSize()).isEqualTo(10);
+        assertThat(landingPages.getTotal()).isGreaterThan(0);
+        assertThat(landingPages.getElements()).isNotEmpty();
+        assertThat(landingPages.getElements().get(0)).isNotNull();
 
-        if(landingPages.total > 1)
+        if(landingPages.getTotal() > 1)
         {
-            assertThat(landingPages.elements.get(0).getUpdatedAt().after(landingPages.elements.get(1).getUpdatedAt()));
+            assertThat(landingPages.getElements().get(0).getUpdatedAt().after(landingPages.getElements().get(1).getUpdatedAt()));
         }
 
-        LandingPage landingPage = landingPageClient.getLandingPage(landingPages.elements.get(0).getId());
+        LandingPage landingPage = landingPageClient.getLandingPage(landingPages.getElements().get(0).getId());
 
         assertThat(landingPage).isNotNull();
         assertThat(landingPage.getHtmlContent()).isNotNull();
@@ -69,10 +69,10 @@ public class LandingPageIntegrationTest extends BaseIntegrationTest
 
         Elements<LandingPage> newLandingPages = landingPageClient.searchForLandingPage(oldTitle);
         assertThat(newLandingPages).isNotNull();
-        assertThat(newLandingPages.elements).isNotEmpty();
-        assertThat(newLandingPages.total).isEqualTo(1);
+        assertThat(newLandingPages.getElements()).isNotEmpty();
+        assertThat(newLandingPages.getTotal()).isEqualTo(1);
 
-        LandingPage testLandingPage = newLandingPages.elements.get(0);
+        LandingPage testLandingPage = newLandingPages.getElements().get(0);
 
         assertThat(testLandingPage.getName()).isEqualTo(oldTitle);
 

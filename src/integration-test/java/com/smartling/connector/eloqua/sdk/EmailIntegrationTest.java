@@ -38,18 +38,18 @@ public class EmailIntegrationTest extends BaseIntegrationTest
         Elements<Email> emails = emailClient.listEmails(1, 10, "createdAt", "DESC", "");
 
         assertThat(emails).isNotNull();
-        assertThat(emails.page).isEqualTo(1);
-        assertThat(emails.pageSize).isEqualTo(10);
-        assertThat(emails.total).isGreaterThan(0);
-        assertThat(emails.elements).isNotEmpty();
-        assertThat(emails.elements.get(0)).isNotNull();
+        assertThat(emails.getPage()).isEqualTo(1);
+        assertThat(emails.getPageSize()).isEqualTo(10);
+        assertThat(emails.getTotal()).isGreaterThan(0);
+        assertThat(emails.getElements()).isNotEmpty();
+        assertThat(emails.getElements().get(0)).isNotNull();
 
-        if(emails.total > 1)
+        if(emails.getTotal() > 1)
         {
-            assertThat(emails.elements.get(0).getUpdatedAt().after(emails.elements.get(1).getUpdatedAt()));
+            assertThat(emails.getElements().get(0).getUpdatedAt().after(emails.getElements().get(1).getUpdatedAt()));
         }
 
-        Email email = emailClient.getEmail(emails.elements.get(0).getId());
+        Email email = emailClient.getEmail(emails.getElements().get(0).getId());
 
         assertThat(email).isNotNull();
         assertThat(email.getHtmlContent()).isNotNull();
@@ -69,10 +69,10 @@ public class EmailIntegrationTest extends BaseIntegrationTest
 
         Elements<Email> newEmails = emailClient.searchForEmail(oldTitle);
         assertThat(newEmails).isNotNull();
-        assertThat(newEmails.elements).isNotEmpty();
-        assertThat(newEmails.total).isEqualTo(1);
+        assertThat(newEmails.getElements()).isNotEmpty();
+        assertThat(newEmails.getTotal()).isEqualTo(1);
 
-        Email testEmail = newEmails.elements.get(0);
+        Email testEmail = newEmails.getElements().get(0);
 
         assertThat(testEmail.getName()).isEqualTo(oldTitle);
 

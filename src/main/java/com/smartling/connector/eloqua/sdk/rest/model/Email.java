@@ -26,7 +26,7 @@ public class Email
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Calendar updatedAt;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
-    private Calendar updatedBy;
+    private Integer updatedBy;
     private String bounceBackEmail;
     private Integer emailFooterId;
     private Integer emailGroupId;
@@ -157,13 +157,12 @@ public class Email
         this.permissions = permissions;
     }
 
-    public Calendar getUpdatedBy()
+    public Integer getUpdatedBy()
     {
         return updatedBy;
     }
 
-    @JsonDeserialize (using = CustomJsonCalendarDeserializer.class)
-    public void setUpdatedBy(final Calendar updatedBy)
+    public void setUpdatedBy(final Integer updatedBy)
     {
         this.updatedBy = updatedBy;
     }
