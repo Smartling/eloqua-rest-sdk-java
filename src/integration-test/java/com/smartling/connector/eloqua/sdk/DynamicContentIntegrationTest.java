@@ -34,7 +34,7 @@ public class DynamicContentIntegrationTest extends BaseIntegrationTest
     {
         DynamicContentClient dynamicContentClient = new DynamicContentClient(configuration);
 
-        Elements<DynamicContent> dynamicContents = dynamicContentClient.listDynamicContents(1, 10, "createdAt", "DESC", "");
+        Elements<DynamicContent> dynamicContents = dynamicContentClient.listDynamicContents(1, 10, "createdAt", "ASC", "");
 
         assertThat(dynamicContents).isNotNull();
         assertThat(dynamicContents.getPage()).isEqualTo(1);
@@ -55,6 +55,8 @@ public class DynamicContentIntegrationTest extends BaseIntegrationTest
         assertThat(dynamicContent.getDefaultContentSection().getContentHtml()).isNotNull();
         dynamicContent.getDefaultContentSection().setContentHtml(HTML);
         dynamicContent.getDefaultContentSection().setContentText(TEXT);
+        dynamicContent.getRules().get(0).getContentSection().setContentHtml(HTML);
+        dynamicContent.getRules().get(0).getContentSection().setContentText(TEXT);
 
         final String oldTitle = dynamicContent.getName() + POSTFIX;
 

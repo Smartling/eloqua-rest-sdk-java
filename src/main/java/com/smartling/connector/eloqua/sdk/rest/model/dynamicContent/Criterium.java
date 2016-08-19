@@ -1,8 +1,11 @@
 package com.smartling.connector.eloqua.sdk.rest.model.dynamicContent;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Criterium
 {
     private String type;
+    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
     private Condition condition;
     private Long fieldId;

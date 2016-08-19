@@ -1,10 +1,13 @@
 package com.smartling.connector.eloqua.sdk.rest.model.dynamicContent;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class Rule
 {
     private String type;
+    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
     private ContentSection contentSection;
     private List<Criterium> criteria;
