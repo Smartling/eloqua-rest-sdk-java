@@ -2,8 +2,10 @@ package com.smartling.connector.eloqua.sdk.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.smartling.connector.eloqua.sdk.rest.model.dynamicContent.DynamicContent;
 
 import java.util.Calendar;
+import java.util.Collection;
 
 public class Email
 {
@@ -44,6 +46,7 @@ public class Email
     private String senderEmail;
     private String senderName;
     private String style;
+    private Collection<DynamicContent> dynamicContents;
 
     public Long getId()
     {
@@ -330,5 +333,15 @@ public class Email
     public Boolean isDraft()
     {
         return DRAFT.equalsIgnoreCase(currentStatus);
+    }
+
+    public Collection<DynamicContent> getDynamicContents()
+    {
+        return dynamicContents;
+    }
+
+    public void setDynamicContents(Collection<DynamicContent> dynamicContents)
+    {
+        this.dynamicContents = dynamicContents;
     }
 }
