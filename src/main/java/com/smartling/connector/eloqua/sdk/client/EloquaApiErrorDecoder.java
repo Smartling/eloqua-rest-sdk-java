@@ -34,7 +34,7 @@ class EloquaApiErrorDecoder implements ErrorDecoder
 
     private static String bodyAsString(final Response response)
     {
-        if (response.body().length() > 0)
+        if (response.body()!=null && response.body().length() > 0)
         {
             try (BufferedReader reader = new BufferedReader(response.body().asReader()))
             {

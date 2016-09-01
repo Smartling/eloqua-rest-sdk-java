@@ -18,7 +18,7 @@ public abstract class EloquaClient<T extends EloquaApi>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(EloquaClient.class);
 
-    private static final String LOGIN_URL = "https://login.eloqua.com/id";
+    public static final String LOGIN_URL = "https://login.eloqua.com";
 
     private final Configuration configuration;
     private final Class<T>      apiType;
@@ -26,11 +26,11 @@ public abstract class EloquaClient<T extends EloquaApi>
 
     private String baseUrl;
 
-    public EloquaClient(final Configuration configuration, Class<T> apiType)
+    protected EloquaClient(final Configuration configuration, Class<T> apiType)
     {
         this.configuration = configuration;
         this.apiType = apiType;
-        this.loginApi = buildApi(LoginApi.class, LOGIN_URL);
+        loginApi = buildApi(LoginApi.class, LOGIN_URL);
     }
 
     public EloquaClient(final Configuration configuration, final Class<T> apiType, final LoginApi loginApi)
@@ -86,10 +86,10 @@ public abstract class EloquaClient<T extends EloquaApi>
 
     protected T getApi()
     {
-        return buildApi(this.apiType, this.baseUrl);
+        return configuration.getTokenInfo() == null ? buildApi(apiType, baseUrl) : buildApiWithOAuthAuthentication(apiType, baseUrl);
     }
 
-    private <A> A buildApi(final Class<A> apiType, final String apiBaseUrl)
+    private <A> A buildApi(final Class<A> apiClass, final String apiBaseUrl)
     {
         return Feign.builder()
                     .requestInterceptor(configuration.getAuthenticationInterceptor())
@@ -97,6 +97,18 @@ public abstract class EloquaClient<T extends EloquaApi>
                     .decoder(new JacksonDecoder())
                     .errorDecoder(new EloquaApiErrorDecoder())
                     .options(configuration.getOptions())
-                    .target(apiType, apiBaseUrl);
+                    .target(apiClass, apiBaseUrl);
     }
+
+    private <A> A buildApiWithOAuthAuthentication(final Class<A> apiClass, final String apiBaseUrl)
+    {
+        return Feign.builder()
+                    .requestInterceptor(configuration.getOAuthInterceptor())
+                    .encoder(new JacksonEncoder())
+                    .decoder(new JacksonDecoder())
+                    .errorDecoder(new EloquaApiErrorDecoder())
+                    .options(configuration.getOptions())
+                    .target(apiClass, apiBaseUrl);
+    }
+
 }

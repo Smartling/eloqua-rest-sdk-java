@@ -5,12 +5,18 @@ import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.EmailApi;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
+import com.smartling.connector.eloqua.sdk.rest.model.login.TokenInfo;
 import org.apache.commons.lang3.StringUtils;
 
 public class EmailClient extends EloquaClient<EmailApi>
 {
 
     public EmailClient(final Configuration configuration)
+    {
+        super(configuration, EmailApi.class);
+    }
+
+    public EmailClient(final Configuration configuration, final TokenInfo tokenInfo)
     {
         super(configuration, EmailApi.class);
     }

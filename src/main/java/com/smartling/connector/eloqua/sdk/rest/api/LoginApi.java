@@ -5,6 +5,6 @@ import feign.RequestLine;
 
 public interface LoginApi extends EloquaApi
 {
-    @RequestLine("GET")
+    @RequestLine("GET /id")
     AccountInfo getAccountInfo();
 }
