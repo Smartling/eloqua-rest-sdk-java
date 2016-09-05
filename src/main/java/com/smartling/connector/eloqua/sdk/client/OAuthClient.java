@@ -1,5 +1,6 @@
 package com.smartling.connector.eloqua.sdk.client;
 
+import com.smartling.connector.eloqua.sdk.EloquaAuthenticationException;
 import com.smartling.connector.eloqua.sdk.OAuthConfiguration;
 import com.smartling.connector.eloqua.sdk.rest.api.OAuthApi;
 import com.smartling.connector.eloqua.sdk.rest.model.login.GrantCodeDTO;
@@ -26,12 +27,12 @@ public class OAuthClient
         oAuthApi = buildOAuthApi(OAuthApi.class, EloquaClient.LOGIN_URL);
     }
 
-    public TokenInfo getTokenUsingGrantCode(GrantCodeDTO grantCodeDTO)
+    public TokenInfo getTokenUsingGrantCode(GrantCodeDTO grantCodeDTO) throws EloquaAuthenticationException
     {
         return oAuthApi.getTokenUsingGrantCode(grantCodeDTO);
     }
 
-    public TokenInfo getTokenUsingRefreshToken(RefreshTokenDTO refreshTokenDTO)
+    public TokenInfo getTokenUsingRefreshToken(RefreshTokenDTO refreshTokenDTO) throws EloquaAuthenticationException
     {
         return oAuthApi.getTokenUsingRefreshToken(refreshTokenDTO);
     }
