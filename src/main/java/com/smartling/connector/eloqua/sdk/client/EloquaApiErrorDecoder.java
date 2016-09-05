@@ -25,11 +25,17 @@ class EloquaApiErrorDecoder implements ErrorDecoder
             String message = String.format("Authentication failed with HTTP %s: %s. Details: %s", response.status(), response.reason(), responseBody);
             return new EloquaAuthenticationException(message);
         }
-        else
+        if (response.status() == 400)
         {
-            String message = String.format("Eloqua API responded with HTTP %s: %s. Details: %s", response.status(), response.reason(), responseBody);
-            return new EloquaClientException(message);
+            if (responseBody != null && responseBody.contains("invalid_grant"))
+            {
+                String message = String.format("Authentication failed with HTTP %s: %s. Details: %s", response.status(), response.reason(), responseBody);
+                return new EloquaAuthenticationException(message);
+            }
         }
+
+        String message = String.format("Eloqua API responded with HTTP %s: %s. Details: %s", response.status(), response.reason(), responseBody);
+        return new EloquaClientException(message);
     }
 
     private static String bodyAsString(final Response response)

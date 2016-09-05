@@ -37,4 +37,16 @@ public class EloquaApiErrorDecoderTest
                 .isExactlyInstanceOf(EloquaAuthenticationException.class)
                 .hasMessage("Authentication failed with HTTP 401: Unauthorized. Details: null");
     }
+
+    @Test
+    public void shouldReturnAuthenticationExceptionFor400() throws Exception
+    {
+        Response response = Response.create(400, "Bad Request", Collections.emptyMap(), "{error: invalid_grant}", Charsets.UTF_8);
+
+        Exception exception = testedInstance.decode("", response);
+
+        assertThat(exception)
+                .isExactlyInstanceOf(EloquaAuthenticationException.class)
+                .hasMessage("Authentication failed with HTTP 400: Bad Request. Details: {error: invalid_grant}");
+    }
 }
