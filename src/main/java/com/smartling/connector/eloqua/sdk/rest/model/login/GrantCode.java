@@ -2,7 +2,7 @@ package com.smartling.connector.eloqua.sdk.rest.model.login;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GrantCodeDTO
+public class GrantCode
 {
     @JsonProperty ("grant_type")
     private final String grantType = "authorization_code";
@@ -10,7 +10,7 @@ public class GrantCodeDTO
     @JsonProperty ("redirect_uri")
     private final String redirectUri;
 
-    public GrantCodeDTO(final String code, final String redirectUri)
+    public GrantCode(final String code, final String redirectUri)
     {
         this.code = code;
         this.redirectUri = redirectUri;

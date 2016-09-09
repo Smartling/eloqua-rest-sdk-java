@@ -2,7 +2,7 @@ package com.smartling.connector.eloqua.sdk.rest.model.login;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class RefreshTokenDTO
+public class RefreshToken
 {
     @JsonProperty ("grant_type")
     private final String grantType = "refresh_token";
@@ -12,7 +12,7 @@ public class RefreshTokenDTO
     private final String redirectUri;
     private final String scope = "full";
 
-    public RefreshTokenDTO(final String refreshToken, final String redirectUri)
+    public RefreshToken(final String refreshToken, final String redirectUri)
     {
         this.refreshToken = refreshToken;
         this.redirectUri = redirectUri;

@@ -3,8 +3,8 @@ package com.smartling.connector.eloqua.sdk.client;
 import com.smartling.connector.eloqua.sdk.EloquaAuthenticationException;
 import com.smartling.connector.eloqua.sdk.OAuthConfiguration;
 import com.smartling.connector.eloqua.sdk.rest.api.OAuthApi;
-import com.smartling.connector.eloqua.sdk.rest.model.login.GrantCodeDTO;
-import com.smartling.connector.eloqua.sdk.rest.model.login.RefreshTokenDTO;
+import com.smartling.connector.eloqua.sdk.rest.model.login.GrantCode;
+import com.smartling.connector.eloqua.sdk.rest.model.login.RefreshToken;
 import com.smartling.connector.eloqua.sdk.rest.model.login.TokenInfo;
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
@@ -27,14 +27,14 @@ public class OAuthClient
         oAuthApi = buildOAuthApi(OAuthApi.class, EloquaClient.LOGIN_URL);
     }
 
-    public TokenInfo getTokenUsingGrantCode(GrantCodeDTO grantCodeDTO) throws EloquaAuthenticationException
+    public TokenInfo getTokenUsingGrantCode(GrantCode grantCode) throws EloquaAuthenticationException
     {
-        return oAuthApi.getTokenUsingGrantCode(grantCodeDTO);
+        return oAuthApi.getTokenUsingGrantCode(grantCode);
     }
 
-    public TokenInfo getTokenUsingRefreshToken(RefreshTokenDTO refreshTokenDTO) throws EloquaAuthenticationException
+    public TokenInfo getTokenUsingRefreshToken(RefreshToken refreshToken) throws EloquaAuthenticationException
     {
-        return oAuthApi.getTokenUsingRefreshToken(refreshTokenDTO);
+        return oAuthApi.getTokenUsingRefreshToken(refreshToken);
     }
 
     private <A> A buildOAuthApi(final Class<A> apiClass, final String apiBaseUrl)

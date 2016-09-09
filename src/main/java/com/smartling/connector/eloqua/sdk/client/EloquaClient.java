@@ -30,7 +30,7 @@ public abstract class EloquaClient<T extends EloquaApi>
     {
         this.configuration = configuration;
         this.apiType = apiType;
-        loginApi = buildApi(LoginApi.class, LOGIN_URL);
+        loginApi = configuration.getTokenInfo() == null ? buildApi(LoginApi.class, LOGIN_URL) : buildApiWithOAuthAuthentication(LoginApi.class, LOGIN_URL);
     }
 
     public EloquaClient(final Configuration configuration, final Class<T> apiType, final LoginApi loginApi)
