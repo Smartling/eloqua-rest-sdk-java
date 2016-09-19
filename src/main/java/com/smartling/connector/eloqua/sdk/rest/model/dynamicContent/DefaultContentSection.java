@@ -1,5 +1,6 @@
 package com.smartling.connector.eloqua.sdk.rest.model.dynamicContent;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.smartling.connector.eloqua.sdk.rest.model.CustomJsonCalendarDeserializer;
 
@@ -8,6 +9,7 @@ import java.util.Calendar;
 public class DefaultContentSection
 {
     private String type;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
     private Calendar createdAt;
     private Integer createdBy;
