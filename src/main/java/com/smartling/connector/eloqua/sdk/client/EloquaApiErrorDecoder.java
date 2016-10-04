@@ -2,6 +2,7 @@ package com.smartling.connector.eloqua.sdk.client;
 
 import com.smartling.connector.eloqua.sdk.EloquaAuthenticationException;
 import com.smartling.connector.eloqua.sdk.EloquaClientException;
+import com.smartling.connector.eloqua.sdk.EloquaObjectNotFoundException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.slf4j.Logger;
@@ -32,6 +33,11 @@ class EloquaApiErrorDecoder implements ErrorDecoder
                 String message = String.format("Authentication failed with HTTP %s: %s. Details: %s", response.status(), response.reason(), responseBody);
                 return new EloquaAuthenticationException(message);
             }
+        }
+        if (response.status() == 404)
+        {
+            String message = String.format("Object not found with HTTP %s: %s. Details: %s", response.status(), response.reason(), responseBody);
+            return new EloquaObjectNotFoundException(message);
         }
 
         String message = String.format("Eloqua API responded with HTTP %s: %s. Details: %s", response.status(), response.reason(), responseBody);

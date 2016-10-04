@@ -21,6 +21,13 @@ public class LandingPageIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
+    public void shouldThrowObjectNotFoundException() throws Exception
+    {
+        LandingPageClient client = new LandingPageClient(configuration);
+        assertThatThrownBy(() -> client.getLandingPage(100500)).isInstanceOf(EloquaObjectNotFoundException.class);
+    }
+
+    @Test
     public void shouldThrowApiExceptionIfApiCallFailed() throws Exception
     {
         LandingPageClient client = new LandingPageClient(configuration);

@@ -20,6 +20,13 @@ public class DynamicContentIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
+    public void shouldThrowObjectNotFoundException() throws Exception
+    {
+        DynamicContentClient client = new DynamicContentClient(configuration);
+        assertThatThrownBy(() -> client.getDynamicContent(100500)).isInstanceOf(EloquaObjectNotFoundException.class);
+    }
+
+    @Test
     public void shouldThrowApiExceptionIfApiCallFailed() throws Exception
     {
         DynamicContentClient client = new DynamicContentClient(configuration);

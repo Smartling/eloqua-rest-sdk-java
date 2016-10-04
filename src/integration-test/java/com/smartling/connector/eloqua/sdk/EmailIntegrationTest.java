@@ -21,6 +21,13 @@ public class EmailIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
+    public void shouldThrowObjectNotFoundException() throws Exception
+    {
+        EmailClient client = new EmailClient(configuration);
+        assertThatThrownBy(() -> client.getEmail(100500)).isInstanceOf(EloquaObjectNotFoundException.class);
+    }
+
+    @Test
     public void shouldThrowApiExceptionIfApiCallFailed() throws Exception
     {
         EmailClient client = new EmailClient(configuration);
