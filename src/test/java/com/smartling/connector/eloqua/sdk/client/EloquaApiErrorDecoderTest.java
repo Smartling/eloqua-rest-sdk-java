@@ -3,6 +3,7 @@ package com.smartling.connector.eloqua.sdk.client;
 import com.google.common.base.Charsets;
 import com.smartling.connector.eloqua.sdk.EloquaAuthenticationException;
 import com.smartling.connector.eloqua.sdk.EloquaClientException;
+import com.smartling.connector.eloqua.sdk.EloquaObjectNotFoundException;
 import feign.Response;
 import org.junit.Test;
 
@@ -48,5 +49,17 @@ public class EloquaApiErrorDecoderTest
         assertThat(exception)
                 .isExactlyInstanceOf(EloquaAuthenticationException.class)
                 .hasMessage("Authentication failed with HTTP 400: Bad Request. Details: {error: invalid_grant}");
+    }
+
+    @Test
+    public void shouldReturnEloquaObjectNotFoundExceptionFor404() throws Exception
+    {
+        Response response = Response.create(404, "Object not found", Collections.emptyMap(), "", Charsets.UTF_8);
+
+        Exception exception = testedInstance.decode("", response);
+
+        assertThat(exception)
+                .isExactlyInstanceOf(EloquaObjectNotFoundException.class)
+                .hasMessage("Object not found with HTTP 404: Object not found. Details: null");
     }
 }
