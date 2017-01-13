@@ -3,6 +3,7 @@ package com.smartling.connector.eloqua.sdk.client;
 import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.EloquaAuthenticationException;
 import com.smartling.connector.eloqua.sdk.EloquaClientException;
+import com.smartling.connector.eloqua.sdk.rest.api.ContactApi;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
 import com.smartling.connector.eloqua.sdk.rest.model.login.AccountInfo;
@@ -10,6 +11,7 @@ import com.smartling.connector.eloqua.sdk.rest.model.login.Urls;
 import feign.FeignException;
 import feign.Response;
 import feign.codec.DecodeException;
+import org.apache.http.client.HttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +38,10 @@ public class EloquaClientTest
     private Configuration configuration;
     @Mock
     private TestApi testApi;
+    @Mock
+    private ContactApi contactApi;
+    @Mock
+    private HttpClient httpClient;
 
     @InjectMocks
     private TestEloquaClient testedInstance;
@@ -44,9 +50,9 @@ public class EloquaClientTest
     {
         private final TestApi api;
 
-        private TestEloquaClient(final Configuration configuration, final LoginApi loginApi, final TestApi api)
+        private TestEloquaClient(final Configuration configuration, final LoginApi loginApi, final TestApi api, HttpClient httpClient)
         {
-            super(configuration, TestApi.class, loginApi);
+            super(configuration, TestApi.class, loginApi, httpClient);
             this.api = api;
         }
 

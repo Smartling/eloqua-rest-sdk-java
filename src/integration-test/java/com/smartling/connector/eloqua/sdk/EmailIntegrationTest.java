@@ -1,5 +1,6 @@
 package com.smartling.connector.eloqua.sdk;
 
+import com.smartling.connector.eloqua.sdk.client.ContactClient;
 import com.smartling.connector.eloqua.sdk.client.EmailClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
@@ -84,5 +85,21 @@ public class EmailIntegrationTest extends BaseIntegrationTest
         assertThat(testEmail.getName()).isEqualTo(oldTitle);
 
         emailClient.deleteEmail(testEmail.getId());
+    }
+
+    @Test
+    public void getPreviewHtml()
+    {
+        EmailClient emailClient = new EmailClient(configuration);
+        ContactClient contactClient = new ContactClient(configuration);
+
+        Elements<Email> emails = emailClient.listEmails(1, 10, "createdAt", "DESC", "");
+
+        assertThat(emails.getPage()).isEqualTo(1);
+        assertThat(emails.getElements().get(0).getUpdatedAt().after(emails.getElements().get(1).getUpdatedAt()));
+
+        final String htmlPreview = emailClient.getHtmlPreview(emails.getElements().get(0).getId(), contactClient.getContactIdForPreview());
+
+        assertThat(htmlPreview).isNotEmpty();
     }
 }

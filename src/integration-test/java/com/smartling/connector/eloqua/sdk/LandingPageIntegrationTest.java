@@ -1,5 +1,6 @@
 package com.smartling.connector.eloqua.sdk;
 
+import com.smartling.connector.eloqua.sdk.client.ContactClient;
 import com.smartling.connector.eloqua.sdk.client.LandingPageClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
@@ -84,5 +85,20 @@ public class LandingPageIntegrationTest extends BaseIntegrationTest
         assertThat(testLandingPage.getName()).isEqualTo(oldTitle);
 
         landingPageClient.deleteLandingPage(testLandingPage.getId());
+    }
+
+    @Test
+    public void getPreviewHtml()
+    {
+        LandingPageClient landingPageClient = new LandingPageClient(configuration);
+        ContactClient contactClient = new ContactClient(configuration);
+
+        Elements<LandingPage> landingPages = landingPageClient.listLandingPages(1, 10, "createdAt", "DESC", "");
+
+        assertThat(landingPages.getPage()).isEqualTo(1);
+        assertThat(landingPages.getElements().get(0).getUpdatedAt().after(landingPages.getElements().get(1).getUpdatedAt()));
+
+        final String htmlPreview = landingPageClient.getHtmlPreview(landingPages.getElements().get(0).getId(), contactClient.getContactIdForPreview());
+        assertThat(htmlPreview).isNotEmpty();
     }
 }

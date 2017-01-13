@@ -27,4 +27,7 @@ public interface LandingPageApi extends EloquaApi
 
     @RequestLine("DELETE /API/REST/1.0/assets/landingPage/{id}")
     Void deleteLandingPage(@Param("id") long id);
+
+    @RequestLine ("GET API/REST/2.0/assets/landingPage/{id}/preview?contactId={contactId}&extensions=e10")
+    String getPreview(@Param("id") long id, @Param("contactId") long contactId);
 }
