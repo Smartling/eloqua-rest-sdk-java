@@ -140,7 +140,7 @@ public abstract class EloquaClient<T extends EloquaApi>
         }
         catch (IOException e)
         {
-            throw new EloquaClientException("Can't get preview link " + e.getMessage());
+            throw new EloquaClientException("Can't get preview link: " + previewLink, e);
         }
     }
 }

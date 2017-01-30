@@ -1,7 +1,5 @@
 package com.smartling.connector.eloqua.sdk;
 
-import feign.FeignException;
-
 public class EloquaClientException extends RuntimeException
 {
     public EloquaClientException(final String message)
@@ -9,7 +7,7 @@ public class EloquaClientException extends RuntimeException
         super(message);
     }
 
-    public EloquaClientException(final String message, final FeignException cause)
+    public EloquaClientException(final String message, final Exception cause)
     {
         super(message, cause);
     }
