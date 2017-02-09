@@ -46,9 +46,8 @@ public class LandingPageClient extends EloquaClient<LandingPageApi>
         return executeCall(landingPageApi -> landingPageApi.searchForLandingPage(EloquaApi.Depth.COMPLETE, "[name =] \"" + name + '"'));
     }
 
-    public String getHtmlPreview(long landingPageId, long contactId)
+    public String getHtmlPreviewLink(long landingPageId, long contactId)
     {
-        final String previewLink = executeCall(landingPageApi -> landingPageApi.getPreview(landingPageId, contactId));
-        return getPreviewHtml(previewLink);
+        return executeCall(landingPageApi -> landingPageApi.getPreview(landingPageId, contactId));
     }
 }

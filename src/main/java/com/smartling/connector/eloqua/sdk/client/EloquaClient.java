@@ -10,14 +10,9 @@ import feign.FeignException;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.function.Function;
 
 public abstract class EloquaClient<T extends EloquaApi>
@@ -29,7 +24,6 @@ public abstract class EloquaClient<T extends EloquaApi>
     private final Configuration configuration;
     private final Class<T>      apiType;
     private final LoginApi loginApi;
-    protected final HttpClient httpClient;
 
     private String baseUrl;
 
@@ -38,7 +32,6 @@ public abstract class EloquaClient<T extends EloquaApi>
         this.configuration = configuration;
         this.apiType = apiType;
         loginApi = configuration.getTokenInfo() == null ? buildApi(LoginApi.class, LOGIN_URL) : buildApiWithOAuthAuthentication(LoginApi.class, LOGIN_URL);
-        httpClient = buildHttpClient();
     }
 
     public EloquaClient(final Configuration configuration, final Class<T> apiType, final LoginApi loginApi, HttpClient httpClient)
@@ -46,7 +39,6 @@ public abstract class EloquaClient<T extends EloquaApi>
         this.configuration = configuration;
         this.apiType = apiType;
         this.loginApi = loginApi;
-        this.httpClient = httpClient;
     }
 
     protected <R> R executeCall(Function<T, R> function)
@@ -118,29 +110,5 @@ public abstract class EloquaClient<T extends EloquaApi>
                     .errorDecoder(new EloquaApiErrorDecoder())
                     .options(configuration.getOptions())
                     .target(apiClass, apiBaseUrl);
-    }
-
-    private HttpClient buildHttpClient()
-    {
-        RequestConfig requestConfig = RequestConfig.custom()
-                                                   .setConnectTimeout(configuration.getOptions().connectTimeoutMillis())
-                                                   .setConnectionRequestTimeout(configuration.getOptions().readTimeoutMillis())
-                                                   .build();
-
-        return HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
-    }
-
-    protected String getPreviewHtml(final String previewLink)
-    {
-        HttpGet get = new HttpGet(previewLink);
-        try
-        {
-            return new BasicResponseHandler().handleResponse(httpClient.execute(get));
-
-        }
-        catch (IOException e)
-        {
-            throw new EloquaClientException("Can't get preview link: " + previewLink, e);
-        }
     }
 }

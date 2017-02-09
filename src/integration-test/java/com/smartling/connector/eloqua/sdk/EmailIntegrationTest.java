@@ -98,7 +98,7 @@ public class EmailIntegrationTest extends BaseIntegrationTest
         assertThat(emails.getPage()).isEqualTo(1);
         assertThat(emails.getElements().get(0).getUpdatedAt().after(emails.getElements().get(1).getUpdatedAt()));
 
-        final String htmlPreview = emailClient.getHtmlPreview(emails.getElements().get(0).getId(), contactClient.getContactIdForPreview());
+        final String htmlPreview = emailClient.getHtmlPreviewLink(emails.getElements().get(0).getId(), contactClient.getContactIdForPreview());
 
         assertThat(htmlPreview).isNotEmpty();
     }

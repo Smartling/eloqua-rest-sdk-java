@@ -53,10 +53,9 @@ public class EmailClient extends EloquaClient<EmailApi>
         return executeCall(emailApi -> emailApi.searchForEmail(EloquaApi.Depth.COMPLETE, "[name =] \"" + name + '"'));
     }
 
-    public String getHtmlPreview(long emailId, long contactId)
+    public String getHtmlPreviewLink(long emailId, long contactId)
     {
-        final String previewLink = executeCall(emailApi -> emailApi.getPreview(emailId, contactId));
-        return getPreviewHtml(previewLink);
+        return executeCall(emailApi -> emailApi.getPreview(emailId, contactId));
     }
 
 }

@@ -98,7 +98,7 @@ public class LandingPageIntegrationTest extends BaseIntegrationTest
         assertThat(landingPages.getPage()).isEqualTo(1);
         assertThat(landingPages.getElements().get(0).getUpdatedAt().after(landingPages.getElements().get(1).getUpdatedAt()));
 
-        final String htmlPreview = landingPageClient.getHtmlPreview(landingPages.getElements().get(0).getId(), contactClient.getContactIdForPreview());
+        final String htmlPreview = landingPageClient.getHtmlPreviewLink(landingPages.getElements().get(0).getId(), contactClient.getContactIdForPreview());
         assertThat(htmlPreview).isNotEmpty();
     }
 }
