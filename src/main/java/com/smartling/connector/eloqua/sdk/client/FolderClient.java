@@ -25,5 +25,16 @@ public class FolderClient extends EloquaClient<FolderApi>
         return executeCall(folderApi -> folderApi.getFolder(assetType, EloquaApi.Depth.COMPLETE, id));
     }
 
-   
+    public Folder createFolder(String type, String name)
+    {
+        final Folder folder = new Folder();
+        folder.setType(type);
+        folder.setName(name);
+        return executeCall(folderApi -> folderApi.createFolder(type, folder));
+    }
+
+    public void deleteFolder(String type, long id)
+    {
+        executeCall(folderApi -> folderApi.deleteFolder(type, id));
+    }
 }

@@ -44,4 +44,40 @@ public class FolderIntegrationTest extends BaseIntegrationTest
         Folder folder = folderClient.getFolder("landingPage", folders.getElements().get(0).getId());
         assertThat(folder).isNotNull();
     }
+
+    @Test
+    public void shouldCreateEmailFolder()
+    {
+        FolderClient folderClient = new FolderClient(configuration);
+
+        final Folder folder = folderClient.createFolder("email", "smartlingTestFolder");
+
+        assertThat(folder.getId()).isNotNull();
+
+        folderClient.deleteFolder("email", folder.getId());
+    }
+
+    @Test
+    public void shouldCreateLandingPageFolder()
+    {
+        FolderClient folderClient = new FolderClient(configuration);
+
+        final Folder folder = folderClient.createFolder("landingPage", "smartlingTestFolder");
+
+        assertThat(folder.getId()).isNotNull();
+
+        folderClient.deleteFolder("landingPage", folder.getId());
+    }
+
+    @Test
+    public void shouldCreateDynamicContentFolder()
+    {
+        FolderClient folderClient = new FolderClient(configuration);
+
+        final Folder folder = folderClient.createFolder("dynamicContent", "smartlingTestFolder");
+
+        assertThat(folder.getId()).isNotNull();
+
+        folderClient.deleteFolder("dynamicContent", folder.getId());
+    }
 }
