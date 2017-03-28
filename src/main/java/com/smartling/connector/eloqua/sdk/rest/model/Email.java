@@ -21,7 +21,7 @@ public class Email
     private Integer createdBy;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private String depth; //minimal / partial / complete
-    private Integer folderId;
+    private Long folderId;
     private String name;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private String permissions; //read / write / fullControl
@@ -68,7 +68,7 @@ public class Email
         return name;
     }
 
-    public Integer getFolderId()
+    public Long getFolderId()
     {
         return folderId;
     }
@@ -83,7 +83,7 @@ public class Email
         this.name = name;
     }
 
-    public void setFolderId(final Integer folderId)
+    public void setFolderId(final Long folderId)
     {
         this.folderId = folderId;
     }

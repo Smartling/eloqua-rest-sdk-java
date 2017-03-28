@@ -13,7 +13,7 @@ public class LandingPage
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Calendar createdAt;
     private String depth;
-    private Integer folderId;
+    private Long folderId;
     private String name;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private String permissions;
@@ -80,12 +80,12 @@ public class LandingPage
         this.depth = depth;
     }
 
-    public Integer getFolderId()
+    public Long getFolderId()
     {
         return folderId;
     }
 
-    public void setFolderId(final Integer folderId)
+    public void setFolderId(final Long folderId)
     {
         this.folderId = folderId;
     }
