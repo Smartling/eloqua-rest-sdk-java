@@ -62,15 +62,27 @@ public class EmailIntegrationTest extends BaseIntegrationTest
         assertThat(email).isNotNull();
         assertThat(email.getHtmlContent()).isNotNull();
         assertThat(email.getHtmlContent().getPlainHtml()).isNotNull();
+
+        //
+        //      Create
+        //
+
         if((email.getHtmlContent().getType().equals(HtmlContent.RAW_HTML_CONTENT)))
         {
             email.getHtmlContent().setHtml(HTML);
-        }else{
+        }
+        else
+        {
             email.getHtmlContent().setHtmlBody(HTML);
         }
-        final String oldTitle = email.getName() + POSTFIX;
 
         Email createdEmail = emailClient.createEmail(email);
+
+        //
+        //      Update
+        //
+
+        final String oldTitle = email.getName() + POSTFIX;
         createdEmail.setName(oldTitle);
 
         emailClient.updateEmail(createdEmail.getId(), createdEmail);
