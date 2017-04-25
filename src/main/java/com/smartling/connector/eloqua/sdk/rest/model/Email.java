@@ -36,9 +36,9 @@ public class Email
     private Integer encodingId;
     private HtmlContent htmlContent;
     @JsonProperty("isPlainTextEditable")
-    private boolean isPlainTextEditable;
+    private boolean plainTextEditable;
     @JsonProperty("isTracked")
-    private boolean isTracked;
+    private boolean tracked;
     private String subject;
     private String layout;
     private String plainText;
@@ -224,22 +224,22 @@ public class Email
 
     public boolean isPlainTextEditable()
     {
-        return isPlainTextEditable;
+        return plainTextEditable;
     }
 
-    public void setIsPlainTextEditable(final boolean isPlainTextEditable)
+    public void setPlainTextEditable(final boolean plainTextEditable)
     {
-        this.isPlainTextEditable = isPlainTextEditable;
+        this.plainTextEditable = plainTextEditable;
     }
 
     public boolean isTracked()
     {
-        return isTracked;
+        return tracked;
     }
 
-    public void setIsTracked(final boolean isTracked)
+    public void setTracked(final boolean tracked)
     {
-        this.isTracked = isTracked;
+        this.tracked = tracked;
     }
 
     public String getSubject()

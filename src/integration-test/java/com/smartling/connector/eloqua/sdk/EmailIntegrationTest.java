@@ -75,8 +75,8 @@ public class EmailIntegrationTest extends BaseIntegrationTest
         {
             email.getHtmlContent().setHtmlBody(HTML);
         }
-        email.setIsTracked(true);
-        email.setIsPlainTextEditable(true);
+        email.setTracked(true);
+        email.setPlainTextEditable(true);
 
         Email createdEmail = emailClient.createEmail(email);
 
