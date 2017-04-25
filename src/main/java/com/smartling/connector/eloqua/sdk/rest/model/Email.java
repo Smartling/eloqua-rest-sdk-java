@@ -35,7 +35,9 @@ public class Email
     private Integer emailHeaderId;
     private Integer encodingId;
     private HtmlContent htmlContent;
+    @JsonProperty("isPlainTextEditable")
     private boolean isPlainTextEditable;
+    @JsonProperty("isTracked")
     private boolean isTracked;
     private String subject;
     private String layout;
