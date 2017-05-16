@@ -21,10 +21,14 @@ public class ContentSection
     private Integer updatedBy;
     private String contentHtml;
     private String contentText;
+    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private List<Object> forms;
+    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private List<Object> hyperlinks;
+    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private List<Object> images;
     private String scope;
+    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Size size;
 
     public String getType()

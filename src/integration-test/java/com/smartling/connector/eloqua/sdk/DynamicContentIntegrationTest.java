@@ -83,4 +83,30 @@ public class DynamicContentIntegrationTest extends BaseIntegrationTest
 
         dynamicContentClient.deleteDynamicContent(testDynamicContent.getId());
     }
+
+    @Test
+    public void testRulesTranslation()
+    {
+        DynamicContentClient dynamicContentClient = new DynamicContentClient(configuration);
+
+        Elements<DynamicContent> dynamicContents = dynamicContentClient.listDynamicContents(1, 10, "createdAt", "ASC", "RuleTranslationTest");
+
+        assertThat(dynamicContents).isNotNull();
+
+        DynamicContent dynamicContent = dynamicContentClient.getDynamicContent(dynamicContents.getElements().get(0).getId());
+
+        assertThat(dynamicContent).isNotNull();
+        assertThat(dynamicContent.getDefaultContentSection().getContentHtml()).isNotNull();
+
+        int initualRulesSize = dynamicContent.getRules().size();
+
+        dynamicContentClient.saveTranslatedRule(dynamicContent.getId(), 100012, "Spain", "<body>Spanish</body>");
+        dynamicContents = dynamicContentClient.listDynamicContents(1, 10, "createdAt", "ASC", "RuleTranslationTest");
+        assertThat(dynamicContents).isNotNull();
+        dynamicContent = dynamicContentClient.getDynamicContent(dynamicContents.getElements().get(0).getId());
+        assertThat(dynamicContent).isNotNull();
+        assertThat(dynamicContent.getRules().size()).isEqualTo(initualRulesSize + 1);
+        dynamicContent.getRules().remove(dynamicContent.getRules().size() - 1);
+        dynamicContentClient.updateDynamicContent(dynamicContent.getId(), dynamicContent);
+    }
 }

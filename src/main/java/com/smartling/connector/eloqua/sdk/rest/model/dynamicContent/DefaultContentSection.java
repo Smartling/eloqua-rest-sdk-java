@@ -14,7 +14,7 @@ public class DefaultContentSection
     private Calendar createdAt;
     private Integer createdBy;
     private String depth;
-    private String folderId;
+    private Long folderId;
     private String name;
     private Calendar updatedAt;
     private Integer updatedBy;
@@ -74,12 +74,12 @@ public class DefaultContentSection
         this.depth = depth;
     }
 
-    public String getFolderId()
+    public Long getFolderId()
     {
         return folderId;
     }
 
-    public void setFolderId(final String folderId)
+    public void setFolderId(final Long folderId)
     {
         this.folderId = folderId;
     }
