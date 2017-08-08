@@ -29,7 +29,7 @@ public class DynamicContentClient extends EloquaClient<DynamicContentApi>
 
      public DynamicContent getDynamicContent(final long id)
      {
-         return executeCall(dynamicContentApi -> dynamicContentApi.getDynamicContent(EloquaApi.Depth.COMPLETE, id));
+         return executeCall(dynamicContentApi -> dynamicContentApi.getDynamicContent(EloquaApi.Depth.PARTIAL, id));
      }
 
      public DynamicContent createDynamicContent(DynamicContent dynamicContentToCreate)
@@ -49,7 +49,7 @@ public class DynamicContentClient extends EloquaClient<DynamicContentApi>
 
      public Elements<DynamicContent> searchForDynamicContent(final String name)
      {
-         return executeCall(dynamicContentApi -> dynamicContentApi.searchForDynamicContent(EloquaApi.Depth.COMPLETE, "[name =] \"" + name + '"'));
+         return executeCall(dynamicContentApi -> dynamicContentApi.searchForDynamicContent(EloquaApi.Depth.PARTIAL, "[name =] \"" + name + '"'));
      }
 
     public void saveTranslatedRule(final long id, final long fieldId, final String locale, final String translatedContent)

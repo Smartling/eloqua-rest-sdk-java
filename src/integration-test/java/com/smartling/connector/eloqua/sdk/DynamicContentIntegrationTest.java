@@ -3,6 +3,7 @@ package com.smartling.connector.eloqua.sdk;
 import com.smartling.connector.eloqua.sdk.client.DynamicContentClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.dynamicContent.DynamicContent;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -84,6 +85,8 @@ public class DynamicContentIntegrationTest extends BaseIntegrationTest
         dynamicContentClient.deleteDynamicContent(testDynamicContent.getId());
     }
 
+    //test email was deleted
+    @Ignore
     @Test
     public void testRulesTranslation()
     {
