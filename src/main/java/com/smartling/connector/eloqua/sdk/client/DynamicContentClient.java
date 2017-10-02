@@ -56,6 +56,15 @@ public class DynamicContentClient extends EloquaClient<DynamicContentApi>
     {
         DynamicContent dynamicContent = getDynamicContent(id);
 
+        final Rule rule = createNewRuleForDynamicContent(fieldId, locale, translatedContent, dynamicContent);
+
+        dynamicContent.getRules().add(rule);
+
+        updateDynamicContent(dynamicContent.getId(), dynamicContent);
+    }
+
+    public static Rule createNewRuleForDynamicContent(final long fieldId, final String locale, final String translatedContent, final DynamicContent dynamicContent)
+    {
         final ContentSection contentSection = new ContentSection();
         contentSection.setType(dynamicContent.getDefaultContentSection().getType());
         contentSection.setDepth(dynamicContent.getDefaultContentSection().getDepth());
@@ -81,9 +90,6 @@ public class DynamicContentClient extends EloquaClient<DynamicContentApi>
         rule.setCriteria(Collections.singletonList(criterium));
         rule.setContentSection(contentSection);
         rule.setStatement("1111");//could be anything but required by API :D
-
-        dynamicContent.getRules().add(rule);
-
-        updateDynamicContent(dynamicContent.getId(), dynamicContent);
+        return rule;
     }
 }
