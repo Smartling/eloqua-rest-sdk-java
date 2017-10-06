@@ -63,10 +63,18 @@ tasks.withType(Test) {
     systemProperties = System.properties
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+
+            artifact tasks.sourceJar {
+                classifier 'sources'
+            }
         }
     }
 
