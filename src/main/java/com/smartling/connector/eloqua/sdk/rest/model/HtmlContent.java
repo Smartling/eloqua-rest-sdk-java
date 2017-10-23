@@ -89,7 +89,21 @@ public class HtmlContent
     @JsonIgnore
     public String getPlainHtml()
     {
-        return STRUCTURED_HTML_CONTENT.equals(type) ? htmlBody : html;
+        return STRUCTURED_HTML_CONTENT.equals(type) ? getMergedRawHtmlString() : html;
+    }
+
+    private String getMergedRawHtmlString()
+    {
+        StringBuilder merged = new StringBuilder();
+        if (systemHeader != null)
+        {
+            merged.append(systemHeader);
+        }
+        if (htmlBody != null)
+        {
+            merged.append(htmlBody);
+        }
+        return merged.toString();
     }
 
     @JsonIgnore
