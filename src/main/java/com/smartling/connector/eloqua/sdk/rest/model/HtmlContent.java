@@ -87,6 +87,16 @@ public class HtmlContent
         this.systemHeader = systemHeader;
     }
 
+    public String getCssHeader()
+    {
+        return cssHeader;
+    }
+
+    public void setCssHeader(final String cssHeader)
+    {
+        this.cssHeader = cssHeader;
+    }
+
     @JsonIgnore
     public String getPlainHtml()
     {
