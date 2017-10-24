@@ -13,6 +13,7 @@ public class HtmlContent
     private String htmlBody;
     private List<String> metaTags;
     private String root;
+    private String cssHeader;
     private String systemHeader;
     private String html;
 
@@ -98,6 +99,10 @@ public class HtmlContent
         if (systemHeader != null)
         {
             merged.append(systemHeader);
+        }
+        if (cssHeader != null)
+        {
+            merged.append(cssHeader);
         }
         if (htmlBody != null)
         {
