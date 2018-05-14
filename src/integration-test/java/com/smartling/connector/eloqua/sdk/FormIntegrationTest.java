@@ -107,7 +107,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
         assertThat(sortedForms.getElements().get(0)).isNotNull();
         assertThat(sortedForms.getElements().get(1)).isNotNull();
 
-        assertThat(sortedForms.getElements().get(0).getUpdatedAt().after(sortedForms.getElements().get(1).getUpdatedAt())).isTrue();
+        assertThat(sortedForms.getElements().get(0).getUpdatedAt().after(sortedForms.getElements().get(1).getUpdatedAt()));
 
         formClient.deleteForm(foundForm1.getId());
         formClient.deleteForm(foundForm2.getId());
