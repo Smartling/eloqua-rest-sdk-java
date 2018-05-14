@@ -43,7 +43,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
-    public void shouldWorkWithFormsCorrectly()
+    public void shouldWorkWithFormsCorrectly() throws Exception
     {
         FormClient formClient = new FormClient(configuration);
 
@@ -87,6 +87,8 @@ public class FormIntegrationTest extends BaseIntegrationTest
         foundForm1.setName(updatedFormName);
         foundForm1.setHtmlName(updatedFormName);
 
+        // This delay for correct sorting by updateAt field
+        Thread.sleep(1000);
         formClient.updateForm(foundForm1.getId(), foundForm1);
 
         Elements<Form> updatedForms = formClient.searchForForm(updatedFormName);
