@@ -98,7 +98,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
         assertThat(updatedForm.getName()).isEqualTo(updatedFormName);
         assertThat(updatedForm.getHtmlName()).isEqualTo(updatedFormName);
 
-        Elements<Form> sortedForms = formClient.listForms(1, 10, "createdAt", "DESC", FORM_NAME + "*");
+        Elements<Form> sortedForms = formClient.listForms(1, 10, "updatedAt", "DESC", FORM_NAME + "*");
         assertThat(sortedForms).isNotNull();
         assertThat(sortedForms.getPage()).isEqualTo(1);
         assertThat(sortedForms.getPageSize()).isEqualTo(10);
@@ -107,7 +107,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
         assertThat(sortedForms.getElements().get(0)).isNotNull();
         assertThat(sortedForms.getElements().get(1)).isNotNull();
 
-        assertThat(sortedForms.getElements().get(0).getCreatedAt().after(sortedForms.getElements().get(1).getCreatedAt())).isTrue();
+        assertThat(sortedForms.getElements().get(0).getUpdatedAt().after(sortedForms.getElements().get(1).getUpdatedAt())).isTrue();
 
         formClient.deleteForm(foundForm1.getId());
         formClient.deleteForm(foundForm2.getId());
