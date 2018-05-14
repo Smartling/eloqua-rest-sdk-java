@@ -16,6 +16,7 @@ public class FormElement
     private String depth; //minimal / partial / complete
     private String description;
     private Long id;
+    private Long optionListId;
     private String instructions;
     private String name;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
@@ -86,6 +87,14 @@ public class FormElement
     public void setId(final Long id)
     {
         this.id = id;
+    }
+
+    public Long getOptionListId() {
+        return optionListId;
+    }
+
+    public void setOptionListId(final Long optionListId) {
+        this.optionListId = optionListId;
     }
 
     public String getInstructions()

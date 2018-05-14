@@ -13,8 +13,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FormIntegrationTest extends BaseIntegrationTest
 {
+    private static Long FORM_ELEMENT_ID = 1L;
     private static String FORM_NAME = "formName";
     private static String FORM_ELEMENT_NAME = "formElementName";
+    private static String FORM_ELEMENT_TYPE = "FormField";
 
     @Test
     public void shouldThrowAuthenticationExceptionIfPasswordIncorrect()
@@ -50,7 +52,8 @@ public class FormIntegrationTest extends BaseIntegrationTest
         FormElement formElement = new FormElement();
 
         formElement.setName(FORM_ELEMENT_NAME);
-        formElement.setType("FormField");
+        formElement.setOptionListId(FORM_ELEMENT_ID);
+        formElement.setType(FORM_ELEMENT_TYPE);
 
         final String formName1 = FORM_NAME + RandomStringUtils.random(5);
         Form form1 = new Form();
