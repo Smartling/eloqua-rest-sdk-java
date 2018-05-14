@@ -1,27 +1,19 @@
 package com.smartling.connector.eloqua.sdk;
 
 import com.google.common.collect.ImmutableList;
-import com.smartling.connector.eloqua.sdk.client.ContactClient;
-import com.smartling.connector.eloqua.sdk.client.LandingPageClient;
 import com.smartling.connector.eloqua.sdk.client.OptionListClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
-import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
-import com.smartling.connector.eloqua.sdk.rest.model.LandingPage;
 import com.smartling.connector.eloqua.sdk.rest.model.Option;
 import com.smartling.connector.eloqua.sdk.rest.model.OptionList;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class OptionListIntegrationTest extends BaseIntegrationTest
 {
-    private static String OPTION_LIST_NAME = "optionListName";
+    private static String OPTION_LIST_NAME_1 = "optionListName1";
+    private static String OPTION_LIST_NAME_2 = "optionListName2";
     private static String OPTION_VALUE = "firstOption";
     private static String OPTION_DISPLAY_NAME = "First Option";
     private static String OPTION_TYPE = "Option";
@@ -63,12 +55,12 @@ public class OptionListIntegrationTest extends BaseIntegrationTest
         option.setValue(OPTION_VALUE);
         option.setDisplayName(OPTION_DISPLAY_NAME);
 
-        final String optionListName1 = OPTION_LIST_NAME + RandomStringUtils.random(5);
+        final String optionListName1 = OPTION_LIST_NAME_1;
         OptionList optionList1 = new OptionList();
         optionList1.setName(optionListName1);
         optionList1.setElements(ImmutableList.of(option));
 
-        final String optionListName2 = OPTION_LIST_NAME + RandomStringUtils.random(5);
+        final String optionListName2 = OPTION_LIST_NAME_2;
         OptionList optionList2 = new OptionList();
         optionList2.setName(optionListName2);
         optionList2.setElements(ImmutableList.of(option));
@@ -105,7 +97,7 @@ public class OptionListIntegrationTest extends BaseIntegrationTest
         OptionList updatedOptionList = updatedOptionLists.getElements().get(0);
         assertThat(updatedOptionList.getName()).isEqualTo(updatedOptionListName);
 
-        Elements<OptionList> sortedOptionLists = optionListClient.listOptionLists(1, 10, "name", "DESC", OPTION_LIST_NAME + "*");
+        Elements<OptionList> sortedOptionLists = optionListClient.listOptionLists(1, 10, "name", "DESC", "optionListName*");
         assertThat(sortedOptionLists).isNotNull();
         assertThat(sortedOptionLists.getPage()).isEqualTo(1);
         assertThat(sortedOptionLists.getPageSize()).isEqualTo(10);
@@ -114,7 +106,7 @@ public class OptionListIntegrationTest extends BaseIntegrationTest
         assertThat(sortedOptionLists.getElements().get(0)).isNotNull();
         assertThat(sortedOptionLists.getElements().get(1)).isNotNull();
 
-        assertThat(sortedOptionLists.getElements().get(0).getName().compareTo(sortedOptionLists.getElements().get(1).getName())).isLessThan(0);
+        assertThat(sortedOptionLists.getElements().get(0).getName().compareTo(sortedOptionLists.getElements().get(1).getName())).isGreaterThan(0);
 
         optionListClient.deleteOptionList(foundOptionList1.getId());
         optionListClient.deleteOptionList(foundOptionList2.getId());
