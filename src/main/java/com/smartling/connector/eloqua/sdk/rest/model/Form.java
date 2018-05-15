@@ -21,6 +21,7 @@ public class Form
     private String html;
     private String htmlName;
     private Long id;
+    private Long folderId;
     private String name;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private String[] permissions;
@@ -130,6 +131,16 @@ public class Form
     public void setId(final Long id)
     {
         this.id = id;
+    }
+
+    public Long getFolderId()
+    {
+        return folderId;
+    }
+
+    public void setFolderId(final Long folderId)
+    {
+        this.folderId = folderId;
     }
 
     public String getName()
