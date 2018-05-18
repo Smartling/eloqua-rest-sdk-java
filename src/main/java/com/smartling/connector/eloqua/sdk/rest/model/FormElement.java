@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class FormElement
 {
@@ -12,6 +13,7 @@ public class FormElement
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Integer createdBy;
     private String currentStatus;
+    private String defaultValue;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private String depth; //minimal / partial / complete
     private String description;
@@ -19,6 +21,7 @@ public class FormElement
     private Long optionListId;
     private String instructions;
     private String name;
+    private String htmlName;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private String[] permissions;
     private String style;
@@ -27,6 +30,9 @@ public class FormElement
     private Calendar updatedAt;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Integer updatedBy;
+    private List<Validation> validations;
+    private List<FormElement> fields;
+    private List<FormElement> stages;
 
     public Calendar getCreatedAt()
     {
@@ -57,6 +63,16 @@ public class FormElement
     public void setCurrentStatus(final String currentStatus)
     {
         this.currentStatus = currentStatus;
+    }
+
+    public String getDefaultValue()
+    {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(final String defaultValue)
+    {
+        this.defaultValue = defaultValue;
     }
 
     public String getDepth()
@@ -117,6 +133,16 @@ public class FormElement
         this.name = name;
     }
 
+    public String getHtmlName()
+    {
+        return htmlName;
+    }
+
+    public void setHtmlName(final String htmlName)
+    {
+        this.htmlName = htmlName;
+    }
+
     public String[] getPermissions()
     {
         return permissions;
@@ -166,5 +192,35 @@ public class FormElement
     public void setUpdatedBy(final Integer updatedBy)
     {
         this.updatedBy = updatedBy;
+    }
+
+    public List<Validation> getValidations()
+    {
+        return validations;
+    }
+
+    public void setValidations(final List<Validation> validations)
+    {
+        this.validations = validations;
+    }
+
+    public List<FormElement> getFields()
+    {
+        return fields;
+    }
+
+    public void setFields(final List<FormElement> fields)
+    {
+        this.fields = fields;
+    }
+
+    public List<FormElement> getStages()
+    {
+        return stages;
+    }
+
+    public void setStages(final List<FormElement> stages)
+    {
+        this.stages = stages;
     }
 }
