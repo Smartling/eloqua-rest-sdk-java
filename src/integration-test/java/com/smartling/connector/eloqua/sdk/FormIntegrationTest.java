@@ -10,6 +10,7 @@ import com.smartling.connector.eloqua.sdk.rest.model.Validation;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,8 @@ public class FormIntegrationTest extends BaseIntegrationTest
     private static String FORM_NAME = "formName";
     private static String FORM_ELEMENT_NAME = "formElementName";
     private static String FORM_ELEMENT_TYPE = "FormField";
+
+    private static long counter = -1;
 
     @Test
     public void shouldThrowAuthenticationExceptionIfPasswordIncorrect()
@@ -139,33 +142,43 @@ public class FormIntegrationTest extends BaseIntegrationTest
         FormElement formField = aFormField("Form Field", "singleLineText");
 
         FormElement pickList = new FormElement();
+        pickList.setId(counter--);
         pickList.setHtmlName("dropdownMenu");
         pickList.setName("Single Picklist");
         pickList.setOptionListId(1L);
         pickList.setType("FormField");
 
         FormElement formFieldGroup = new FormElement();
+        formFieldGroup.setId(counter--);
         formFieldGroup.setFields(ImmutableList.of(aFormField("FF1 in Group", "customFieldOne"), aFormField("FF2 in group", "customFieldTwo")));
         formFieldGroup.setName("Custom Two Column");
         formFieldGroup.setType("FormFieldGroup");
 
         FormElement progressiveProfileStage = new FormElement();
+        progressiveProfileStage.setId(counter--);
         progressiveProfileStage.setFields(ImmutableList.of(aFormField("FF in ProgressiveProfileStage", "ffInProgressiveProfileStage")));
         progressiveProfileStage.setType("ProgressiveProfileStage");
 
         FormElement progressiveProfile = new FormElement();
+        progressiveProfile.setId(counter--);
         progressiveProfile.setStages(ImmutableList.of(progressiveProfileStage));
         progressiveProfile.setName("Progressive Profile");
         progressiveProfile.setType("ProgressiveProfile");
 
+        List<FormElement> elements = new ArrayList<>();
+        elements.add(formField);
+        elements.add(pickList);
+        elements.add(formFieldGroup);
+        elements.add(progressiveProfile);
 
         final String formName = "Form" + RandomStringUtils.random(5);
         Form form = new Form();
         form.setName(formName);
         form.setHtmlName(formName);
-        form.setElements(ImmutableList.of(formField));
+        form.setElements(elements);
         form.setType("Form");
         form.setCurrentStatus("Draft");
+        form.setDepth("complete");
 
         Form newForm = formClient.createForm(form);
 
@@ -174,7 +187,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
         assertThat(foundForm.getName()).isEqualTo(form.getName());
         assertThat(foundForm.getHtmlName()).isEqualTo(form.getHtmlName());
         assertThat(foundForm.getElements()).isNotEmpty();
-        assertThat(foundForm.getElements().size()).isEqualTo(1);
+        assertThat(foundForm.getElements().size()).isEqualTo(elements.size());
 
         Optional<FormElement> optionalFormField = findByName(formField.getName(), foundForm.getElements());
         assertThat(optionalFormField.isPresent()).isTrue();
@@ -195,10 +208,6 @@ public class FormIntegrationTest extends BaseIntegrationTest
         assertThat(foundValidation.getName()).isEqualTo(formField.getValidations().get(0).getName());
         assertThat(foundValidation.getType()).isEqualTo(formField.getValidations().get(0).getType());
 
-        foundForm.setElements(ImmutableList.of(pickList));
-        formClient.updateForm(newForm.getId(), foundForm);
-        foundForm = formClient.getForm(newForm.getId());
-
         Optional<FormElement> optionalPickList = findByName(pickList.getName(), foundForm.getElements());
         assertThat(optionalPickList.isPresent()).isTrue();
         FormElement foundPickList = optionalPickList.get();
@@ -206,36 +215,30 @@ public class FormIntegrationTest extends BaseIntegrationTest
         assertThat(foundPickList.getOptionListId()).isEqualTo(pickList.getOptionListId());
         assertThat(foundPickList.getType()).isEqualTo(pickList.getType());
 
-        /*foundForm.setElements(ImmutableList.of(formFieldGroup));
-        formClient.updateForm(newForm.getId(), foundForm);
-        foundForm = formClient.getForm(newForm.getId());
-
         Optional<FormElement> optionalFormFieldGroup = findByName(formFieldGroup.getName(), foundForm.getElements());
         assertThat(optionalFormFieldGroup.isPresent()).isTrue();
         FormElement foundFormFieldGroup = optionalFormFieldGroup.get();
         assertThat(foundFormFieldGroup.getFields()).isNotEmpty();
-        assertThat(foundFormFieldGroup.getFields().size()).isEqualTo(1);
+        assertThat(foundFormFieldGroup.getFields().size()).isEqualTo(formFieldGroup.getFields().size());
         assertThat(foundFormFieldGroup.getFields().get(0).getName()).isEqualTo(formFieldGroup.getFields().get(0).getName());
         assertThat(foundFormFieldGroup.getFields().get(0).getHtmlName()).isEqualTo(formFieldGroup.getFields().get(0).getHtmlName());
-        assertThat(foundFormFieldGroup.getType()).isEqualTo(formFieldGroup.getType());*/
-
-        foundForm.setElements(ImmutableList.of(progressiveProfile));
-        formClient.updateForm(newForm.getId(), foundForm);
-        foundForm = formClient.getForm(newForm.getId());
+        assertThat(foundFormFieldGroup.getFields().get(1).getName()).isEqualTo(formFieldGroup.getFields().get(1).getName());
+        assertThat(foundFormFieldGroup.getFields().get(1).getHtmlName()).isEqualTo(formFieldGroup.getFields().get(1).getHtmlName());
+        assertThat(foundFormFieldGroup.getType()).isEqualTo(formFieldGroup.getType());
 
         Optional<FormElement> optionalProgressiveProfile = findByName(progressiveProfile.getName(), foundForm.getElements());
         assertThat(optionalProgressiveProfile.isPresent()).isTrue();
         FormElement foundProgressiveProfile = optionalProgressiveProfile.get();
-        /*assertThat(foundProgressiveProfile.getStages()).isNotEmpty();
+        assertThat(foundProgressiveProfile.getStages()).isNotEmpty();
         assertThat(foundProgressiveProfile.getStages().size()).isEqualTo(1);
         FormElement foundProgressiveProfileStage = foundProgressiveProfile.getStages().get(0);
         assertThat(foundProgressiveProfileStage.getFields()).isNotEmpty();
-        assertThat(foundProgressiveProfileStage.getFields().size()).isEqualTo(1);
+        assertThat(foundProgressiveProfileStage.getFields().size()).isEqualTo(progressiveProfileStage.getFields().size());
         assertThat(foundProgressiveProfileStage.getFields().get(0).getName()).isEqualTo(progressiveProfileStage.getFields().get(0).getName());
         assertThat(foundProgressiveProfileStage.getFields().get(0).getHtmlName()).isEqualTo(progressiveProfileStage.getFields().get(0).getHtmlName());
         assertThat(foundProgressiveProfileStage.getType()).isEqualTo(progressiveProfileStage.getType());
         assertThat(foundProgressiveProfile.getType()).isEqualTo(progressiveProfile.getType());
-*/
+
         formClient.deleteForm(foundForm.getId());
     }
 
@@ -255,6 +258,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
         validation.setType("FieldValidation");
 
         FormElement formField = new FormElement();
+        formField.setId(counter--);
         formField.setName(name);
         formField.setHtmlName(htmlName);
         formField.setType("FormField");
