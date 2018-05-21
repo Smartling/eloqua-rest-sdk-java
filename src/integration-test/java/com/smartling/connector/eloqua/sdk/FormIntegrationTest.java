@@ -237,7 +237,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
         assertThat(foundProgressiveProfile.getType()).isEqualTo(progressiveProfile.getType());
 
         // clone form
-        Form clonedForm = foundForm;
+        Form clonedForm = newForm;
         clonedForm.setId(null);
         clonedForm.setHtmlName(StringUtils.reverse(newForm.getHtmlName()));
         Form newClonedForm = formClient.createForm(clonedForm);
