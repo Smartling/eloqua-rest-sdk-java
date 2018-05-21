@@ -9,13 +9,12 @@ import com.smartling.connector.eloqua.sdk.rest.model.FormElement;
 import com.smartling.connector.eloqua.sdk.rest.model.Validation;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.mutable.MutableLong;
 
 import java.util.List;
 
 public class FormClient extends EloquaClient<FormApi>
 {
-    private static int counter;
-
     public FormClient(final Configuration configuration)
     {
         super(configuration, FormApi.class);
@@ -35,8 +34,8 @@ public class FormClient extends EloquaClient<FormApi>
 
     public Form createForm(Form formToCreate)
     {
-        counter = -500000;
-        prepareForCreation(formToCreate.getElements());
+        MutableLong counter = new MutableLong(-500000);
+        invertIds(formToCreate.getElements(), counter);
         return executeCall(formApi -> formApi.createForm(formToCreate));
     }
 
@@ -55,7 +54,7 @@ public class FormClient extends EloquaClient<FormApi>
         return executeCall(formApi -> formApi.searchForForm(EloquaApi.Depth.COMPLETE, "name=" + name));
     }
 
-    private void prepareForCreation(List<FormElement> formElements)
+    private void invertIds(List<FormElement> formElements, MutableLong counter)
     {
         if (CollectionUtils.isEmpty(formElements))
         {
@@ -64,27 +63,29 @@ public class FormClient extends EloquaClient<FormApi>
 
         for (FormElement formElement : formElements)
         {
-            formElement.setId(invertId(formElement.getId()));
+            formElement.setId(invertId(formElement.getId(), counter));
             if (CollectionUtils.isNotEmpty(formElement.getValidations()))
             {
                 for (Validation validation : formElement.getValidations())
                 {
-                    validation.setId(invertId(validation.getId()));
+                    validation.setId(invertId(validation.getId(), counter));
                 }
             }
             if (CollectionUtils.isNotEmpty(formElement.getFields()))
             {
-                prepareForCreation(formElement.getFields());
+                invertIds(formElement.getFields(), counter);
             }
             if (CollectionUtils.isNotEmpty(formElement.getStages()))
             {
-                prepareForCreation(formElement.getStages());
+                invertIds(formElement.getStages(), counter);
             }
         }
     }
 
-    private static long invertId(Long id)
+    private static long invertId(Long id, MutableLong counter)
     {
-        return (id == null || id == 0) ? counter-- : ((id > 0) ? -id : id);
+        Long invertedId = (id == null || id == 0) ? counter.getValue() : ((id > 0) ? -id : id);
+        counter.decrement();
+        return invertedId;
     }
 }
