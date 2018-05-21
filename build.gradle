@@ -43,6 +43,7 @@ dependencies {
     compile "com.netflix.feign:feign-jackson:$feignVersion"
     compile "com.netflix.feign:feign-httpclient:$feignVersion"
     compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'commons-collections:commons-collections:3.2.2'
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.0'
 

@@ -8,6 +8,7 @@ import com.smartling.connector.eloqua.sdk.rest.model.Form;
 import com.smartling.connector.eloqua.sdk.rest.model.FormElement;
 import com.smartling.connector.eloqua.sdk.rest.model.Validation;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -23,8 +24,6 @@ public class FormIntegrationTest extends BaseIntegrationTest
     private static String FORM_NAME = "formName";
     private static String FORM_ELEMENT_NAME = "formElementName";
     private static String FORM_ELEMENT_TYPE = "FormField";
-
-    private static long counter = -1;
 
     @Test
     public void shouldThrowAuthenticationExceptionIfPasswordIncorrect()
@@ -84,6 +83,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
         assertThat(foundForm1.getHtmlName()).isEqualTo(formName1);
         assertThat(foundForm1.getElements()).isNotEmpty();
         assertThat(foundForm1.getElements().get(0)).isNotNull();
+        assertThat(foundForm1.getElements().get(0).getId()).isGreaterThan(0);
         assertThat(foundForm1.getElements().get(0).getName()).isEqualTo(FORM_ELEMENT_NAME);
 
         Form foundForm2 = formClient.getForm(newForm2.getId());
@@ -92,6 +92,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
         assertThat(foundForm2.getHtmlName()).isEqualTo(formName2);
         assertThat(foundForm2.getElements()).isNotEmpty();
         assertThat(foundForm2.getElements().get(0)).isNotNull();
+        assertThat(foundForm1.getElements().get(0).getId()).isGreaterThan(0);
         assertThat(foundForm2.getElements().get(0).getName()).isEqualTo(FORM_ELEMENT_NAME);
 
         final String updatedFormName = formName1 + POSTFIX;
@@ -142,25 +143,21 @@ public class FormIntegrationTest extends BaseIntegrationTest
         FormElement formField = aFormField("Form Field", "singleLineText");
 
         FormElement pickList = new FormElement();
-        pickList.setId(counter--);
         pickList.setHtmlName("dropdownMenu");
         pickList.setName("Single Picklist");
         pickList.setOptionListId(1L);
         pickList.setType("FormField");
 
         FormElement formFieldGroup = new FormElement();
-        formFieldGroup.setId(counter--);
         formFieldGroup.setFields(ImmutableList.of(aFormField("FF1 in Group", "customFieldOne"), aFormField("FF2 in group", "customFieldTwo")));
         formFieldGroup.setName("Custom Two Column");
         formFieldGroup.setType("FormFieldGroup");
 
         FormElement progressiveProfileStage = new FormElement();
-        progressiveProfileStage.setId(counter--);
         progressiveProfileStage.setFields(ImmutableList.of(aFormField("FF in ProgressiveProfileStage", "ffInProgressiveProfileStage")));
         progressiveProfileStage.setType("ProgressiveProfileStage");
 
         FormElement progressiveProfile = new FormElement();
-        progressiveProfile.setId(counter--);
         progressiveProfile.setStages(ImmutableList.of(progressiveProfileStage));
         progressiveProfile.setName("Progressive Profile");
         progressiveProfile.setType("ProgressiveProfile");
@@ -239,7 +236,21 @@ public class FormIntegrationTest extends BaseIntegrationTest
         assertThat(foundProgressiveProfileStage.getType()).isEqualTo(progressiveProfileStage.getType());
         assertThat(foundProgressiveProfile.getType()).isEqualTo(progressiveProfile.getType());
 
+        // clone form
+        Form clonedForm = foundForm;
+        clonedForm.setId(null);
+        clonedForm.setHtmlName(StringUtils.reverse(newForm.getHtmlName()));
+        Form newClonedForm = formClient.createForm(clonedForm);
+
+        Form foundClonedForm = formClient.getForm(newClonedForm.getId());
+        assertThat(foundClonedForm).isNotNull();
+        assertThat(foundClonedForm.getId()).isNotEqualTo(foundForm.getId());
+        assertThat(foundClonedForm.getName()).isEqualTo(clonedForm.getName());
+        assertThat(foundClonedForm.getElements()).isNotEmpty();
+        assertThat(foundClonedForm.getElements().size()).isEqualTo(elements.size());
+
         formClient.deleteForm(foundForm.getId());
+        formClient.deleteForm(foundClonedForm.getId());
     }
 
     private static FormElement aFormField(String name, String htmlName)
@@ -258,7 +269,6 @@ public class FormIntegrationTest extends BaseIntegrationTest
         validation.setType("FieldValidation");
 
         FormElement formField = new FormElement();
-        formField.setId(counter--);
         formField.setName(name);
         formField.setHtmlName(htmlName);
         formField.setType("FormField");
@@ -268,8 +278,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
         return formField;
     }
 
-    private static Optional<FormElement> findByName(String name, List<FormElement> elements)
-    {
+    private static Optional<FormElement> findByName(String name, List<FormElement> elements) {
         return elements.stream().filter(e -> (e.getName().equals(name))).findFirst();
     }
 }
