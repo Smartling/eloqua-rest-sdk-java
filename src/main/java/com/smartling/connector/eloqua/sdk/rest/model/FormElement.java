@@ -26,6 +26,7 @@ public class FormElement
     private String[] permissions;
     private String style;
     private String type;
+    private String fieldType;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Calendar updatedAt;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
@@ -33,11 +34,13 @@ public class FormElement
     private List<Validation> validations;
     private List<FormElement> fields;
     private List<FormElement> stages;
-
     public Calendar getCreatedAt()
     {
         return createdAt;
     }
+    private String altText;
+    private String dataType;
+    private String displayType;
 
     @JsonDeserialize(using = CustomJsonCalendarDeserializer.class)
     public void setCreatedAt(final Calendar createdAt)
@@ -173,6 +176,16 @@ public class FormElement
         this.type = type;
     }
 
+    public String getFieldType()
+    {
+        return fieldType;
+    }
+
+    public void setFieldType(String fieldType)
+    {
+        this.fieldType = fieldType;
+    }
+
     public Calendar getUpdatedAt()
     {
         return updatedAt;
@@ -222,5 +235,35 @@ public class FormElement
     public void setStages(final List<FormElement> stages)
     {
         this.stages = stages;
+    }
+
+    public String getAltText()
+    {
+        return altText;
+    }
+
+    public void setAltText(String altText)
+    {
+        this.altText = altText;
+    }
+
+    public String getDataType()
+    {
+        return dataType;
+    }
+
+    public void setDataType(String dataType)
+    {
+        this.dataType = dataType;
+    }
+
+    public String getDisplayType()
+    {
+        return displayType;
+    }
+
+    public void setDisplayType(String displayType)
+    {
+        this.displayType = displayType;
     }
 }
