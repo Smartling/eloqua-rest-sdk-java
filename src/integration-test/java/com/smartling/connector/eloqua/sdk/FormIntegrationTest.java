@@ -8,7 +8,6 @@ import com.smartling.connector.eloqua.sdk.rest.model.Form;
 import com.smartling.connector.eloqua.sdk.rest.model.FormElement;
 import com.smartling.connector.eloqua.sdk.rest.model.Validation;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -74,8 +73,8 @@ public class FormIntegrationTest extends BaseIntegrationTest
         form2.setHtmlName(formName2);
         form2.setElements(ImmutableList.of(formElement));
 
-        Form newForm1 = formClient.createForm(form1);
-        Form newForm2 = formClient.createForm(form2);
+        Form newForm1 = formClient.createForm(form1, true);
+        Form newForm2 = formClient.createForm(form2, true);
 
         Form foundForm1 = formClient.getForm(newForm1.getId());
         assertThat(foundForm1).isNotNull();
@@ -101,7 +100,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
 
         // This delay for correct sorting by updateAt field
         Thread.sleep(1000);
-        formClient.updateForm(foundForm1.getId(), foundForm1);
+        formClient.updateForm(foundForm1.getId(), foundForm1, false);
 
         Elements<Form> updatedForms = formClient.searchForForm(updatedFormName);
         assertThat(updatedForms).isNotNull();
@@ -177,7 +176,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
         form.setCurrentStatus("Draft");
         form.setDepth("complete");
 
-        Form newForm = formClient.createForm(form);
+        Form newForm = formClient.createForm(form, true);
 
         Form foundForm = formClient.getForm(newForm.getId());
         assertThat(foundForm).isNotNull();
@@ -239,8 +238,8 @@ public class FormIntegrationTest extends BaseIntegrationTest
         // clone form
         Form clonedForm = newForm;
         clonedForm.setId(null);
-        clonedForm.setHtmlName(StringUtils.reverse(newForm.getHtmlName()));
-        Form newClonedForm = formClient.createForm(clonedForm);
+        clonedForm.setHtmlName(null);
+        Form newClonedForm = formClient.createForm(clonedForm, true);
 
         Form foundClonedForm = formClient.getForm(newClonedForm.getId());
         assertThat(foundClonedForm).isNotNull();

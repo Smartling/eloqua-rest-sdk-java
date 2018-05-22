@@ -32,15 +32,21 @@ public class FormClient extends EloquaClient<FormApi>
         return executeCall(formApi -> formApi.getForm(EloquaApi.Depth.COMPLETE, id));
     }
 
-    public Form createForm(Form formToCreate)
+    public Form createForm(Form formToCreate, boolean sanitizeIds)
     {
-        MutableLong counter = new MutableLong(-500000);
-        invertIds(formToCreate.getElements(), counter);
+        if (sanitizeIds) {
+            MutableLong counter = new MutableLong(-500000);
+            invertIds(formToCreate.getElements(), counter);
+        }
         return executeCall(formApi -> formApi.createForm(formToCreate));
     }
 
-    public void updateForm(Long id, Form form)
+    public void updateForm(Long id, Form form, boolean sanitizeIds)
     {
+        if (sanitizeIds) {
+            MutableLong counter = new MutableLong(-500000);
+            invertIds(form.getElements(), counter);
+        }
         executeCall(formApi -> formApi.updateForm(id, form));
     }
 
