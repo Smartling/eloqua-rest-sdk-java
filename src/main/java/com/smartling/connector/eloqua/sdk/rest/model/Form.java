@@ -31,6 +31,7 @@ public class Form
     private Calendar updatedAt;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Integer updatedBy;
+    private Integer submitFailedLandingPageId;
 
     public Calendar getCreatedAt()
     {
@@ -202,5 +203,15 @@ public class Form
     public void setUpdatedBy(final Integer updatedBy)
     {
         this.updatedBy = updatedBy;
+    }
+
+    public Integer getSubmitFailedLandingPageId()
+    {
+        return submitFailedLandingPageId;
+    }
+
+    public void setSubmitFailedLandingPageId(Integer submitFailedLandingPageId)
+    {
+        this.submitFailedLandingPageId = submitFailedLandingPageId;
     }
 }
