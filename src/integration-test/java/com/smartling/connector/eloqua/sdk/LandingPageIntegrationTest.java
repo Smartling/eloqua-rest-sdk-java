@@ -88,6 +88,15 @@ public class LandingPageIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
+    public void shouldReadFormsFromLandingPage()
+    {
+        LandingPageClient landingPageClient = new LandingPageClient(configuration);
+        LandingPage landingPage = landingPageClient.getLandingPage(346);
+
+        assertThat(landingPage.getForms()).hasSize(1);
+    }
+
+    @Test
     public void getPreviewHtml()
     {
         LandingPageClient landingPageClient = new LandingPageClient(configuration);

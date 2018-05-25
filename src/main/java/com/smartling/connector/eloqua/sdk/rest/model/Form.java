@@ -24,7 +24,7 @@ public class Form
     private Long folderId;
     private String name;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
-    private String[] permissions;
+    private List<String> permissions;
     private String style;
     private String type;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
@@ -153,12 +153,12 @@ public class Form
         this.name = name;
     }
 
-    public String[] getPermissions()
+    public List<String> getPermissions()
     {
         return permissions;
     }
 
-    public void setPermissions(final String[] permissions)
+    public void setPermissions(final List<String> permissions)
     {
         this.permissions = permissions;
     }
