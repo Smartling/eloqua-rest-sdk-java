@@ -29,7 +29,6 @@ public class LandingPage
     private Integer micrositeId;
     private Calendar refreshedAt;
     private String style;
-    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private List<Form> forms;
 
     public String getType()
