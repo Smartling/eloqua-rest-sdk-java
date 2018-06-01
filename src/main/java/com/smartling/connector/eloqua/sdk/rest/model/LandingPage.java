@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class LandingPage
 {
@@ -16,7 +17,7 @@ public class LandingPage
     private Long folderId;
     private String name;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
-    private String permissions;
+    private List<String> permissions;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Calendar updatedAt;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
@@ -28,6 +29,7 @@ public class LandingPage
     private Integer micrositeId;
     private Calendar refreshedAt;
     private String style;
+    private List<Form> forms;
 
     public String getType()
     {
@@ -100,12 +102,12 @@ public class LandingPage
         this.name = name;
     }
 
-    public String getPermissions()
+    public List<String> getPermissions()
     {
         return permissions;
     }
 
-    public void setPermissions(final String permissions)
+    public void setPermissions(final List<String> permissions)
     {
         this.permissions = permissions;
     }
@@ -191,5 +193,13 @@ public class LandingPage
     public void setStyle(final String style)
     {
         this.style = style;
+    }
+
+    public List<Form> getForms() {
+        return forms;
+    }
+
+    public void setForms(List<Form> forms) {
+        this.forms = forms;
     }
 }
