@@ -3,6 +3,7 @@ package com.smartling.connector.eloqua.sdk.client;
 import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LandingPageApi;
+import com.smartling.connector.eloqua.sdk.rest.model.CopyRequest;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.LandingPage;
 import org.apache.commons.lang3.StringUtils;
@@ -49,5 +50,13 @@ public class LandingPageClient extends EloquaClient<LandingPageApi>
     public String getHtmlPreviewLink(long landingPageId, long contactId)
     {
         return executeCall(landingPageApi -> landingPageApi.getPreview(landingPageId, contactId));
+    }
+
+    public LandingPage copyLandingPage(long id, String name)
+    {
+        CopyRequest copyRequest = new CopyRequest();
+        copyRequest.setName(name);
+
+        return executeCall(landingPageApi -> landingPageApi.copyLandingPage(id, copyRequest));
     }
 }

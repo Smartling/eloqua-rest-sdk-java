@@ -6,6 +6,8 @@ import com.smartling.connector.eloqua.sdk.rest.model.dynamicContent.DynamicConte
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -111,5 +113,18 @@ public class DynamicContentIntegrationTest extends BaseIntegrationTest
         assertThat(dynamicContent.getRules().size()).isEqualTo(initualRulesSize + 1);
         dynamicContent.getRules().remove(dynamicContent.getRules().size() - 1);
         dynamicContentClient.updateDynamicContent(dynamicContent.getId(), dynamicContent);
+    }
+
+    @Test
+    public void shouldCopyDynamicContent()
+    {
+        DynamicContentClient dynamicContentClient = new DynamicContentClient(configuration);
+        String newName = "cloned landingPage " + UUID.randomUUID();
+        DynamicContent clonedDynamicContent = dynamicContentClient.copyDynamicContent(15, newName);
+
+        assertThat(clonedDynamicContent.getId()).isNotEqualTo(15);
+        assertThat(clonedDynamicContent.getName()).isEqualTo(newName);
+
+        dynamicContentClient.deleteDynamicContent(clonedDynamicContent.getId());
     }
 }

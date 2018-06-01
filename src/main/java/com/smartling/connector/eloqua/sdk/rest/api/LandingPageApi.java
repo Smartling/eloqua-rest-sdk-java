@@ -1,5 +1,6 @@
 package com.smartling.connector.eloqua.sdk.rest.api;
 
+import com.smartling.connector.eloqua.sdk.rest.model.CopyRequest;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.LandingPage;
 import feign.Headers;
@@ -24,6 +25,10 @@ public interface LandingPageApi extends EloquaApi
     @RequestLine("PUT /API/REST/2.0/assets/landingPage/{id}")
     @Headers ("Content-Type: application/json")
     Void updateLandingPage(@Param("id") long id, LandingPage clonedEmail);
+
+    @RequestLine("POST /API/REST/2.0/assets/landingPage/{id}/copy")
+    @Headers ("Content-Type: application/json")
+    LandingPage copyLandingPage(@Param("id") long id, CopyRequest copyRequest);
 
     @RequestLine("DELETE /API/REST/2.0/assets/landingPage/{id}")
     Void deleteLandingPage(@Param("id") long id);

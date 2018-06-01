@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -250,6 +251,19 @@ public class FormIntegrationTest extends BaseIntegrationTest
 
         formClient.deleteForm(foundForm.getId());
         formClient.deleteForm(foundClonedForm.getId());
+    }
+
+    @Test
+    public void shouldCopyForm()
+    {
+        FormClient formClient = new FormClient(configuration);
+        String newName = "cloned landingPage " + UUID.randomUUID();
+        Form clonedForm = formClient.copyForm(190, newName);
+
+        assertThat(clonedForm.getId()).isNotEqualTo(190);
+        assertThat(clonedForm.getName()).isEqualTo(newName);
+
+        formClient.deleteForm(clonedForm.getId());
     }
 
     private static FormElement aFormField(String name, String htmlName)

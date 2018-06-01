@@ -7,6 +7,8 @@ import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
 import com.smartling.connector.eloqua.sdk.rest.model.LandingPage;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -109,5 +111,18 @@ public class LandingPageIntegrationTest extends BaseIntegrationTest
 
         final String htmlPreview = landingPageClient.getHtmlPreviewLink(landingPages.getElements().get(0).getId(), contactClient.getContactIdForPreview());
         assertThat(htmlPreview).isNotEmpty();
+    }
+
+    @Test
+    public void shouldCopyLandingPage()
+    {
+        LandingPageClient landingPageClient = new LandingPageClient(configuration);
+        String newName = "cloned landingPage " + UUID.randomUUID();
+        LandingPage clonedLandingPage = landingPageClient.copyLandingPage(322, newName);
+
+        assertThat(clonedLandingPage.getId()).isNotEqualTo(322);
+        assertThat(clonedLandingPage.getName()).isEqualTo(newName);
+
+        landingPageClient.deleteLandingPage(clonedLandingPage.getId());
     }
 }

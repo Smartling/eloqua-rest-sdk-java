@@ -1,5 +1,6 @@
 package com.smartling.connector.eloqua.sdk.rest.api;
 
+import com.smartling.connector.eloqua.sdk.rest.model.CopyRequest;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Form;
 import feign.Headers;
@@ -23,6 +24,10 @@ public interface FormApi extends EloquaApi {
     @RequestLine("PUT /API/REST/2.0/assets/form/{id}")
     @Headers("Content-Type: application/json")
     Void updateForm(@Param("id") long id, Form form);
+
+    @RequestLine("POST /API/REST/2.0/assets/form/{id}/copy")
+    @Headers ("Content-Type: application/json")
+    Form copyForm(@Param("id") long id, CopyRequest copyRequest);
 
     @RequestLine("DELETE /API/REST/2.0/assets/form/{id}")
     Void deleteForm(@Param("id") long id);

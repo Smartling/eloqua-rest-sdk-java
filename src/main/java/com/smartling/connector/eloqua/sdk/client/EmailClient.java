@@ -4,6 +4,7 @@ import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.EmailApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
+import com.smartling.connector.eloqua.sdk.rest.model.CopyRequest;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
 import com.smartling.connector.eloqua.sdk.rest.model.login.TokenInfo;
@@ -83,4 +84,11 @@ public class EmailClient extends EloquaClient<EmailApi>
         return executeCall(emailApi -> emailApi.getPreview(emailId, contactId));
     }
 
+    public Email copyEmail(long id, String name)
+    {
+        CopyRequest copyRequest = new CopyRequest();
+        copyRequest.setName(name);
+
+        return executeCall(emailApi -> emailApi.copyEmail(id, copyRequest));
+    }
 }
