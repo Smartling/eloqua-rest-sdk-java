@@ -119,6 +119,12 @@ public class HtmlContent
     private String getMergedRawHtmlString()
     {
         StringBuilder merged = new StringBuilder();
+        if (docType != null)
+        {
+            merged.append(docType);
+        }
+        merged.append("<html>");
+        merged.append("<head>");
         if (systemHeader != null)
         {
             merged.append(systemHeader);
@@ -127,10 +133,12 @@ public class HtmlContent
         {
             merged.append(cssHeader);
         }
+        merged.append("</head>");
         if (htmlBody != null)
         {
             merged.append(htmlBody);
         }
+        merged.append("</html>");
         return merged.toString();
     }
 
