@@ -61,10 +61,11 @@ public class FormClient extends EloquaClient<FormApi>
         return executeCall(formApi -> formApi.searchForForm(EloquaApi.Depth.COMPLETE, "name=" + name));
     }
 
-    public Form copyForm(long id, String name)
+    public Form copyForm(long id, String name, Long folderId)
     {
         CopyRequest copyRequest = new CopyRequest();
         copyRequest.setName(name);
+        copyRequest.setFolderId(folderId);
 
         return executeCall(formApi -> formApi.copyForm(id, copyRequest));
     }

@@ -258,10 +258,11 @@ public class FormIntegrationTest extends BaseIntegrationTest
     {
         FormClient formClient = new FormClient(configuration);
         String newName = "cloned landingPage " + UUID.randomUUID();
-        Form clonedForm = formClient.copyForm(190, newName);
+        Form clonedForm = formClient.copyForm(190, newName, 672L);
 
         assertThat(clonedForm.getId()).isNotEqualTo(190);
         assertThat(clonedForm.getName()).isEqualTo(newName);
+        assertThat(clonedForm.getFolderId()).isEqualTo(672);
 
         formClient.deleteForm(clonedForm.getId());
     }
