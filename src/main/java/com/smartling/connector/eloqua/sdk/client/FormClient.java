@@ -3,6 +3,7 @@ package com.smartling.connector.eloqua.sdk.client;
 import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.FormApi;
+import com.smartling.connector.eloqua.sdk.rest.model.CopyRequest;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Form;
 import com.smartling.connector.eloqua.sdk.rest.model.FormElement;
@@ -58,6 +59,15 @@ public class FormClient extends EloquaClient<FormApi>
     public Elements<Form> searchForForm(final String name)
     {
         return executeCall(formApi -> formApi.searchForForm(EloquaApi.Depth.COMPLETE, "name=" + name));
+    }
+
+    public Form copyForm(long id, String name, Long folderId)
+    {
+        CopyRequest copyRequest = new CopyRequest();
+        copyRequest.setName(name);
+        copyRequest.setFolderId(folderId);
+
+        return executeCall(formApi -> formApi.copyForm(id, copyRequest));
     }
 
     private void invertIds(List<FormElement> formElements, MutableLong counter)

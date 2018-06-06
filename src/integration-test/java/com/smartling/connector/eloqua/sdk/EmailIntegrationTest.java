@@ -7,6 +7,8 @@ import com.smartling.connector.eloqua.sdk.rest.model.Email;
 import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -119,5 +121,18 @@ public class EmailIntegrationTest extends BaseIntegrationTest
         final String htmlPreview = emailClient.getHtmlPreviewLink(emails.getElements().get(0).getId(), contactClient.getContactIdForPreview());
 
         assertThat(htmlPreview).isNotEmpty();
+    }
+
+    @Test
+    public void shouldCopyEmail()
+    {
+        EmailClient emailClient = new EmailClient(configuration);
+        String newName = "cloned landingPage " + UUID.randomUUID();
+        Email clonedEmail = emailClient.copyEmail(102, newName);
+
+        assertThat(clonedEmail.getId()).isNotEqualTo(102);
+        assertThat(clonedEmail.getName()).isEqualTo(newName);
+
+        emailClient.deleteEmail(clonedEmail.getId());
     }
 }

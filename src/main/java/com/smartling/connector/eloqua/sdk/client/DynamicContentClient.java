@@ -3,6 +3,7 @@ package com.smartling.connector.eloqua.sdk.client;
 import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.rest.api.DynamicContentApi;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
+import com.smartling.connector.eloqua.sdk.rest.model.CopyRequest;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.dynamicContent.Condition;
 import com.smartling.connector.eloqua.sdk.rest.model.dynamicContent.ContentSection;
@@ -91,5 +92,13 @@ public class DynamicContentClient extends EloquaClient<DynamicContentApi>
         rule.setContentSection(contentSection);
         rule.setStatement("1111");//could be anything but required by API :D
         return rule;
+    }
+
+    public DynamicContent copyDynamicContent(long id, String name)
+    {
+        CopyRequest copyRequest = new CopyRequest();
+        copyRequest.setName(name);
+
+        return executeCall(dynamicContentApi -> dynamicContentApi.copyDynamicContent(id, copyRequest));
     }
 }

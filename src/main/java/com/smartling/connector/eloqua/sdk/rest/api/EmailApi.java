@@ -1,5 +1,6 @@
 package com.smartling.connector.eloqua.sdk.rest.api;
 
+import com.smartling.connector.eloqua.sdk.rest.model.CopyRequest;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.Email;
 import feign.Headers;
@@ -24,6 +25,10 @@ public interface EmailApi extends EloquaApi
     @RequestLine("PUT /API/REST/1.0/assets/email/{id}")
     @Headers ("Content-Type: application/json")
     Void updateEmail(@Param("id") long id, Email clonedEmail);
+
+    @RequestLine("POST /API/REST/2.0/assets/email/{id}/copy")
+    @Headers ("Content-Type: application/json")
+    Email copyEmail(@Param("id") long id, CopyRequest copyRequest);
 
     @RequestLine("DELETE /API/REST/1.0/assets/email/{id}")
     Void deleteEmail(@Param("id") long id);
