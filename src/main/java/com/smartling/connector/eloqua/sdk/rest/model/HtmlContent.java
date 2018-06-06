@@ -8,6 +8,8 @@ public class HtmlContent
 {
     public static final String RAW_HTML_CONTENT = "RawHtmlContent";
     public static final String STRUCTURED_HTML_CONTENT = "StructuredHtmlContent";
+    public static final String CONTENT_SOURCE_EDITOR = "editor";
+    public static final String CONTENT_SOURCE_UPLOAD = "upload";
     private String type;
     private String docType;
     private String htmlBody;
@@ -16,6 +18,7 @@ public class HtmlContent
     private String cssHeader;
     private String systemHeader;
     private String html;
+    private String contentSource;
 
     public String getHtmlBody()
     {
@@ -97,6 +100,16 @@ public class HtmlContent
         this.cssHeader = cssHeader;
     }
 
+    public String getContentSource()
+    {
+        return contentSource;
+    }
+
+    public void setContentSource(final String contentSource)
+    {
+        this.contentSource = contentSource;
+    }
+
     @JsonIgnore
     public String getPlainHtml()
     {
@@ -106,6 +119,12 @@ public class HtmlContent
     private String getMergedRawHtmlString()
     {
         StringBuilder merged = new StringBuilder();
+        if (docType != null)
+        {
+            merged.append(docType);
+        }
+        merged.append("<html>");
+        merged.append("<head>");
         if (systemHeader != null)
         {
             merged.append(systemHeader);
@@ -114,10 +133,12 @@ public class HtmlContent
         {
             merged.append(cssHeader);
         }
+        merged.append("</head>");
         if (htmlBody != null)
         {
             merged.append(htmlBody);
         }
+        merged.append("</html>");
         return merged.toString();
     }
 
@@ -127,8 +148,10 @@ public class HtmlContent
         if (STRUCTURED_HTML_CONTENT.equals(type))
         {
             htmlBody = html;
+            this.contentSource = CONTENT_SOURCE_EDITOR;
         } else {
             this.html = html;
+            this.contentSource = CONTENT_SOURCE_UPLOAD;
         }
     }
 
