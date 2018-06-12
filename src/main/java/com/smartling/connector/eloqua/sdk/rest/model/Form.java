@@ -26,6 +26,7 @@ public class Form
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private List<String> permissions;
     private String style;
+    private String customCSS;
     private String type;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Calendar updatedAt;
@@ -172,6 +173,16 @@ public class Form
     public void setStyle(final String style)
     {
         this.style = style;
+    }
+
+    public String getCustomCSS()
+    {
+        return customCSS;
+    }
+
+    public void setCustomCSS(final String customCSS)
+    {
+        this.customCSS = customCSS;
     }
 
     public String getType()
