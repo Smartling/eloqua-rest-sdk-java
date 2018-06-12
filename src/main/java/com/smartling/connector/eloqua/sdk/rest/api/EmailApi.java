@@ -26,7 +26,7 @@ public interface EmailApi extends EloquaApi
     @Headers ("Content-Type: application/json")
     Void updateEmail(@Param("id") long id, Email clonedEmail);
 
-    @RequestLine("POST /API/REST/2.0/assets/email/{id}/copy")
+    @RequestLine("POST /API/REST/1.0/assets/email/{id}/copy")
     @Headers ("Content-Type: application/json")
     Email copyEmail(@Param("id") long id, CopyRequest copyRequest);
 
