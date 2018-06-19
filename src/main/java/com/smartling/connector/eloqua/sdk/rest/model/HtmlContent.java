@@ -125,13 +125,13 @@ public class HtmlContent
         }
         merged.append("<html>");
         merged.append("<head>");
-        if (systemHeader != null)
-        {
-            merged.append(systemHeader);
-        }
         if (cssHeader != null)
         {
             merged.append(cssHeader);
+        }
+        if (systemHeader != null)
+        {
+            merged.append(systemHeader);
         }
         merged.append("</head>");
         if (htmlBody != null)
