@@ -20,10 +20,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FormIntegrationTest extends BaseIntegrationTest
 {
-    private static Long FORM_ELEMENT_ID = 1L;
-    private static String FORM_NAME = "formName";
-    private static String FORM_ELEMENT_NAME = "formElementName";
-    private static String FORM_ELEMENT_TYPE = "FormField";
+    private static final Long INTEGRATION_TESTS_FOLDER_ID = 2766L;
+    private static final long INTEGRATION_TESTS_FORM_ID   = 359;
+    private static final Long FORM_ELEMENT_ID = 1L;
+    private static final String FORM_NAME = "formName";
+    private static final String FORM_ELEMENT_NAME = "formElementName";
+    private static final String FORM_ELEMENT_TYPE = "FormField";
 
     @Test
     public void shouldThrowAuthenticationExceptionIfPasswordIncorrect()
@@ -258,11 +260,11 @@ public class FormIntegrationTest extends BaseIntegrationTest
     {
         FormClient formClient = new FormClient(configuration);
         String newName = "cloned form " + UUID.randomUUID();
-        Form clonedForm = formClient.copyForm(190, newName, 1410L);
+        Form clonedForm = formClient.copyForm(INTEGRATION_TESTS_FORM_ID, newName, INTEGRATION_TESTS_FOLDER_ID);
 
-        assertThat(clonedForm.getId()).isNotEqualTo(190);
+        assertThat(clonedForm.getId()).isNotEqualTo(INTEGRATION_TESTS_FORM_ID);
         assertThat(clonedForm.getName()).isEqualTo(newName);
-        assertThat(clonedForm.getFolderId()).isEqualTo(1410);
+        assertThat(clonedForm.getFolderId()).isEqualTo(INTEGRATION_TESTS_FOLDER_ID);
 
         formClient.deleteForm(clonedForm.getId());
     }

@@ -6,10 +6,12 @@ import com.smartling.connector.eloqua.sdk.rest.model.dynamicContent.DynamicConte
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 public class Email
 {
-    public static final String DRAFT = "Draft";
+    private static final String DRAFT = "Draft";
+
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private String type;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
@@ -24,7 +26,7 @@ public class Email
     private Long folderId;
     private String name;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
-    private String permissions; //read / write / fullControl
+    private List<String> permissions;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Calendar updatedAt;
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
@@ -49,6 +51,7 @@ public class Email
     private String senderName;
     private String style;
     private Collection<DynamicContent> dynamicContents;
+    private String previewText;
 
     public Long getId()
     {
@@ -152,12 +155,12 @@ public class Email
         this.depth = depth;
     }
 
-    public String getPermissions()
+    public List<String> getPermissions()
     {
         return permissions;
     }
 
-    public void setPermissions(final String permissions)
+    public void setPermissions(final List<String> permissions)
     {
         this.permissions = permissions;
     }
@@ -345,5 +348,15 @@ public class Email
     public void setDynamicContents(Collection<DynamicContent> dynamicContents)
     {
         this.dynamicContents = dynamicContents;
+    }
+
+    public String getPreviewText()
+    {
+        return previewText;
+    }
+
+    public void setPreviewText(String previewText)
+    {
+        this.previewText = previewText;
     }
 }
