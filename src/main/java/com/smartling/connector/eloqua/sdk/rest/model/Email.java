@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Email
 {
-    public static final String DRAFT = "Draft";
+    private static final String DRAFT = "Draft";
 
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private String type;
@@ -51,6 +51,7 @@ public class Email
     private String senderName;
     private String style;
     private Collection<DynamicContent> dynamicContents;
+    private String previewText;
 
     public Long getId()
     {
@@ -347,5 +348,15 @@ public class Email
     public void setDynamicContents(Collection<DynamicContent> dynamicContents)
     {
         this.dynamicContents = dynamicContents;
+    }
+
+    public String getPreviewText()
+    {
+        return previewText;
+    }
+
+    public void setPreviewText(String previewText)
+    {
+        this.previewText = previewText;
     }
 }
