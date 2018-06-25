@@ -269,6 +269,17 @@ public class FormIntegrationTest extends BaseIntegrationTest
         formClient.deleteForm(clonedForm.getId());
     }
 
+    @Test
+    public void shouldFindFormByFullName()
+    {
+        FormClient formClient = new FormClient(configuration);
+        Elements<Form> forms = formClient.searchForForm("Test Form for Integration Tests");
+        assertThat(forms).isNotNull();
+        assertThat(forms.getElements()).isNotEmpty();
+        assertThat(forms.getElements()).hasSize(1);
+        assertThat(forms.getElements().get(0).getId()).isEqualTo(INTEGRATION_TESTS_FORM_ID);
+    }
+
     private static FormElement aFormField(String name, String htmlName)
     {
         Condition condition = new Condition();
