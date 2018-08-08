@@ -33,6 +33,7 @@ public class Form
     @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private Integer updatedBy;
     private Integer submitFailedLandingPageId;
+    private List<ProcessingStep> processingSteps;
 
     public Calendar getCreatedAt()
     {
@@ -224,5 +225,15 @@ public class Form
     public void setSubmitFailedLandingPageId(Integer submitFailedLandingPageId)
     {
         this.submitFailedLandingPageId = submitFailedLandingPageId;
+    }
+
+    public List<ProcessingStep> getProcessingSteps()
+    {
+        return processingSteps;
+    }
+
+    public void setProcessingSteps(final List<ProcessingStep> processingSteps)
+    {
+        this.processingSteps = processingSteps;
     }
 }
