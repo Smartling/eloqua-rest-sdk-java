@@ -141,7 +141,7 @@ public class FormClient extends EloquaClient<FormApi>
                 }
             }
 
-            RuleSet ruleSet = processingStep.getRuleSet();
+            RuleSet ruleSet = processingStep.getContactUpdateRuleSet();
             if (ruleSet != null)
             {
                 ruleSet.setId(invertId(ruleSet.getId(), counter));

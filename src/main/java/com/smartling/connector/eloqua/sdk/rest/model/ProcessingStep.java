@@ -13,7 +13,7 @@ public class ProcessingStep
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<String> permissions;
     private ProcessingStepCondition condition;
-    private RuleSet ruleSet;
+    private RuleSet contactUpdateRuleSet;
     private Mapping keyFieldMapping;
 
     private Long keyFieldId;
@@ -83,14 +83,14 @@ public class ProcessingStep
         this.condition = condition;
     }
 
-    public RuleSet getRuleSet()
+    public RuleSet getContactUpdateRuleSet()
     {
-        return ruleSet;
+        return contactUpdateRuleSet;
     }
 
-    public void setRuleSet(final RuleSet ruleSet)
+    public void setContactUpdateRuleSet(final RuleSet contactUpdateRuleSet)
     {
-        this.ruleSet = ruleSet;
+        this.contactUpdateRuleSet = contactUpdateRuleSet;
     }
 
     public Mapping getKeyFieldMapping()
