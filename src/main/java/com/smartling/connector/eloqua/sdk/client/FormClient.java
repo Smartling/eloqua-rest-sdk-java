@@ -1,5 +1,7 @@
 package com.smartling.connector.eloqua.sdk.client;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.FormApi;
@@ -20,6 +22,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableLong;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class FormClient extends EloquaClient<FormApi>
@@ -119,64 +123,113 @@ public class FormClient extends EloquaClient<FormApi>
         {
             processingStep.setId(invertId(processingStep.getId(), counter));
 
-            ProcessingStepCondition processingStepCondition = processingStep.getCondition();
-            if (processingStepCondition != null)
-            {
-                processingStepCondition.setId(invertId(processingStepCondition.getId(), counter));
-                if (CollectionUtils.isNotEmpty(processingStepCondition.getConditionalFieldCriteria()))
-                {
-                    for (FieldCriteria fieldCriteria : processingStepCondition.getConditionalFieldCriteria())
-                    {
-                        fieldCriteria.setId(invertId(fieldCriteria.getId(), counter));
-                        if (StringUtils.isNotEmpty(fieldCriteria.getType()) && fieldCriteria.getType().equals("FormFieldComparisonCriteria")) {
-                            fieldCriteria.setFieldId(invertId(fieldCriteria.getFieldId(), counter));
-                        }
-                        FieldCriteriaCondition fieldCriteriaCondition = fieldCriteria.getCondition();
-                        if (fieldCriteriaCondition != null)
-                        {
-                            fieldCriteriaCondition.setId(invertId(fieldCriteriaCondition.getId(), counter));
-                            fieldCriteriaCondition.setFormFieldId(invertId(fieldCriteriaCondition.getFormFieldId(), counter));
-                        }
-                    }
-                }
-            }
+            invertProcessingStepConditionIds(processingStep.getCondition(), counter);
 
-            RuleSet ruleSet = processingStep.getContactUpdateRuleSet();
-            if (ruleSet != null)
-            {
-                ruleSet.setId(invertId(ruleSet.getId(), counter));
-                if (CollectionUtils.isNotEmpty(ruleSet.getUpdateRules()))
-                {
-                    for (Rule rule : ruleSet.getUpdateRules())
-                    {
-                        rule.setId(invertId(rule.getId(), counter));
-                        rule.setFormFieldId(invertId(rule.getFormFieldId(), counter));
-                    }
-                }
-            }
+            invertRuleSetIds(processingStep.getContactUpdateRuleSet(), counter);
+            invertRuleSetIds(processingStep.getAccountUpdateRuleSet(), counter);
 
-            Mapping keyFieldMapping = processingStep.getKeyFieldMapping();
-            if (keyFieldMapping != null)
-            {
-                keyFieldMapping.setId(invertId(keyFieldMapping.getId(), counter));
-                keyFieldMapping.setSourceFormFieldId(invertId(keyFieldMapping.getSourceFormFieldId(), counter));
-            }
+            invertMappingIds(processingStep.getKeyFieldMapping(), counter);
 
             processingStep.setKeyFieldMappingSourceId(invertId(processingStep.getKeyFieldMappingSourceId(), counter));
             if (CollectionUtils.isNotEmpty(processingStep.getMappings()))
             {
                 for (Mapping mapping : processingStep.getMappings())
                 {
-                    mapping.setId(invertId(mapping.getId(), counter));
-                    mapping.setSourceFormFieldId(invertId(mapping.getSourceFormFieldId(), counter));
+                    invertMappingIds(mapping, counter);
                 }
             }
 
             processingStep.setEmailAddressFormFieldId(invertId(processingStep.getEmailAddressFormFieldId(), counter));
-            ProcessingStepValue processingStepValue = processingStep.getNewEmailAddressId();
-            if (processingStepValue != null)
+            invertProcessingStepValueIds(processingStep.getNewEmailAddressId(), counter);
+            invertProcessingStepValueIds(processingStep.getEmailId(), counter);
+            invertProcessingStepValueIds(processingStep.getSubject(), counter);
+            invertProcessingStepValueIds(processingStep.getRecipientEmailAddress(), counter);
+            invertProcessingStepValueIds(processingStep.getEncodingId(), counter);
+            invertProcessingStepValueIds(processingStep.getProgramElementId(), counter);
+            invertProcessingStepValueIds(processingStep.getLandingPageId(), counter);
+            invertProcessingStepValueIds(processingStep.getPageUrl(), counter);
+            invertProcessingStepValueIds(processingStep.getContactListId(), counter);
+            invertProcessingStepValueIds(processingStep.getExternalUrl(), counter);
+            invertProcessingStepValueIds(processingStep.getIntegrationRuleSetId(), counter);
+            invertProcessingStepValueIds(processingStep.getEmailGroupId(), counter);
+            invertProcessingStepValueIds(processingStep.getIsSubscribing(), counter);
+            invertEventIdProcessingStepValue(processingStep, counter);
+        }
+    }
+
+    private void invertProcessingStepConditionIds(ProcessingStepCondition processingStepCondition, MutableLong counter)
+    {
+        if (processingStepCondition != null)
+        {
+            processingStepCondition.setId(invertId(processingStepCondition.getId(), counter));
+            if (CollectionUtils.isNotEmpty(processingStepCondition.getConditionalFieldCriteria()))
             {
-                processingStepValue.setFormFieldId(invertId(processingStepValue.getFormFieldId(), counter));
+                for (FieldCriteria fieldCriteria : processingStepCondition.getConditionalFieldCriteria())
+                {
+                    fieldCriteria.setId(invertId(fieldCriteria.getId(), counter));
+                    if (StringUtils.isNotEmpty(fieldCriteria.getType()) && fieldCriteria.getType().equals("FormFieldComparisonCriteria")) {
+                        fieldCriteria.setFieldId(invertId(fieldCriteria.getFieldId(), counter));
+                    }
+                    FieldCriteriaCondition fieldCriteriaCondition = fieldCriteria.getCondition();
+                    if (fieldCriteriaCondition != null)
+                    {
+                        fieldCriteriaCondition.setId(invertId(fieldCriteriaCondition.getId(), counter));
+                        fieldCriteriaCondition.setFormFieldId(invertId(fieldCriteriaCondition.getFormFieldId(), counter));
+                    }
+                }
+            }
+        }
+    }
+
+    private void invertRuleSetIds(RuleSet ruleSet, MutableLong counter)
+    {
+        if (ruleSet != null)
+        {
+            ruleSet.setId(invertId(ruleSet.getId(), counter));
+            if (CollectionUtils.isNotEmpty(ruleSet.getUpdateRules()))
+            {
+                for (Rule rule : ruleSet.getUpdateRules())
+                {
+                    rule.setId(invertId(rule.getId(), counter));
+                    rule.setFormFieldId(invertId(rule.getFormFieldId(), counter));
+                }
+            }
+        }
+    }
+
+    private void invertMappingIds(Mapping mapping, MutableLong counter)
+    {
+        if (mapping != null)
+        {
+            mapping.setId(invertId(mapping.getId(), counter));
+            mapping.setSourceFormFieldId(invertId(mapping.getSourceFormFieldId(), counter));
+        }
+    }
+
+    private void invertProcessingStepValueIds(ProcessingStepValue processingStepValue, MutableLong counter)
+    {
+        if (processingStepValue != null && (StringUtils.isEmpty(processingStepValue.getValueType()) || !processingStepValue.getValueType().equals("constant")))
+        {
+            processingStepValue.setFormFieldId(invertId(processingStepValue.getFormFieldId(), counter));
+        }
+    }
+
+    private void invertEventIdProcessingStepValue(ProcessingStep processingStep, MutableLong counter)
+    {
+        if (StringUtils.isNotEmpty(processingStep.getType())
+                && processingStep.getType().equals("FormStepCancelRegistration")
+                && StringUtils.isNotEmpty(processingStep.getEventId()))
+        {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+            try {
+                ProcessingStepValue eventId = objectMapper.readValue(processingStep.getEventId(), ProcessingStepValue.class);
+                invertProcessingStepValueIds(eventId, counter);
+                processingStep.setEventId(objectMapper.writeValueAsString(eventId));
+            } catch (IOException e)
+            {
+                // can't parse event id as processing step value; do nothing
             }
         }
     }

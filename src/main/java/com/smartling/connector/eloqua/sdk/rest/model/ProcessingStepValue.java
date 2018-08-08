@@ -6,6 +6,7 @@ public class ProcessingStepValue
     private Long formFieldId;
     private String valueType;
     private String constantValue;
+    private Long optionListId;
 
     public String getType()
     {
@@ -44,5 +45,15 @@ public class ProcessingStepValue
     public void setConstantValue(final String constantValue)
     {
         this.constantValue = constantValue;
+    }
+
+    public Long getOptionListId()
+    {
+        return optionListId;
+    }
+
+    public void setOptionListId(final Long optionListId)
+    {
+        this.optionListId = optionListId;
     }
 }

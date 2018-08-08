@@ -6,6 +6,7 @@ public class Mapping
     private Long id;
     private Long sourceFormFieldId;
     private Long targetEntityFieldId;
+    private String targetFieldName;
     private String updateType;
 
     public String getType()
@@ -46,6 +47,16 @@ public class Mapping
     public void setTargetEntityFieldId(final Long targetEntityFieldId)
     {
         this.targetEntityFieldId = targetEntityFieldId;
+    }
+
+    public String getTargetFieldName()
+    {
+        return targetFieldName;
+    }
+
+    public void setTargetFieldName(final String targetFieldName)
+    {
+        this.targetFieldName = targetFieldName;
     }
 
     public String getUpdateType()
