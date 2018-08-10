@@ -45,7 +45,7 @@ public class FormClient extends EloquaClient<FormApi>
     public Elements<Form> listForms(final int page, final int count, String sortBy, String order, String searchTerm)
     {
         final String orderBy = StringUtils.isEmpty(sortBy) ? "" : sortBy + " " + order;
-        final String search = StringUtils.isEmpty(searchTerm) ? "" : "name=" + searchTerm;
+        final String search = StringUtils.isEmpty(searchTerm) ? "" : "[name =] \"" + searchTerm + '"';
         return executeCall(formApi -> formApi.listForms(EloquaApi.Depth.MINIMAL, page, count, orderBy, search));
     }
 
@@ -81,7 +81,7 @@ public class FormClient extends EloquaClient<FormApi>
 
     public Elements<Form> searchForForm(final String name)
     {
-        return executeCall(formApi -> formApi.searchForForm(EloquaApi.Depth.COMPLETE, "name=" + name));
+        return executeCall(formApi -> formApi.searchForForm(EloquaApi.Depth.COMPLETE, "[name =] \"" + name + '"'));
     }
 
     public Form copyForm(long id, String name, Long folderId)

@@ -19,7 +19,7 @@ public class OptionListClient extends EloquaClient<OptionListApi>
     public Elements<OptionList> listOptionLists(final int page, final int count, String sortBy, String order, String searchTerm)
     {
         final String orderBy = StringUtils.isEmpty(sortBy) ? "" : sortBy + " " + order;
-        final String search = StringUtils.isEmpty(searchTerm) ? "" : "name=" + searchTerm;
+        final String search = StringUtils.isEmpty(searchTerm) ? "" : "[name =] \"" + searchTerm + '"';
         return executeCall(optionListApi -> optionListApi.listOptionLists(EloquaApi.Depth.MINIMAL, page, count, orderBy, search));
     }
 
@@ -45,6 +45,6 @@ public class OptionListClient extends EloquaClient<OptionListApi>
 
     public Elements<OptionList> searchForOptionList(final String name)
     {
-        return executeCall(optionListApi -> optionListApi.searchForOptionList(EloquaApi.Depth.COMPLETE, "name=" + name));
+        return executeCall(optionListApi -> optionListApi.searchForOptionList(EloquaApi.Depth.COMPLETE, "[name =] \"" + name + '"'));
     }
 }

@@ -119,4 +119,15 @@ public class OptionListIntegrationTest extends BaseIntegrationTest
         assertThat(optionLists).isNotNull();
         assertThat(optionLists.getElements()).isEmpty();
     }
+
+    @Test
+    public void shouldFindOptionListByFullName()
+    {
+        OptionListClient optionListClient = new OptionListClient(configuration);
+        Elements<OptionList> optionLists = optionListClient.searchForOptionList("Country Codes");
+        assertThat(optionLists).isNotNull();
+        assertThat(optionLists.getElements()).isNotEmpty();
+        assertThat(optionLists.getElements()).hasSize(1);
+        assertThat(optionLists.getElements().get(0).getElements().get(1).getDisplayName()).isEqualTo("United States");
+    }
 }
