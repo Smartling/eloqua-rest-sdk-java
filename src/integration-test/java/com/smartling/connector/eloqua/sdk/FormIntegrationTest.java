@@ -22,6 +22,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
 {
     private static final Long INTEGRATION_TESTS_FOLDER_ID = 2766L;
     private static final long INTEGRATION_TESTS_FORM_ID   = 359;
+    private static final long INTEGRATION_TESTS_FORM_ID_WITH_PROCESSING_STEPS = 502;
     private static final Long FORM_ELEMENT_ID = 1L;
     private static final String FORM_NAME = "formName";
     private static final String FORM_ELEMENT_NAME = "formElementName";
@@ -286,14 +287,14 @@ public class FormIntegrationTest extends BaseIntegrationTest
         String newName = "updated element name " + UUID.randomUUID();
 
         FormClient formClient = new FormClient(configuration);
-        Form form = formClient.getForm(502);
+        Form form = formClient.getForm(INTEGRATION_TESTS_FORM_ID_WITH_PROCESSING_STEPS);
         form.getElements().get(0).setName(newName);
 
-        formClient.updateForm(502L, form, true);
+        formClient.updateForm(INTEGRATION_TESTS_FORM_ID_WITH_PROCESSING_STEPS, form, true);
 
-        Form updatedForm = formClient.getForm(502);
+        Form updatedForm = formClient.getForm(INTEGRATION_TESTS_FORM_ID_WITH_PROCESSING_STEPS);
 
-        assertThat(updatedForm.getId()).isEqualTo(502);
+        assertThat(updatedForm.getId()).isEqualTo(INTEGRATION_TESTS_FORM_ID_WITH_PROCESSING_STEPS);
         assertThat(updatedForm.getElements().get(0).getName()).isEqualTo(newName);
     }
 
