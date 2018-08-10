@@ -7,7 +7,7 @@ public class FieldCriteriaCondition
     private String operator;
     private Long formFieldId;
     private String valueType;
-    private String value;
+    private Object value;
 
     public String getType()
     {
@@ -59,12 +59,12 @@ public class FieldCriteriaCondition
         this.valueType = valueType;
     }
 
-    public String getValue()
+    public Object getValue()
     {
         return value;
     }
 
-    public void setValue(final String value)
+    public void setValue(final Object value)
     {
         this.value = value;
     }

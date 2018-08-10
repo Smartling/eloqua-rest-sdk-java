@@ -267,6 +267,23 @@ public class FormIntegrationTest extends BaseIntegrationTest
         formClient.deleteForm(clonedForm.getId());
     }
 
+    @Test
+    public void shouldUpdateForm()
+    {
+        String newName = "updated element name " + UUID.randomUUID();
+
+        FormClient formClient = new FormClient(configuration);
+        Form form = formClient.getForm(502);
+        form.getElements().get(0).setName(newName);
+
+        formClient.updateForm(502L, form, true);
+
+        Form updatedForm = formClient.getForm(502);
+
+        assertThat(updatedForm.getId()).isEqualTo(502);
+        assertThat(updatedForm.getElements().get(0).getName()).isEqualTo(newName);
+    }
+
     private static FormElement aFormField(String name, String htmlName)
     {
         Condition condition = new Condition();

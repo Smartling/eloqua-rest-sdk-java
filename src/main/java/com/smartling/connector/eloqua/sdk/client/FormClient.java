@@ -1,10 +1,13 @@
 package com.smartling.connector.eloqua.sdk.client;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.FormApi;
+import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
 import com.smartling.connector.eloqua.sdk.rest.model.CopyRequest;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.FieldCriteria;
@@ -21,9 +24,10 @@ import com.smartling.connector.eloqua.sdk.rest.model.Validation;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableLong;
+import org.apache.http.client.HttpClient;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class FormClient extends EloquaClient<FormApi>
@@ -31,6 +35,11 @@ public class FormClient extends EloquaClient<FormApi>
     public FormClient(final Configuration configuration)
     {
         super(configuration, FormApi.class);
+    }
+
+    public FormClient(final Configuration configuration, final Class<FormApi> apiType, final LoginApi loginApi, HttpClient httpClient)
+    {
+        super(configuration, apiType, loginApi, httpClient);
     }
 
     public Elements<Form> listForms(final int page, final int count, String sortBy, String order, String searchTerm)
@@ -122,15 +131,16 @@ public class FormClient extends EloquaClient<FormApi>
         for (ProcessingStep processingStep : processingSteps)
         {
             processingStep.setId(invertId(processingStep.getId(), counter));
+            processingStep.setEmailAddressFormFieldId(invertId(processingStep.getEmailAddressFormFieldId(), counter));
+            processingStep.setKeyFieldMappingSourceId(invertId(processingStep.getKeyFieldMappingSourceId(), counter));
 
             invertProcessingStepConditionIds(processingStep.getCondition(), counter);
 
             invertRuleSetIds(processingStep.getContactUpdateRuleSet(), counter);
             invertRuleSetIds(processingStep.getAccountUpdateRuleSet(), counter);
+            invertRuleSetIds(processingStep.getCustomObjectUpdateRuleSet(), counter);
 
             invertMappingIds(processingStep.getKeyFieldMapping(), counter);
-
-            processingStep.setKeyFieldMappingSourceId(invertId(processingStep.getKeyFieldMappingSourceId(), counter));
             if (CollectionUtils.isNotEmpty(processingStep.getMappings()))
             {
                 for (Mapping mapping : processingStep.getMappings())
@@ -139,71 +149,86 @@ public class FormClient extends EloquaClient<FormApi>
                 }
             }
 
-            processingStep.setEmailAddressFormFieldId(invertId(processingStep.getEmailAddressFormFieldId(), counter));
             invertProcessingStepValueIds(processingStep.getNewEmailAddressId(), counter);
-            invertProcessingStepValueIds(processingStep.getEmailId(), counter);
-            invertProcessingStepValueIds(processingStep.getSubject(), counter);
-            invertProcessingStepValueIds(processingStep.getRecipientEmailAddress(), counter);
-            invertProcessingStepValueIds(processingStep.getEncodingId(), counter);
-            invertProcessingStepValueIds(processingStep.getProgramElementId(), counter);
-            invertProcessingStepValueIds(processingStep.getLandingPageId(), counter);
-            invertProcessingStepValueIds(processingStep.getPageUrl(), counter);
-            invertProcessingStepValueIds(processingStep.getContactListId(), counter);
-            invertProcessingStepValueIds(processingStep.getExternalUrl(), counter);
             invertProcessingStepValueIds(processingStep.getIntegrationRuleSetId(), counter);
             invertProcessingStepValueIds(processingStep.getEmailGroupId(), counter);
             invertProcessingStepValueIds(processingStep.getIsSubscribing(), counter);
+            invertProcessingStepValueIds(processingStep.getEmailId(), counter);
+            invertProcessingStepValueIds(processingStep.getEncodingId(), counter);
+            invertProcessingStepValueIds(processingStep.getRecipientEmailAddress(), counter);
+            invertProcessingStepValueIds(processingStep.getSubject(), counter);
+            invertProcessingStepValueIds(processingStep.getContactListId(), counter);
+            invertProcessingStepValueIds(processingStep.getProgramElementId(), counter);
+            invertProcessingStepValueIds(processingStep.getCampaignElementId(), counter);
+            invertProcessingStepValueIds(processingStep.getExternalUrl(), counter);
+            invertProcessingStepValueIds(processingStep.getLandingPageId(), counter);
+            invertProcessingStepValueIds(processingStep.getPageUrl(), counter);
             invertEventIdProcessingStepValue(processingStep, counter);
         }
     }
 
     private void invertProcessingStepConditionIds(ProcessingStepCondition processingStepCondition, MutableLong counter)
     {
-        if (processingStepCondition != null)
+        if (processingStepCondition == null)
         {
-            processingStepCondition.setId(invertId(processingStepCondition.getId(), counter));
-            if (CollectionUtils.isNotEmpty(processingStepCondition.getConditionalFieldCriteria()))
+            return;
+        }
+
+        processingStepCondition.setId(invertId(processingStepCondition.getId(), counter));
+
+        if (CollectionUtils.isEmpty(processingStepCondition.getConditionalFieldCriteria()))
+        {
+            return;
+        }
+
+        for (FieldCriteria fieldCriteria : processingStepCondition.getConditionalFieldCriteria())
+        {
+            fieldCriteria.setId(invertId(fieldCriteria.getId(), counter));
+            if (StringUtils.isNotEmpty(fieldCriteria.getType()) && fieldCriteria.getType().equals("FormFieldComparisonCriteria")) {
+                fieldCriteria.setFieldId(invertId(fieldCriteria.getFieldId(), counter));
+            }
+            FieldCriteriaCondition fieldCriteriaCondition = fieldCriteria.getCondition();
+            if (fieldCriteriaCondition != null)
             {
-                for (FieldCriteria fieldCriteria : processingStepCondition.getConditionalFieldCriteria())
-                {
-                    fieldCriteria.setId(invertId(fieldCriteria.getId(), counter));
-                    if (StringUtils.isNotEmpty(fieldCriteria.getType()) && fieldCriteria.getType().equals("FormFieldComparisonCriteria")) {
-                        fieldCriteria.setFieldId(invertId(fieldCriteria.getFieldId(), counter));
-                    }
-                    FieldCriteriaCondition fieldCriteriaCondition = fieldCriteria.getCondition();
-                    if (fieldCriteriaCondition != null)
-                    {
-                        fieldCriteriaCondition.setId(invertId(fieldCriteriaCondition.getId(), counter));
-                        fieldCriteriaCondition.setFormFieldId(invertId(fieldCriteriaCondition.getFormFieldId(), counter));
-                    }
-                }
+                fieldCriteriaCondition.setId(invertId(fieldCriteriaCondition.getId(), counter));
+                fieldCriteriaCondition.setFormFieldId(invertId(fieldCriteriaCondition.getFormFieldId(), counter));
             }
         }
     }
 
     private void invertRuleSetIds(RuleSet ruleSet, MutableLong counter)
     {
-        if (ruleSet != null)
+        if (ruleSet == null)
         {
-            ruleSet.setId(invertId(ruleSet.getId(), counter));
-            if (CollectionUtils.isNotEmpty(ruleSet.getUpdateRules()))
+            return;
+        }
+
+        ruleSet.setId(invertId(ruleSet.getId(), counter));
+
+        if (CollectionUtils.isEmpty(ruleSet.getUpdateRules()))
+        {
+            return;
+        }
+
+        for (Rule rule : ruleSet.getUpdateRules())
+        {
+            rule.setId(invertId(rule.getId(), counter));
+            if (rule.getFormFieldId() != null)
             {
-                for (Rule rule : ruleSet.getUpdateRules())
-                {
-                    rule.setId(invertId(rule.getId(), counter));
-                    rule.setFormFieldId(invertId(rule.getFormFieldId(), counter));
-                }
+                rule.setFormFieldId(invertId(rule.getFormFieldId(), counter));
             }
         }
     }
 
     private void invertMappingIds(Mapping mapping, MutableLong counter)
     {
-        if (mapping != null)
+        if (mapping == null)
         {
-            mapping.setId(invertId(mapping.getId(), counter));
-            mapping.setSourceFormFieldId(invertId(mapping.getSourceFormFieldId(), counter));
+            return;
         }
+
+        mapping.setId(invertId(mapping.getId(), counter));
+        mapping.setSourceFormFieldId(invertId(mapping.getSourceFormFieldId(), counter));
     }
 
     private void invertProcessingStepValueIds(ProcessingStepValue processingStepValue, MutableLong counter)
@@ -218,19 +243,17 @@ public class FormClient extends EloquaClient<FormApi>
     {
         if (StringUtils.isNotEmpty(processingStep.getType())
                 && processingStep.getType().equals("FormStepCancelRegistration")
-                && StringUtils.isNotEmpty(processingStep.getEventId()))
+                && processingStep.getEventId() != null
+                && processingStep.getEventId() instanceof LinkedHashMap)
         {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-            try {
-                ProcessingStepValue eventId = objectMapper.readValue(processingStep.getEventId(), ProcessingStepValue.class);
-                invertProcessingStepValueIds(eventId, counter);
-                processingStep.setEventId(objectMapper.writeValueAsString(eventId));
-            } catch (IOException e)
+            LinkedHashMap<String, String> eventId = (LinkedHashMap<String, String>) processingStep.getEventId();
+            if (StringUtils.isNotEmpty(eventId.get("valueType")) && eventId.get("valueType").equals("constant"))
             {
-                // can't parse event id as processing step value; do nothing
+                return;
             }
+
+            Long formFieldId = StringUtils.isNotEmpty(eventId.get("formFieldId")) ? Long.valueOf(eventId.get("formFieldId")) : null;
+            eventId.put("formFieldId", String.valueOf(invertId(formFieldId, counter)));
         }
     }
 

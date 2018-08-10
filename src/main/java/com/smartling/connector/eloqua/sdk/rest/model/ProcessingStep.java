@@ -6,52 +6,115 @@ import java.util.List;
 
 public class ProcessingStep
 {
+    // common parameters
     private String type;
     private Long id;
     private String name;
     private String execute;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<String> permissions;
+
+    // if execute = conditional
     private ProcessingStepCondition condition;
+
+    // type = FormStepUpdateContactEmailAddress
+    private Long emailAddressFormFieldId;
+    private ProcessingStepValue newEmailAddressId;
+
+    // type = ContactUpdateRuleSet
     private RuleSet contactUpdateRuleSet;
-    private RuleSet accountUpdateRuleSet;
     private Mapping keyFieldMapping;
 
+    // type = FormStepCreateUpdateContactFromFormField
     private Long keyFieldId;
     private Long keyFieldMappingSourceId;
     private List<Mapping> mappings;
 
-    private Long emailAddressFormFieldId;
-    private ProcessingStepValue newEmailAddressId;
+    // type = FormStepCreateUpdateAccountFromFormField
+    // keyFieldId
+    // keyFieldMappingSourceId
+    // mappings
 
-    private String allowResend;
-    private ProcessingStepValue emailId;
-    private Integer resendLimit;
+    // type = FormStepCreateUpdateAccount
+    private RuleSet accountUpdateRuleSet;
+    // keyFieldMapping
 
-    private Long notificationConfigurationId;
-    private ProcessingStepValue subject;
-    private ProcessingStepValue recipientEmailAddress;
-    private ProcessingStepValue encodingId;
+    // type = FormStepCreateUpdateCustomObjectFromFormField
+    private Long customObjectId;
+    private Long uniqueFieldId;
+    // keyFieldId
+    // mappings
 
-    private Long programId;
-    private ProcessingStepValue programElementId;
+    // type = FormStepCreateUpdateCustomObject
+    private RuleSet customObjectUpdateRuleSet;
+    // customObjectId
+    // keyFieldMapping
 
-    private Long campaignId;
-    private ProcessingStepValue campaignElementId;
-
-    private ProcessingStepValue landingPageId;
-    private ProcessingStepValue pageUrl;
-
-    private ProcessingStepValue contactListId;
-
-    private ProcessingStepValue externalUrl;
-
+    // type = FormStepRunIntegrationRules
     private ProcessingStepValue integrationRuleSetId;
+    // keyFieldMapping
 
+    // type = FormStepGroupSubscription
     private ProcessingStepValue emailGroupId;
     private ProcessingStepValue isSubscribing;
+    // emailAddressFormFieldId
 
-    private String eventId;
+    // type = FormStepSendEmail
+    private String allowResend;
+    private Integer resendLimit;
+    private ProcessingStepValue emailId;
+    // emailAddressFormFieldId
+
+    // type = FormStepSendNotificationEmail
+    private Long notificationConfigurationId;
+    private ProcessingStepValue encodingId;
+    private ProcessingStepValue recipientEmailAddress;
+    private ProcessingStepValue subject;
+
+    // type = FormStepGlobalUnsubscribe
+    // emailAddressFormFieldId
+
+    // type = FormStepGlobalSubscribe
+    // emailAddressFormFieldId
+
+    // type = FormStepAddToContactList
+    private ProcessingStepValue contactListId;
+    // keyFieldMapping
+
+    // type = FormStepRemoveFromContactList
+    // contactListId
+    // keyFieldMapping
+
+    // type = FormStepCreateUpdateEventRegistration
+    private Object eventId;
+    // mappings
+
+    // type = FormStepAddToProgramBuilder
+    private Long programId;
+    private ProcessingStepValue programElementId;
+    // keyFieldMapping
+
+    // type = FormStepAddToCampaign
+    private Long campaignId;
+    private ProcessingStepValue campaignElementId;
+    // keyFieldMapping
+
+    // type = FormStepAddToProgram
+    // programId
+    // programElementId
+    // keyFieldMapping
+
+    // type = FormStepCancelRegistration
+    // eventId (as processing step value)
+    // emailAddressFormFieldId
+
+    // type = FormStepPostData
+    private ProcessingStepValue externalUrl;
+    // mappings
+
+    // type = FormStepRedirectToWebPage
+    private ProcessingStepValue landingPageId;
+    private ProcessingStepValue pageUrl;
 
     public String getType()
     {
@@ -113,6 +176,26 @@ public class ProcessingStep
         this.condition = condition;
     }
 
+    public Long getEmailAddressFormFieldId()
+    {
+        return emailAddressFormFieldId;
+    }
+
+    public void setEmailAddressFormFieldId(final Long emailAddressFormFieldId)
+    {
+        this.emailAddressFormFieldId = emailAddressFormFieldId;
+    }
+
+    public ProcessingStepValue getNewEmailAddressId()
+    {
+        return newEmailAddressId;
+    }
+
+    public void setNewEmailAddressId(final ProcessingStepValue newEmailAddressId)
+    {
+        this.newEmailAddressId = newEmailAddressId;
+    }
+
     public RuleSet getContactUpdateRuleSet()
     {
         return contactUpdateRuleSet;
@@ -121,16 +204,6 @@ public class ProcessingStep
     public void setContactUpdateRuleSet(final RuleSet contactUpdateRuleSet)
     {
         this.contactUpdateRuleSet = contactUpdateRuleSet;
-    }
-
-    public RuleSet getAccountUpdateRuleSet()
-    {
-        return accountUpdateRuleSet;
-    }
-
-    public void setAccountUpdateRuleSet(final RuleSet accountUpdateRuleSet)
-    {
-        this.accountUpdateRuleSet = accountUpdateRuleSet;
     }
 
     public Mapping getKeyFieldMapping()
@@ -173,24 +246,74 @@ public class ProcessingStep
         this.mappings = mappings;
     }
 
-    public Long getEmailAddressFormFieldId()
+    public RuleSet getAccountUpdateRuleSet()
     {
-        return emailAddressFormFieldId;
+        return accountUpdateRuleSet;
     }
 
-    public void setEmailAddressFormFieldId(final Long emailAddressFormFieldId)
+    public void setAccountUpdateRuleSet(final RuleSet accountUpdateRuleSet)
     {
-        this.emailAddressFormFieldId = emailAddressFormFieldId;
+        this.accountUpdateRuleSet = accountUpdateRuleSet;
     }
 
-    public ProcessingStepValue getNewEmailAddressId()
+    public Long getCustomObjectId()
     {
-        return newEmailAddressId;
+        return customObjectId;
     }
 
-    public void setNewEmailAddressId(final ProcessingStepValue newEmailAddressId)
+    public void setCustomObjectId(final Long customObjectId)
     {
-        this.newEmailAddressId = newEmailAddressId;
+        this.customObjectId = customObjectId;
+    }
+
+    public Long getUniqueFieldId()
+    {
+        return uniqueFieldId;
+    }
+
+    public void setUniqueFieldId(final Long uniqueFieldId)
+    {
+        this.uniqueFieldId = uniqueFieldId;
+    }
+
+    public RuleSet getCustomObjectUpdateRuleSet()
+    {
+        return customObjectUpdateRuleSet;
+    }
+
+    public void setCustomObjectUpdateRuleSet(final RuleSet customObjectUpdateRuleSet)
+    {
+        this.customObjectUpdateRuleSet = customObjectUpdateRuleSet;
+    }
+
+    public ProcessingStepValue getIntegrationRuleSetId()
+    {
+        return integrationRuleSetId;
+    }
+
+    public void setIntegrationRuleSetId(final ProcessingStepValue integrationRuleSetId)
+    {
+        this.integrationRuleSetId = integrationRuleSetId;
+    }
+
+    public ProcessingStepValue getEmailGroupId()
+    {
+        return emailGroupId;
+    }
+
+    public void setEmailGroupId(final ProcessingStepValue emailGroupId)
+    {
+        this.emailGroupId = emailGroupId;
+    }
+
+    public ProcessingStepValue getIsSubscribing()
+    {
+        return isSubscribing;
+    }
+
+    public void setIsSubscribing(final ProcessingStepValue isSubscribing)
+    {
+        this.isSubscribing = isSubscribing;
     }
 
     public String getAllowResend()
@@ -203,16 +326,6 @@ public class ProcessingStep
         this.allowResend = allowResend;
     }
 
-    public ProcessingStepValue getEmailId()
-    {
-        return emailId;
-    }
-
-    public void setEmailId(final ProcessingStepValue emailId)
-    {
-        this.emailId = emailId;
-    }
-
     public Integer getResendLimit()
     {
         return resendLimit;
@@ -221,6 +334,16 @@ public class ProcessingStep
     public void setResendLimit(final Integer resendLimit)
     {
         this.resendLimit = resendLimit;
+    }
+
+    public ProcessingStepValue getEmailId()
+    {
+        return emailId;
+    }
+
+    public void setEmailId(final ProcessingStepValue emailId)
+    {
+        this.emailId = emailId;
     }
 
     public Long getNotificationConfigurationId()
@@ -233,14 +356,14 @@ public class ProcessingStep
         this.notificationConfigurationId = notificationConfigurationId;
     }
 
-    public ProcessingStepValue getSubject()
+    public ProcessingStepValue getEncodingId()
     {
-        return subject;
+        return encodingId;
     }
 
-    public void setSubject(final ProcessingStepValue subject)
+    public void setEncodingId(final ProcessingStepValue encodingId)
     {
-        this.subject = subject;
+        this.encodingId = encodingId;
     }
 
     public ProcessingStepValue getRecipientEmailAddress()
@@ -253,14 +376,34 @@ public class ProcessingStep
         this.recipientEmailAddress = recipientEmailAddress;
     }
 
-    public ProcessingStepValue getEncodingId()
+    public ProcessingStepValue getSubject()
     {
-        return encodingId;
+        return subject;
     }
 
-    public void setEncodingId(final ProcessingStepValue encodingId)
+    public void setSubject(final ProcessingStepValue subject)
     {
-        this.encodingId = encodingId;
+        this.subject = subject;
+    }
+
+    public ProcessingStepValue getContactListId()
+    {
+        return contactListId;
+    }
+
+    public void setContactListId(final ProcessingStepValue contactListId)
+    {
+        this.contactListId = contactListId;
+    }
+
+    public Object getEventId()
+    {
+        return eventId;
+    }
+
+    public void setEventId(final Object eventId)
+    {
+        this.eventId = eventId;
     }
 
     public Long getProgramId()
@@ -293,40 +436,14 @@ public class ProcessingStep
         this.campaignId = campaignId;
     }
 
-    public ProcessingStepValue getCampaignElementId() {
+    public ProcessingStepValue getCampaignElementId()
+    {
         return campaignElementId;
     }
 
-    public void setCampaignElementId(final ProcessingStepValue campaignElementId) {
+    public void setCampaignElementId(final ProcessingStepValue campaignElementId)
+    {
         this.campaignElementId = campaignElementId;
-    }
-
-    public ProcessingStepValue getLandingPageId()
-    {
-        return landingPageId;
-    }
-
-    public void setLandingPageId(final ProcessingStepValue landingPageId)
-    {
-        this.landingPageId = landingPageId;
-    }
-
-    public ProcessingStepValue getPageUrl() {
-        return pageUrl;
-    }
-
-    public void setPageUrl(ProcessingStepValue pageUrl) {
-        this.pageUrl = pageUrl;
-    }
-
-    public ProcessingStepValue getContactListId()
-    {
-        return contactListId;
-    }
-
-    public void setContactListId(final ProcessingStepValue contactListId)
-    {
-        this.contactListId = contactListId;
     }
 
     public ProcessingStepValue getExternalUrl()
@@ -339,41 +456,23 @@ public class ProcessingStep
         this.externalUrl = externalUrl;
     }
 
-    public ProcessingStepValue getIntegrationRuleSetId()
+    public ProcessingStepValue getLandingPageId()
     {
-        return integrationRuleSetId;
+        return landingPageId;
     }
 
-    public void setIntegrationRuleSetId(final ProcessingStepValue integrationRuleSetId)
+    public void setLandingPageId(final ProcessingStepValue landingPageId)
     {
-        this.integrationRuleSetId = integrationRuleSetId;
+        this.landingPageId = landingPageId;
     }
 
-    public ProcessingStepValue getEmailGroupId()
+    public ProcessingStepValue getPageUrl()
     {
-        return emailGroupId;
+        return pageUrl;
     }
 
-    public void setEmailGroupId(final ProcessingStepValue emailGroupId)
+    public void setPageUrl(final ProcessingStepValue pageUrl)
     {
-        this.emailGroupId = emailGroupId;
-    }
-
-    public ProcessingStepValue getIsSubscribing() {
-        return isSubscribing;
-    }
-
-    public void setIsSubscribing(ProcessingStepValue isSubscribing) {
-        this.isSubscribing = isSubscribing;
-    }
-
-    public String getEventId()
-    {
-        return eventId;
-    }
-
-    public void setEventId(final String eventId)
-    {
-        this.eventId = eventId;
+        this.pageUrl = pageUrl;
     }
 }
