@@ -2,6 +2,8 @@ package com.smartling.connector.eloqua.sdk.rest.model.dynamicContent;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class Criterium
 {
     private String type;
@@ -9,6 +11,9 @@ public class Criterium
     private Long id;
     private Condition condition;
     private Long fieldId;
+
+    private List<Criterium> fieldConditions;
+    private Long customObjectId;
 
     public String getType()
     {
@@ -48,5 +53,24 @@ public class Criterium
     public void setFieldId(final Long fieldId)
     {
         this.fieldId = fieldId;
+    }
+
+    public List<Criterium> getFieldConditions()
+    {
+        return fieldConditions;
+    }
+
+    public void setFieldConditions(final List<Criterium> fieldConditions)
+    {
+        this.fieldConditions = fieldConditions;
+    }
+
+    public Long getCustomObjectId() {
+        return customObjectId;
+    }
+
+    public void setCustomObjectId(final Long customObjectId)
+    {
+        this.customObjectId = customObjectId;
     }
 }

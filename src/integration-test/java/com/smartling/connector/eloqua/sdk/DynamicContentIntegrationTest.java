@@ -2,7 +2,10 @@ package com.smartling.connector.eloqua.sdk;
 
 import com.smartling.connector.eloqua.sdk.client.DynamicContentClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
+import com.smartling.connector.eloqua.sdk.rest.model.dynamicContent.Condition;
+import com.smartling.connector.eloqua.sdk.rest.model.dynamicContent.Criterium;
 import com.smartling.connector.eloqua.sdk.rest.model.dynamicContent.DynamicContent;
+import com.smartling.connector.eloqua.sdk.rest.model.dynamicContent.Rule;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -116,6 +119,31 @@ public class DynamicContentIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
+    public void testShouldLoadRulesCorrectly()
+    {
+        DynamicContentClient dynamicContentClient = new DynamicContentClient(configuration);
+
+        Elements<DynamicContent> dynamicContents = dynamicContentClient.listDynamicContents(1, 10, "createdAt", "ASC", "Test Dynamic Content");
+
+        assertThat(dynamicContents).isNotNull();
+
+        DynamicContent dynamicContent = dynamicContentClient.getDynamicContent(dynamicContents.getElements().get(0).getId());
+
+        assertThat(dynamicContent).isNotNull();
+        assertThat(dynamicContent.getDefaultContentSection().getContentHtml()).isNotNull();
+        assertThat(dynamicContent.getRules()).isNotEmpty();
+        assertThat(dynamicContent.getRules().size()).isEqualTo(1);
+        assertThat(dynamicContent.getRules().get(0).getContentSection().getContentHtml()).isNotNull();
+        assertThat(dynamicContent.getRules().get(0).getCriteria()).isNotEmpty();
+        assertThat(dynamicContent.getRules().get(0).getCriteria().size()).isEqualTo(5);
+
+        for (Criterium criterium : dynamicContent.getRules().get(0).getCriteria())
+        {
+            verifyRuleCriterium(criterium);
+        }
+    }
+
+    @Test
     public void shouldCopyDynamicContent()
     {
         DynamicContentClient dynamicContentClient = new DynamicContentClient(configuration);
@@ -126,5 +154,68 @@ public class DynamicContentIntegrationTest extends BaseIntegrationTest
         assertThat(clonedDynamicContent.getName()).isEqualTo(newName);
 
         dynamicContentClient.deleteDynamicContent(clonedDynamicContent.getId());
+    }
+
+    private void verifyRuleCriterium(Criterium criterium)
+    {
+        assertThat(criterium.getType()).isNotEmpty();
+        if (criterium.getType().equals("ContactFieldCriterion") || criterium.getType().equals("AccountFieldCriterion") || criterium.getType().equals("FieldCondition"))
+        {
+            assertThat(criterium.getCondition()).isNotNull();
+            assertThat(criterium.getFieldId()).isNotNull();
+            assertThat(criterium.getCustomObjectId()).isNull();
+            assertThat(criterium.getFieldConditions()).isNull();
+            verifyCondition(criterium.getCondition());
+        }
+        else
+        {
+            assertThat(criterium.getCondition()).isNull();
+            assertThat(criterium.getFieldId()).isNull();
+            assertThat(criterium.getCustomObjectId()).isNotNull();
+            assertThat(criterium.getFieldConditions()).isNotEmpty();
+            for (Criterium fieldCondition : criterium.getFieldConditions())
+            {
+                verifyRuleCriterium(fieldCondition);
+            }
+        }
+    }
+
+    private void verifyCondition(Condition condition)
+    {
+        assertThat(condition.getType()).isNotEmpty();
+        assertThat(condition.getOperator()).isNotEmpty();
+        if (condition.getOperator().equals("between"))
+        {
+            assertThat(condition.getStart()).isNotEmpty();
+            assertThat(condition.getEnd()).isNotEmpty();
+            assertThat(condition.getValue()).isNull();
+            assertThat(condition.getOptionListId()).isNull();
+            assertThat(condition.getQuickListString()).isNull();
+        }
+        else if (condition.getOperator().equals("in"))
+        {
+            assertThat(condition.getOptionListId()).isNotNull();
+            assertThat(condition.getQuickListString()).isNotNull();
+            assertThat(condition.getStart()).isNull();
+            assertThat(condition.getEnd()).isNull();
+            assertThat(condition.getValue()).isNull();
+        }
+        else if (condition.getOperator().equals("blank"))
+        {
+            assertThat(condition.getOptionListId()).isNull();
+            assertThat(condition.getQuickListString()).isNull();
+            assertThat(condition.getStart()).isNull();
+            assertThat(condition.getEnd()).isNull();
+            assertThat(condition.getValue()).isNull();
+        }
+        else
+        {
+            assertThat(condition.getValue()).isNotEmpty();
+            assertThat(condition.getValue()).isNotEmpty();
+            assertThat(condition.getOptionListId()).isNull();
+            assertThat(condition.getQuickListString()).isNull();
+            assertThat(condition.getStart()).isNull();
+            assertThat(condition.getEnd()).isNull();
+        }
     }
 }
