@@ -59,7 +59,7 @@ public class LandingPageIntegrationTest extends BaseIntegrationTest
             assertThat(landingPages.getElements().get(0).getUpdatedAt().after(landingPages.getElements().get(1).getUpdatedAt()));
         }
 
-        LandingPage landingPage = landingPageClient.getLandingPage(landingPages.getElements().get(0).getId());
+        LandingPage landingPage = landingPageClient.getLandingPage(425);
 
         assertThat(landingPage).isNotNull();
         assertThat(landingPage.getHtmlContent()).isNotNull();
