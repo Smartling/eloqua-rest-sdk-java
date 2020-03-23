@@ -32,8 +32,8 @@ public class EmailClient extends EloquaClient<EmailApi>
 
     public Elements<Email> listEmails(final int page, final int count, String sortBy, String order, String searchTerm)
     {
-        final String orderBy = StringUtils.isEmpty(sortBy) ? "" : sortBy + ' ' + order;
-        final String search = StringUtils.isEmpty(searchTerm) ? "" : "[name =] \"" + searchTerm + '"';
+        final String orderBy = getOrderBy(sortBy, order);
+        final String search = getSearch(searchTerm);
         if (count > MAX_PAGE_SIZE)
         {
             final Elements<Email> elements = executeCall(emailApi -> emailApi.listEmails(EloquaApi.Depth.MINIMAL, page, MAX_PAGE_SIZE, orderBy, search));
@@ -47,6 +47,23 @@ public class EmailClient extends EloquaClient<EmailApi>
             return elements;
         }
         return executeCall(emailApi -> emailApi.listEmails(EloquaApi.Depth.MINIMAL, page, count, orderBy, search));
+    }
+
+    private String getSearch(String searchTerm)
+    {
+        return StringUtils.isEmpty(searchTerm) ? "" : "[name =] \"" + searchTerm + '"';
+    }
+
+    public Elements<Email> listEmailsByFolder(final long folderId, final int page, final int count, String sortBy, String order, String searchTerm)
+    {
+        final String orderBy = getOrderBy(sortBy, order);
+        final String search = getSearch(searchTerm);
+        return executeCall(emailApi -> emailApi.listEmailsByFolder(folderId, EloquaApi.Depth.MINIMAL, page, count, orderBy, search));
+    }
+
+    private String getOrderBy(String sortBy, String order)
+    {
+        return StringUtils.isEmpty(sortBy) ? "" : sortBy + ' ' + order;
     }
 
     private Elements<Email> getEmailElements(final String orderBy, final String search, final int counter)
