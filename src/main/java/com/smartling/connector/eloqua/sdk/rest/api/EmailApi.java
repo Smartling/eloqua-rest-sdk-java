@@ -12,7 +12,7 @@ public interface EmailApi extends EloquaApi
     @RequestLine("GET /API/REST/2.0/assets/emails?depth={depth}&page={page}&count={count}&orderBy={orderBy}&search={search}")
     Elements<Email> listEmails(@Param("depth") Depth depth, @Param("page") int page, @Param("count")int count, @Param("orderBy")String orderBy, @Param("search") String search);
 
-    @RequestLine("GET /API/REST/2.0/assets/email/folder/{folderid}/contents?depth={depth}&page={page}&count={count}&orderBy={orderBy}&search={search}")
+    @RequestLine("GET /API/REST/2.0/assets/email/folder/{folderId}/contents?depth={depth}&page={page}&count={count}&orderBy={orderBy}&search={search}")
     Elements<Email> listEmailsByFolder(@Param("folderId") long folderId, @Param("depth") Depth depth, @Param("page") int page, @Param("count")int count, @Param("orderBy")String orderBy, @Param("search") String search);
 
     @RequestLine("GET /API/REST/2.0/assets/email/{id}?depth={depth}")
