@@ -1,32 +1,15 @@
 package com.smartling.connector.eloqua.sdk.client;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.smartling.connector.eloqua.sdk.Configuration;
 import com.smartling.connector.eloqua.sdk.rest.api.EloquaApi;
 import com.smartling.connector.eloqua.sdk.rest.api.FormApi;
 import com.smartling.connector.eloqua.sdk.rest.api.LoginApi;
-import com.smartling.connector.eloqua.sdk.rest.model.CopyRequest;
-import com.smartling.connector.eloqua.sdk.rest.model.Elements;
-import com.smartling.connector.eloqua.sdk.rest.model.FieldCriteria;
-import com.smartling.connector.eloqua.sdk.rest.model.FieldCriteriaCondition;
-import com.smartling.connector.eloqua.sdk.rest.model.Form;
-import com.smartling.connector.eloqua.sdk.rest.model.FormElement;
-import com.smartling.connector.eloqua.sdk.rest.model.Mapping;
-import com.smartling.connector.eloqua.sdk.rest.model.ProcessingStep;
-import com.smartling.connector.eloqua.sdk.rest.model.ProcessingStepCondition;
-import com.smartling.connector.eloqua.sdk.rest.model.ProcessingStepValue;
-import com.smartling.connector.eloqua.sdk.rest.model.Rule;
-import com.smartling.connector.eloqua.sdk.rest.model.RuleSet;
-import com.smartling.connector.eloqua.sdk.rest.model.Validation;
+import com.smartling.connector.eloqua.sdk.rest.model.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableLong;
 import org.apache.http.client.HttpClient;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 

@@ -5,6 +5,7 @@ import com.smartling.connector.eloqua.sdk.client.LandingPageClient;
 import com.smartling.connector.eloqua.sdk.rest.model.Elements;
 import com.smartling.connector.eloqua.sdk.rest.model.HtmlContent;
 import com.smartling.connector.eloqua.sdk.rest.model.LandingPage;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.UUID;
@@ -41,6 +42,7 @@ public class LandingPageIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
+    @Ignore
     public void shouldWorkWithEmailsCorrectly()
     {
         LandingPageClient landingPageClient = new LandingPageClient(configuration);

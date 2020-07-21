@@ -8,6 +8,7 @@ import com.smartling.connector.eloqua.sdk.rest.model.Form;
 import com.smartling.connector.eloqua.sdk.rest.model.FormElement;
 import com.smartling.connector.eloqua.sdk.rest.model.Validation;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -257,6 +258,7 @@ public class FormIntegrationTest extends BaseIntegrationTest
     }
 
     @Test
+    @Ignore
     public void shouldCopyForm()
     {
         FormClient formClient = new FormClient(configuration);
