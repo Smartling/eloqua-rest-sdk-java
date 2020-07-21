@@ -40,12 +40,13 @@ public class EmailClientTest
         urls.setBase("http://smth.com");
         accountInfo.setUrls(urls);
         when(loginApi.getAccountInfo()).thenReturn(accountInfo);
+
+        doReturn(emailApi).when(emailClient).getApi();
     }
 
     @Test
     public void shouldCallGetEmailsOnce()
     {
-        doReturn(emailApi).when(emailClient).getApi();
         final Elements<Email> elements = new Elements<>();
         elements.setTotal(0);
         elements.setElements(new ArrayList<>());
@@ -61,7 +62,6 @@ public class EmailClientTest
     @Test
     public void shouldCallGetEmails5times()
     {
-        doReturn(emailApi).when(emailClient).getApi();
         final Elements<Email> elements = new Elements<>();
         elements.setTotal(4010);
         ArrayList<Email> emails = new ArrayList<>();
@@ -124,4 +124,19 @@ public class EmailClientTest
         assertThat(listEmails.getElements().size()).isEqualTo(4010);
     }
 
+    @Test
+    public void shouldCallListEmailsByFolderId()
+    {
+        emailClient.listEmailsByFolder(12, 2, 10, "sort", "order", "search");
+
+        verify(emailApi).listEmailsByFolder(12, EloquaApi.Depth.MINIMAL, 2, 10, "sort order", "[name =] \"search\"");
+    }
+
+    @Test
+    public void shouldCallListEmailsByFolderIdEmptySortSearch()
+    {
+        emailClient.listEmailsByFolder(12, 2, 10, "", "order", "");
+
+        verify(emailApi).listEmailsByFolder(12, EloquaApi.Depth.MINIMAL, 2, 10, "", "");
+    }
 }
