@@ -8,6 +8,7 @@ public class HtmlContent
 {
     public static final String RAW_HTML_CONTENT = "RawHtmlContent";
     public static final String STRUCTURED_HTML_CONTENT = "StructuredHtmlContent";
+    public static final String RESPONSIVE_HTML_CONTENT = "ResponsiveHtmlContent";
     public static final String CONTENT_SOURCE_EDITOR = "editor";
     public static final String CONTENT_SOURCE_UPLOAD = "upload";
     private String type;
@@ -113,7 +114,9 @@ public class HtmlContent
     @JsonIgnore
     public String getPlainHtml()
     {
-        return STRUCTURED_HTML_CONTENT.equals(type) ? getMergedRawHtmlString() : html;
+        return STRUCTURED_HTML_CONTENT.equals(type) || RESPONSIVE_HTML_CONTENT.equals(type) ?
+                getMergedRawHtmlString() :
+                html;
     }
 
     private String getMergedRawHtmlString()
