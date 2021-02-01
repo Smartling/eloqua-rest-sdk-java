@@ -14,6 +14,8 @@ import org.apache.http.client.HttpClient;
 public class EmailClient extends EloquaClient<EmailApi>
 {
     public static final int MAX_PAGE_SIZE = 1000;
+    public static final long ROOT_FOLDER_ID = 0;
+    public static final String ROOT_FOLDER_ID_ALIAS = "root";
 
     public EmailClient(final Configuration configuration)
     {
@@ -56,9 +58,15 @@ public class EmailClient extends EloquaClient<EmailApi>
 
     public Elements<Email> listEmailsByFolder(final long folderId, final int page, final int count, String sortBy, String order, String searchTerm)
     {
-        final String orderBy = getOrderBy(sortBy, order);
-        final String search = getSearch(searchTerm);
-        return executeCall(emailApi -> emailApi.listEmailsByFolder(folderId, EloquaApi.Depth.MINIMAL, page, count, orderBy, search));
+        String folderIdParam = getFolderId(folderId);
+        String orderByParam = getOrderBy(sortBy, order);
+        String searchParam = getSearch(searchTerm);
+        return executeCall(emailApi -> emailApi.listEmailsByFolder(folderIdParam, EloquaApi.Depth.MINIMAL, page, count, orderByParam, searchParam));
+    }
+
+    private String getFolderId(long folderId)
+    {
+        return folderId == ROOT_FOLDER_ID ? ROOT_FOLDER_ID_ALIAS : String.valueOf(folderId);
     }
 
     private String getOrderBy(String sortBy, String order)

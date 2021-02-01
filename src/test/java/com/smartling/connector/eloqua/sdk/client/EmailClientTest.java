@@ -129,7 +129,7 @@ public class EmailClientTest
     {
         emailClient.listEmailsByFolder(12, 2, 10, "sort", "order", "search");
 
-        verify(emailApi).listEmailsByFolder(12, EloquaApi.Depth.MINIMAL, 2, 10, "sort order", "[name =] \"search\"");
+        verify(emailApi).listEmailsByFolder("12", EloquaApi.Depth.MINIMAL, 2, 10, "sort order", "[name =] \"search\"");
     }
 
     @Test
@@ -137,6 +137,14 @@ public class EmailClientTest
     {
         emailClient.listEmailsByFolder(12, 2, 10, "", "order", "");
 
-        verify(emailApi).listEmailsByFolder(12, EloquaApi.Depth.MINIMAL, 2, 10, "", "");
+        verify(emailApi).listEmailsByFolder("12", EloquaApi.Depth.MINIMAL, 2, 10, "", "");
+    }
+
+    @Test
+    public void shouldCallListEmailsByFolderIdRootFolder()
+    {
+        emailClient.listEmailsByFolder(0, 2, 10, "", "order", "");
+
+        verify(emailApi).listEmailsByFolder("root", EloquaApi.Depth.MINIMAL, 2, 10, "", "");
     }
 }
